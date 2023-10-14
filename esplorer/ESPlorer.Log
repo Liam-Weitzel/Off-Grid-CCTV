@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2023-10-11T15:53:35.761318300Z</date>
+  <millis>1697039615761</millis>
+  <nanos>318300</nanos>
+  <sequence>5</sequence>
+  <logger>ESPlorer.ESPlorer</logger>
+  <level>INFO</level>
+  <class>ESPlorer.ESPlorer</class>
+  <method>log</method>
+  <thread>17</thread>
+  <message>Set new color theme: Success.</message>
+</record>
+<record>
+  <date>2023-10-11T15:53:35.771223500Z</date>
+  <millis>1697039615771</millis>
+  <nanos>223500</nanos>
+  <sequence>6</sequence>
+  <logger>ESPlorer.ESPlorer</logger>
+  <level>INFO</level>
+  <class>ESPlorer.ESPlorer</class>
+  <method>log</method>
+  <thread>17</thread>
+  <message>Load saved settings: DONE.</message>
+</record>
+<record>
+  <date>2023-10-11T15:53:35.771223500Z</date>
+  <millis>1697039615771</millis>
+  <nanos>223500</nanos>
+  <sequence>7</sequence>
+  <logger>ESPlorer.ESPlorer</logger>
+  <level>INFO</level>
+  <class>ESPlorer.ESPlorer</class>
+  <method>log</method>
+  <thread>17</thread>
+  <message>Snippets (LUA): loading...</message>
+</record>
+<record>
+  <date>2023-10-11T15:53:35.771223500Z</date>
+  <millis>1697039615771</millis>
+  <nanos>223500</nanos>
+  <sequence>8</sequence>
+  <logger>ESPlorer.ESPlorer</logger>
+  <level>INFO</level>
+  <class>ESPlorer.ESPlorer</class>
+  <method>log</method>
+  <thread>17</thread>
+  <message>Snippets (LUA) load: Success.</message>
+</record>
+<record>
+  <date>2023-10-11T15:53:36.330993100Z</date>
+  <millis>1697039616330</millis>
+  <nanos>993100</nanos>
+  <sequence>9</sequence>
+  <logger>ESPlorer.ESPlorer</logger>
+  <level>INFO</level>
+  <class>ESPlorer.ESPlorer</class>
+  <method>log</method>
+  <thread>17</thread>
+  <message>Scan system...</message>
+</record>
+<record>
+  <date>2023-10-11T15:53:36.336977500Z</date>
+  <millis>1697039616336</millis>
+  <nanos>977500</nanos>
+  <sequence>10</sequence>
+  <logger>ESPlorer.ESPlorer</logger>
+  <level>INFO</level>
+  <class>ESPlorer.ESPlorer</class>
+  <method>log</method>
+  <thread>17</thread>
+  <message>Could not find any serial port. Please, connect device and ReScan</message>
+</record>
+<record>
+  <date>2023-10-11T15:53:36.337975400Z</date>
+  <millis>1697039616337</millis>
+  <nanos>975400</nanos>
+  <sequence>11</sequence>
+  <logger>ESPlorer.ESPlorer</logger>
+  <level>INFO</level>
+  <class>ESPlorer.ESPlorer</class>
+  <method>log</method>
+  <thread>17</thread>
+  <message>Scan done.</message>
+</record>
+<record>
+  <date>2023-10-11T15:53:43.409499300Z</date>
+  <millis>1697039623409</millis>
+  <nanos>499300</nanos>
+  <sequence>12</sequence>
+  <logger>ESPlorer.ESPlorer</logger>
+  <level>INFO</level>
+  <class>ESPlorer.ESPlorer</class>
+  <method>log</method>
+  <thread>17</thread>
+  <message>Scan system...</message>
+</record>
+<record>
+  <date>2023-10-11T15:53:43.411496100Z</date>
+  <millis>1697039623411</millis>
+  <nanos>496100</nanos>
+  <sequence>13</sequence>
+  <logger>ESPlorer.ESPlorer</logger>
+  <level>INFO</level>
+  <class>ESPlorer.ESPlorer</class>
+  <method>log</method>
+  <thread>17</thread>
+  <message>found last saved serial port COM3</message>
+</record>
+<record>
+  <date>2023-10-11T15:53:43.412493500Z</date>
+  <millis>1697039623412</millis>
+  <nanos>493500</nanos>
+  <sequence>14</sequence>
+  <logger>ESPlorer.ESPlorer</logger>
+  <level>INFO</level>
+  <class>ESPlorer.ESPlorer</class>
+  <method>log</method>
+  <thread>17</thread>
+  <message>Scan done.</message>
+</record>
+<record>
+  <date>2023-10-11T15:53:44.540866700Z</date>
+  <millis>1697039624540</millis>
+  <nanos>866700</nanos>
+  <sequence>15</sequence>
+  <logger>ESPlorer.ESPlorer</logger>
+  <level>INFO</level>
+  <class>ESPlorer.ESPlorer</class>
+  <method>log</method>
+  <thread>17</thread>
+  <message>Serial port COM3 save as default.</message>
+</record>
+<record>
+  <date>2023-10-11T15:53:44.541867700Z</date>
+  <millis>1697039624541</millis>
+  <nanos>867700</nanos>
+  <sequence>16</sequence>
+  <logger>ESPlorer.ESPlorer</logger>
+  <level>INFO</level>
+  <class>ESPlorer.ESPlorer</class>
+  <method>log</method>
+  <thread>17</thread>
+  <message>Baud rate 9600 save as default.</message>
+</record>
+<record>
+  <date>2023-10-11T15:53:44.542864600Z</date>
+  <millis>1697039624542</millis>
+  <nanos>864600</nanos>
+  <sequence>17</sequence>
+  <logger>ESPlorer.ESPlorer</logger>
+  <level>INFO</level>
+  <class>ESPlorer.ESPlorer</class>
+  <method>log</method>
+  <thread>17</thread>
+  <message>Try to open port COM3, baud 9600, 8N1</message>
+</record>
