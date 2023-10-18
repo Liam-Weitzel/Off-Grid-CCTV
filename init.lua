@@ -1,19 +1,14 @@
 
-LEDpins = {0,4}
-LEDstate = true
 RELAYpins = {5, 6, 7, 8}
 RELAYstates = {true, true, true, true}
-UNUSEDpins = {1,2,3}
-LDRval = 0
+UNUSEDpins = {0,1,2,3,4}
 LDRpin = 0
-NightVisionState = true
+AutoNightVisionTmr = tmr.create()
+nightVisionLDRThresh = 0
+NightVisionState = false
+AutoNightVisionState = false
 
 function init()
-  for k, v in pairs(LEDpins) do --set LEDpins to HIGH
-    gpio.mode(v,gpio.OUTPUT)
-    gpio.write(v,gpio.HIGH)
-  end
-  
   for k, v in pairs(RELAYpins) do --set RELAYpins to high
     gpio.mode(v,gpio.OUTPUT)
     gpio.write(v,gpio.HIGH)
@@ -27,11 +22,8 @@ function init()
   togRelay(4) --Making sure the ir cam cut filter switch is in the right position
   tmr.delay(100000)
   togRelay(4)
-  
-  blinkOFF()
-  tmr.create():alarm(1000, tmr.ALARM_AUTO, function() -- read LDR val
-    LDRval = adc.read(LDRpin)
-  end)
+
+  read()
 end
 
 function togRelay(number)
@@ -43,46 +35,58 @@ function togRelay(number)
   RELAYstates[number] = not RELAYstates[number];
 end
 
-function togLED()
-  if LEDstate==false then 
-    for k, v in pairs(LEDpins) do --set LEDpins to HIGH
-      gpio.write(v,gpio.HIGH)
-    end
-  else 
-    for k, v in pairs(LEDpins) do --set LEDpins to LOW
-      gpio.write(v,gpio.LOW)
-    end
-  end
-  LEDstate = not LEDstate;
-end
-
-function blkinkON()
-  if mytimer~=nil then -- Timer already on.
-    return 
-  end 
-  mytimer = tmr.create()
-  mytimer:alarm(200, tmr.ALARM_AUTO, function() togLED() end)
-end
-
-function blinkOFF()
-  if mytimer==nil then -- Timer already off. 
-    return 
-  end 
-  mytimer:unregister() mytimer=nil
-end
-
 function togNightVision()
   togRelay(2)
   if(NightVisionState) then
-    togRelay(3)
-    tmr.delay(10000)
-    togRelay(3)
-  else 
     togRelay(4)
     tmr.delay(100000)
     togRelay(4)
+  else 
+    togRelay(3)
+    tmr.delay(10000)
+    togRelay(3)
   end
   NightVisionState = not NightVisionState
+end
+
+function autoNightVision()
+    if(not AutoNightVisionState) then
+        AutoNightVisionTmr:alarm(1000, tmr.ALARM_AUTO, function()
+           if(adc.read(LDRpin) <= tonumber(nightVisionLDRThresh) and NightVisionState == false) then togNightVision() end
+           if(adc.read(LDRpin) > tonumber(nightVisionLDRThresh) and NightVisionState == true) then togNightVision() end
+        end)
+    end
+    if(AutoNightVisionState) then
+        AutoNightVisionTmr:unregister()
+    end
+    AutoNightVisionState = not AutoNightVisionState
+end
+
+function togCamera()
+    togRelay(1) 
+    if(NightVisionState) then 
+        togNightVision() 
+    end
+    if(AutoNightVisionState) then
+        autoNightVision()
+    end
+end
+
+function read()
+    if file.open("config.txt", "r") then
+        print(file.readline())
+        file.close()
+    end
+end
+
+function save(ldrVal)
+    nightVisionLDRThresh = ldrVal
+    if file.open("config.txt", "w+") then
+        file.writeline("nightVisionLDRThresh:"..tostring(nightVisionLDRThresh))
+        file.writeline("NightVisionState:"..tostring(NightVisionState))
+        file.writeline("AutoNightVisionState:"..tostring(AutoNightVisionState))
+        file.close()
+    end
 end
 
 wifi.setmode(wifi.STATIONAP) -- Start access point
@@ -93,53 +97,72 @@ init()
 
 sv:listen(80, function(conn)  
   conn:on("receive",function(conn,payload)
-    print(payload)
-    function controlLED()
+  print(payload)
+
+    local function readControl()
       if payload ~= nil then
-        control = string.sub(payload,fnd[2]+1) -- Data is at end already.
-        if control == "LED" then togLED(); blinkOFF() return end
-        if control == "Blink" then blkinkON() return end
-        if control == "Blinkoff" then blinkOFF() return end
-        if control == "NightVision" then togNightVision() return end
+        fndLDR = {string.find(payload,"ldr=")}
+        ldrVal = string.sub(payload,fndLDR[2]+1)
+        control = string.sub(payload,fndCONTROL[2]+1, fndLDR[2]-5) -- Data is at end already.
+        print(control)
+        if control == "Toggle+night+vision" then togNightVision() return end
+        if control == "Toggle+camera" then togCamera() return end
+        if control == "Automatically+enable+night+vision" then autoNightVision() return end
+        if control == "Save" then save(ldrVal) return end
       end
     end
-    --get control data from payload
-    fnd = {string.find(payload,"control=")}
-    if #fnd ~= 0 then controlLED() end -- Is there data in payload? - Take action if so.
 
-    conn:send('<!DOCTYPE HTML>\n')
-    conn:send('<html>\n')
-    conn:send('<head><meta http-equiv="content-type" content="text/html; charset=UTF-8">\n')
-    -- Scale the viewport to fit the device.
-    conn:send('<meta name="viewport" content="width=device-width, initial-scale=1">')
-    -- Title
-    conn:send('<title>ESP8266 Wifi LED Control</title>\n')
-    -- CSS style definition for submit buttons
-    conn:send('<style>\n')
-    conn:send('input[type="submit"] {\n')
-    conn:send('color:#050; width:70px; padding:10px;\n')
-    conn:send('font: bold 84% "trebuchet ms",helvetica,sans-serif;\n')
-    conn:send('background-color:lightgreen;\n')
-    conn:send('border:1px solid; border-radius: 12px;\n')
-    conn:send('transition-duration: 0.4s;\n')
-    conn:send('}\n')
-    conn:send('input[type="submit"]:hover {\n')
-    conn:send('background-color:lightblue;\n')
-    conn:send('color: white;\n')
-    conn:send('}')
-    conn:send('</style></head>\n')
-    -- HTML body Page content.
-    conn:send('<body>')
-    conn:send('<h1>Control of nodeMCU<br>(ESP8266-E12) Built in LED.</h1>\n')
-    conn:send('<p>The built in LED for NodeMCU V3 is on D4</p>\n')
-    -- HTML Form (POST type) and buttons.
-    conn:send('<form action="" method="POST">\n')
-    conn:send('<input type="submit" name="control" value="LED" > Toggle Built in LED <br><br>\n')
-    conn:send('<input type="submit" name="control" value="Blink"> Blink LED <br><br>\n')
-    conn:send('<input type="submit" name="control" value="Blinkoff"> Stop LED Blink<br><br>\n')
-    conn:send('<input type="submit" name="control" value="NightVision" > Toggle night vision </form>\n')
-    conn:send('<p> LDR out: '..LDRval..'</p>')
-    conn:send('</body></html>\n')
+    local function isDisabled() 
+        if(AutoNightVisionState) then return "button" end
+        if(not AutoNightVisionState) then return "submit" end
+    end
+
+    LDRpercent = adc.read(LDRpin)/10
+
+    --get control data from payload
+    fndCONTROL = {string.find(payload,"control=")}
+    if #fndCONTROL ~= 0 then readControl() end -- Is there data in payload? - Take action if so.
+
+        conn:send('<!DOCTYPE HTML>\n')
+        conn:send('<html>\n')
+        conn:send('<head><meta http-equiv="content-type" content="text/html; charset=UTF-8">\n')
+        -- Scale the viewport to fit the device.
+        conn:send('<meta name="viewport" content="width=device-width, initial-scale=1">')
+        -- Title
+        conn:send('<title>Camera control panel</title>\n')
+        -- CSS style definition for submit buttons
+        conn:send('<style>\n')
+        conn:send('input[type="submit"] {\n')
+        conn:send('padding:10px;\n')
+        conn:send('font: bold 84% "trebuchet ms",helvetica,sans-serif;\n')
+        conn:send('border:1px solid; border-radius: 12px;\n')
+        conn:send('transition-duration: 0.4s;\n')
+        conn:send('}\n')
+        conn:send('input[type="submit"].false {\n background-color:lightred; color: red;}\n')
+        conn:send('input[type="submit"].true {\n background-color:lightgreen; color: green;}\n') 
+        conn:send('input[type="submit"]:hover {\n')
+        conn:send('background-color:lightblue;\n')
+        conn:send('color: white;\n')
+        conn:send('}')
+        conn:send('input[type="button"] {\n')
+        conn:send('color: grey;padding:10px;background-color: lightgrey;\n')
+        conn:send('font: bold 84% "trebuchet ms",helvetica,sans-serif;\n')
+        conn:send('border:1px solid; border-radius: 12px;\n')
+        conn:send('transition-duration: 0.4s;\n')
+        conn:send('}\n')
+        conn:send('</style></head>\n')
+        -- HTML body Page content.
+        conn:send('<body>')
+        conn:send('<h1>Camera control panel</h1>\n')
+        -- HTML Form (POST type) and buttons.
+        conn:send('<form action="" method="POST">\n')
+        conn:send('<input class="'..tostring(RELAYstates[1])..'" type="submit" name="control" value="Toggle camera"><br><br>\n')
+        conn:send('<input class="'..tostring(NightVisionState)..'" type="'..isDisabled()..'" name="control" value="Toggle night vision"><br><br>\n')
+        conn:send('<input class="'..tostring(AutoNightVisionState)..'" type="submit" name="control" value="Automatically enable night vision"><br><br>\n')
+        conn:send('<input type="submit" name="control" value="Save">\n')
+        conn:send('Threshold for night vision: <input type="range" name="ldr" min="0" max="1000" value="'..nightVisionLDRThresh..'"></form>\n')
+        conn:send('<p> Current amount of light detected: '..LDRpercent..'%</p>\n')
+        conn:send('</body></html>\n')
 
     conn:on("sent",function(conn) conn:close() end)
   end)
