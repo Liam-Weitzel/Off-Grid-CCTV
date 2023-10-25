@@ -1,4 +1,8 @@
 
+--Memory remedies:
+--get rid of float reads on pins
+--see if i can get rid of more libraries in my binary file
+
 RELAYpins = {5, 6, 7, 8}
 RELAYstates = {true, true, true, true}
 UNUSEDpins = {0,1,2,3,4}
@@ -23,7 +27,7 @@ function init()
   tmr.delay(100000)
   togRelay(4)
 
-  read()
+  read() --Read and set saved states from the config file
 end
 
 function togRelay(number)
@@ -43,7 +47,7 @@ function togNightVision()
     togRelay(4)
   else 
     togRelay(3)
-    tmr.delay(10000)
+    tmr.delay(100000)
     togRelay(3)
   end
   NightVisionState = not NightVisionState
@@ -74,7 +78,25 @@ end
 
 function read()
     if file.open("config.txt", "r") then
-        print(file.readline())
+        line = file.readline()
+        while line ~= nil do
+            print(line)
+            varToSet = string.sub(line,0,string.find(line,":"))
+            val = string.sub(line,string.find(line,":")+1)
+            if(varToSet == "nightVisionLDRThresh:") then 
+                nightVisionLDRThresh = tonumber(val)
+            end
+            if(varToSet == "NightVisionState:") then 
+                if(tostring(val) ~= tostring(NightVisionState).."\n") then togNightVision() end
+            end
+            if(varToSet == "AutoNightVisionState:") then 
+                if(tostring(val) ~= tostring(AutoNightVisionState).."\n") then autoNightVision() end
+            end
+            if(varToSet == "CameraState:") then 
+                if(tostring(val) ~= tostring(RELAYstates[1]).."\n") then togCamera() end
+            end
+            line = file.readline()
+        end
         file.close()
     end
 end
@@ -85,6 +107,7 @@ function save(ldrVal)
         file.writeline("nightVisionLDRThresh:"..tostring(nightVisionLDRThresh))
         file.writeline("NightVisionState:"..tostring(NightVisionState))
         file.writeline("AutoNightVisionState:"..tostring(AutoNightVisionState))
+        file.writeline("CameraState:"..tostring(RELAYstates[1]))
         file.close()
     end
 end
