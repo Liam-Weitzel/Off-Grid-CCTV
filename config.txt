@@ -1,4 +1,2 @@
 nightVisionLDRThresh:300
-NightVisionState:false
 AutoNightVisionState:true
-CameraState:true
