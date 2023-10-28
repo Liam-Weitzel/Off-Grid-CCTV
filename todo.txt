@@ -1,4 +1,3 @@
 Be able to interface OSD
     Use this to switch between black and white mode in control panel & automatically
-    Allow user to input custom name in camera
     Allow user to control arrow keys on camera settings

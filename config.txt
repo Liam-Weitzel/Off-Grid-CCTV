@@ -1,2 +1,0 @@
-nightVisionLDRThresh:300
-AutoNightVisionState:true
