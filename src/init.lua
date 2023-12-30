@@ -2,14 +2,14 @@ LDRpin = 0
 IRCutFilterOn = 1
 IRCutFilterOff = 2
 IRLEDPin = 3
-CamUpPin = 4
-CamDownPin = 5 
-CamRightPin = 6
-CamLeftPin = 7
-CamMiddlePin = 8 
+CamUpPin = 5
+CamDownPin = 8
+CamRightPin = 7
+CamLeftPin = 6
+CamMiddlePin = 4
 
-GPIOpins = {1, 2, 3, 4, 5, 6, 7, 8}
-GPIOstates = {true, true, true, true, true, true, true, true}
+GPIOpins = {0,1,2,3,4,5,6,7}
+GPIOstates = {true, true, true, false, false, false, false, false}
 
 AutoNightVisionTmr = tmr.create()
 nightVisionLDRThresh = 0
@@ -18,10 +18,22 @@ apName = "The Ultimate CCTV Camera"
 apPwd = "Just_A_Default_Password"
 
 function init()
-  for k, v in pairs(GPIOpins) do --set GPIOpins to high
-    gpio.mode(v,gpio.OUTPUT)
-    gpio.write(v,gpio.HIGH)
-  end
+    gpio.mode(GPIOpins[1],gpio.OUTPUT)
+    gpio.write(GPIOpins[1],gpio.HIGH)
+    gpio.mode(GPIOpins[2],gpio.OUTPUT)
+    gpio.write(GPIOpins[2],gpio.HIGH)
+    gpio.mode(GPIOpins[3],gpio.OUTPUT)
+    gpio.write(GPIOpins[3],gpio.HIGH)
+    gpio.mode(GPIOpins[4],gpio.OUTPUT)
+    gpio.write(GPIOpins[4],gpio.LOW)
+    gpio.mode(GPIOpins[5],gpio.OUTPUT)
+    gpio.write(GPIOpins[5],gpio.LOW)
+    gpio.mode(GPIOpins[6],gpio.OUTPUT)
+    gpio.write(GPIOpins[6],gpio.LOW)
+    gpio.mode(GPIOpins[7],gpio.OUTPUT)
+    gpio.write(GPIOpins[7],gpio.LOW)
+    gpio.mode(GPIOpins[8],gpio.OUTPUT)
+    gpio.write(GPIOpins[8],gpio.LOW)
 
   togRelay(IRCutFilterOn) --Making sure the ir cam cut filter switch is in the right position
   tmr.delay(100000)
@@ -39,16 +51,18 @@ function togRelay(number)
   GPIOstates[number] = not GPIOstates[number];
 end
 
+function shortPressRelay(number)
+    togRelay(number)
+    tmr.delay(100000)
+    togRelay(number)
+end
+
 function togNightVision()
     togRelay(IRLEDPin)
     if(GPIOstates[IRLEDPin]) then
-        togRelay(IRCutFilterOn)
-        tmr.delay(100000)
-        togRelay(IRCutFilterOn)
+        shortPressRelay(IRCutFilterOn)
     else
-        togRelay(IRCutFilterOff)
-        tmr.delay(100000)
-        togRelay(IRCutFilterOff)
+        shortPressRelay(IRCutFilterOff)
     end
 end
 
@@ -138,6 +152,11 @@ sv:listen(80, function(conn)
         if control == "Toggle+night+vision" then togNightVision() return end
         if control == "Automatically+enable+night+vision" then autoNightVision() return end
         if control == "Save" then save(ldrVal, apNameTemp, apPwdTemp) return end
+        if control == "up" then shortPressRelay(CamUpPin) return end
+        if control == "down" then shortPressRelay(CamDownPin) return end
+        if control == "left" then shortPressRelay(CamLeftPin) return end
+        if control == "right" then shortPressRelay(CamRightPin) return end
+        if control == "middle" then shortPressRelay(CamMiddlePin) return end
       end
     end
 
@@ -165,13 +184,18 @@ sv:listen(80, function(conn)
     conn:send('<br><br><br><br>Advanced: interface directly with camera settings')
     conn:send('<div style="padding: 20px; padding-left: 150px; width: 100px; height: 100px; display: grid; grid-template-columns: auto auto auto;">\n')
     conn:send('<div style="text-align:center"></div>\n')
-    conn:send('<div style="text-align:center"><i style="border: solid black; border-width:0 3px 3px 0; display: inline-block; padding:3px;transform: rotate(-135deg);-webkit-transform: rotate(-135deg);"></i></div>\n')
+    conn:send('<div style="text-align:center">')
+    conn:send('<input type="submit" name="control" value="up" style="font-size: 0px;border: solid black; border-width:0 3px 3px 0; display: inline-block; padding:3px;transform: rotate(-135deg);-webkit-transform: rotate(-135deg);"></div>')
     conn:send('<div style="text-align:center"></div>\n')
-    conn:send('<div style="text-align:center"><i style="border: solid black; border-width:0 3px 3px 0; display: inline-block; padding:3px;transform: rotate(135deg);-webkit-transform: rotate(135deg);"></i></div>\n')
-    conn:send('<div style="text-align:center"><i style="border: solid black; border-width:2px 2px 2px 2px; display: inline-block; padding:3px;"></i></div>\n')
-    conn:send('<div style="text-align:center"><i style="border: solid black; border-width:0 3px 3px 0; display: inline-block; padding:3px;transform: rotate(-45deg);-webkit-transform: rotate(-45deg);"></i></div>\n')
+    conn:send('<div style="text-align:center">')
+    conn:send('<input type="submit" name="control" value="left" style="font-size: 0px;border: solid black; border-width:0 3px 3px 0; display: inline-block; padding:3px;transform: rotate(135deg);-webkit-transform: rotate(135deg);"></div>\n')
+    conn:send('<div style="text-align:center">')
+    conn:send('<input type="submit" name="control" value="middle" style="font-size: 0px;border: solid black; border-width:2px 2px 2px 2px; display: inline-block; padding:3px;"></div>\n')
+    conn:send('<div style="text-align:center">')
+    conn:send('<input type="submit" name="control" value="right" style="font-size: 0px;border: solid black; border-width:0 3px 3px 0; display: inline-block; padding:3px;transform: rotate(-45deg);-webkit-transform: rotate(-45deg);"></div>\n')
     conn:send('<div style="text-align:center"></div>\n')
-    conn:send('<div style="text-align:center"><i style="border: solid black; border-width:0 3px 3px 0; display: inline-block; padding:3px;transform: rotate(45deg);-webkit-transform: rotate(45deg);"></i></input></div>\n')
+    conn:send('<div style="text-align:center">')
+    conn:send('<input type="submit" name="control" value="down" style="font-size: 0px;border: solid black; border-width:0 3px 3px 0; display: inline-block; padding:3px;transform: rotate(45deg);-webkit-transform: rotate(45deg);"></div>\n')
     conn:send('<div style="text-align:center"></div>\n')
     conn:send('</div>') 
     
