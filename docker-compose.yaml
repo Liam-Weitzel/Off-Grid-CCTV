@@ -1,7 +1,7 @@
 version: "3"
 services:
   web:
-    image: web:v0.1
+    image: web:latest
     ports:
       - "8081:80"
     restart: always
@@ -13,7 +13,7 @@ services:
       network:
         ipv4_address: 192.168.92.21
   backend:
-    image: backend:v0.1
+    image: backend:latest
     ports:
       - "8082:80"
     restart: always
