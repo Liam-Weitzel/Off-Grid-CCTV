@@ -19,6 +19,13 @@ do
 	majorVersion=$(echo "${fullVersion}" | grep -o -P '.{0,10}\.' | sed 's/\.//g')
 	minorVersion=$(echo "${fullVersion}" | grep -o -P '\..{0,10}' | sed 's/\.//g')
 
+	if [ -z "$majorVersion" ]; then
+	    majorVersion=0
+	fi
+	if [ -z "$minorVersion" ]; then
+	    minorVersion=0	
+	fi
+
 	#echo "${currentDir}: ${fullVersion}  -  v${majorVersion}.${minorVersion}"
 
 	#increment version no.
