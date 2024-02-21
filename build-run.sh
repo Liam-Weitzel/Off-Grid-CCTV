@@ -4,7 +4,7 @@
 declare -a imageName=()
 declare -a imageVersion=()
 size=0
-
+path=$(pwd)
 echo "The following commands will be executed:"
 
 for dir in */
@@ -59,9 +59,15 @@ done
 for (( i = 0; i <= $size; i++ ))
 do
     #echo "${imageName[$i]}  ${imageVersion[$i]}"
-    cd ${imageName[$i]}/ && sudo docker build . -t ${imageName[$i]}:${imageVersion[$i]} -t ${imageName[$i]}:latest && cd ../
+    cd ${imageName[$i]}/
+    sudo docker build . -t ${imageName[$i]}:${imageVersion[$i]} -t ${imageName[$i]}:latest
+    cd ..
 done
 
-sudo docker-compose up -d #runs docker compose headless mode
+echo "Build successful! docker-compose up"
+cd ${path}
+sudo docker-compose up
 
-#sudo docker exec -it off-grid-cctv_backend_1 /bin/bash #this will ssh into the container
+#sudo docker run -it backend:latest /bin/bash
+#sudo docker exec -it off-grid-cctv_backend_1 /bin/bash
+#sudo docker system prune -a
