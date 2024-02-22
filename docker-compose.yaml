@@ -3,7 +3,7 @@ services:
   web:
     image: web:latest
     ports:
-      - "8081:80"
+      - "8080:80"
     restart: always
     depends_on:
       - backend
@@ -15,7 +15,7 @@ services:
   backend:
     image: backend:latest
     ports:
-      - "8080:80"
+      - "8080:8080"
     restart: always
     environment:
       SERVICE_NAME: backend

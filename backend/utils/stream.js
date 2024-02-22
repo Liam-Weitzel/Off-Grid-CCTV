@@ -6,6 +6,7 @@ const { server } = require('./config');
 /* const streamArgs = [
 	'-f',
 	'image2pipe',
+	// '-',
 	'-i',
 	'-',
 	'-f',
@@ -25,6 +26,9 @@ const { server } = require('./config');
 ]; */
 
 const streamArgs = [
+	'-f',
+	'image2pipe',
+	'-',
 	'-i',
 	'/dev/video0',
 	'-f',
