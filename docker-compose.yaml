@@ -19,6 +19,7 @@ services:
     restart: always
     environment:
       SERVICE_NAME: backend
+    privileged: true
     volumes:
       - ./sqlite:/sqlite
       - ./videostore:/videostore

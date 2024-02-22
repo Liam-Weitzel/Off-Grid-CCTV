@@ -24,6 +24,8 @@ const streamArgs = [
 	`http://localhost:${server.streamPort}/${server.streamSecret}`
 ];
 
+//ffmpeg -f image2pipe -i - -f mpegts -c:v mpeg1video -b:v 1000k -maxrate:v 1000k -bufsize 500k -an http://localhost:8082/N23y08VnzfDH4Wmf2tXoDyxbwf2rGQJC
+
 const ffmpegStream = spawn('ffmpeg', streamArgs);
 ffmpegStream.stdin.setEncoding('binary');
 
