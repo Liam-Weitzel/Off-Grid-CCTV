@@ -71,4 +71,4 @@ npm install && \
 apt-get purge -y build-essential curl wget unzip git cmake && \
 apt-get autoremove -y --purge
 
-CMD ['node', 'server.js']
+CMD ['node','server.js']

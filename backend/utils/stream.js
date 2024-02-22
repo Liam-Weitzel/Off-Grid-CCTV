@@ -28,7 +28,7 @@ const streamArgs = [
 	'-i',
 	'/dev/video0',
 	'-f',
-	'mjpeg',
+	'mpegts',
 	'-c:v',
 	'mpeg1video',
 	// "-q",
