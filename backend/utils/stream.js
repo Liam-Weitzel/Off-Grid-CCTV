@@ -3,13 +3,32 @@ const filter = require('stream-filter');
 
 const { server } = require('./config');
 
-const streamArgs = [
+/* const streamArgs = [
 	'-f',
 	'image2pipe',
 	'-i',
 	'-',
 	'-f',
 	'mpegts',
+	'-c:v',
+	'mpeg1video',
+	// "-q",
+	// "10",
+	'-b:v',
+	'1000k',
+	'-maxrate:v',
+	'1000k',
+	'-bufsize',
+	'500k',
+	'-an',
+	`http://localhost:${server.streamPort}/${server.streamSecret}`
+]; */
+
+const streamArgs = [
+	'-i',
+	'/dev/video0',
+	'-f',
+	'mjpeg',
 	'-c:v',
 	'mpeg1video',
 	// "-q",
