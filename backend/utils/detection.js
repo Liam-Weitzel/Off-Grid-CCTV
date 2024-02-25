@@ -11,10 +11,10 @@ if (!cv.xmodules.dnn) {
 // set stdout encoding to 'binary'
 process.stdout.setDefaultEncoding('binary');
 
-const modelPath = path.resolve(__dirname, '../model/frozen_inference_graph.pb');
+const modelPath = path.resolve(__dirname, '../ai/obj_detection_model/frozen_inference_graph.pb');
 const configPath = path.resolve(
 	__dirname,
-	'../model/ssd_mobilenet_v2_coco_2018_03_29.pbtxt'
+	'../ai/obj_detection_model/ssd_mobilenet_v3_large_coco_2020_01_14.pbtxt'
 );
 
 if (!fs.existsSync(modelPath) || !fs.existsSync(configPath)) {

@@ -1,5 +1,7 @@
 FROM ubuntu:16.04
 
+WORKDIR /server
+
 COPY . .
 
 ENV OPENCV4NODEJS_DISABLE_AUTOBUILD=1
@@ -12,12 +14,12 @@ apt-get install -y nodejs && node -v && npm -v && \
 rm -rf /var/lib/apt/lists/* && \
 mkdir opencv && \
 cd opencv && \
-wget https://github.com/Itseez/opencv/archive/3.3.1.zip --no-check-certificate -O opencv-3.3.1.zip && \
-unzip opencv-3.3.1.zip && \
-#wget https://github.com/Itseez/opencv_contrib/archive/3.3.1.zip --no-check-certificate -O opencv_contrib-3.3.1.zip; && \
-#unzip opencv_contrib-3.3.1.zip; && \
-mkdir opencv-3.3.1/build && \
-cd opencv-3.3.1/build && \
+wget https://github.com/Itseez/opencv/archive/3.4.15.zip --no-check-certificate -O opencv-3.4.15.zip && \
+unzip opencv-3.4.15.zip && \
+#wget https://github.com/Itseez/opencv_contrib/archive/3.4.15.zip --no-check-certificate -O opencv_contrib-3.4.15.zip; && \
+#unzip opencv_contrib-3.4.15.zip; && \
+mkdir opencv-3.4.15/build && \
+cd opencv-3.4.15/build && \
 cmake_flags="-D CMAKE_BUILD_TYPE=RELEASE \
   -D BUILD_EXAMPLES=OFF \
   -D BUILD_DOCS=OFF \
@@ -55,7 +57,7 @@ cmake_flags="-D CMAKE_BUILD_TYPE=RELEASE \
   -D BUILD_opencv_xobjdetect=OFF \
   -D BUILD_opencv_xphoto=OFF \
   -D CMAKE_INSTALL_PREFIX=/usr/local" && \
-#cmake_flags="$cmake_flags -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-3.3.1/modules"; && \
+#cmake_flags="$cmake_flags -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-3.4.15/modules"; && \
 echo $cmake_flags && \
 cmake $cmake_flags .. && \
 make -j $(nproc) && \
@@ -71,4 +73,4 @@ npm install && \
 apt-get purge -y build-essential curl wget unzip git cmake && \
 apt-get autoremove -y --purge
 
-CMD ['node','server.js']
+CMD ["node", "server.js"]
