@@ -1,8 +1,6 @@
 const { spawn } = require('child_process');
 const filter = require('stream-filter');
 
-const { server } = require('./config');
-
 const streamArgs = [
 	'-f',
 	'image2pipe',
@@ -22,7 +20,7 @@ const streamArgs = [
 	'-bufsize',
 	'500k',
 	'-an',
-	`http://localhost:${server.streamPort}/${server.streamSecret}`
+	`http://localhost:${streamPort}/${streamSecret}`
 ];
 
 /* const streamArgs = [
@@ -49,13 +47,13 @@ const streamArgs = [
 
 //ffmpeg -f image2pipe -i - -f mpegts -c:v mpeg1video -b:v 1000k -maxrate:v 1000k -bufsize 500k -an http://localhost:8082/N23y08VnzfDH4Wmf2tXoDyxbwf2rGQJC
 
-const ffmpegStream = spawn('ffmpeg', streamArgs);
-ffmpegStream.stdin.setEncoding('binary');
+const stream = (camPort, camFps, frameSize, httpPort, wsPort, streamPort, streamSecret) => {
+        const ffmpegStream = spawn('ffmpeg', streamArgs);
+        ffmpegStream.stdin.setEncoding('binary');
 
-const detectionStream = spawn('node', ['utils/detection.js']);
-detectionStream.stdout.setDefaultEncoding('binary');
+        const detectionStream = spawn('node', ['utils/detection.js', camPort, camFps, frameSize, httpPort, wsPort, streamPort, streamSecret]);
+        detectionStream.stdout.setDefaultEncoding('binary');
 
-const stream = () => {
         detectionStream.stdout.on('data', (data) => {
                 console.log('opencv stdout: ' + data.toString());
         });

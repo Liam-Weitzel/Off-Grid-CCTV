@@ -3,12 +3,19 @@ const WebSocket = require('ws');
 const http = require('http');
 const path = require('path');
 const ngrok = require('ngrok');
+const { spawn } = require('child_process');
 
-const { server } = require('./utils/config');
+camPort = parseInt(process.argv[2]);
+camFps = parseInt(process.argv[3]);
+frameSize = parseInt(process.argv[4]);
+httpPort = parseInt(process.argv[5]);
+wsPort = parseInt(process.argv[6]);
+streamPort = parseInt(process.argv[7]);
+streamSecret = process.argv[8];
 
 // App parameters
 const app = express();
-app.set('port', server.httpPort);
+app.set('port', httpPort);
 app.use(express.static(path.join(__dirname, 'public')));
 
 // View engine setup
@@ -16,7 +23,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 // Default Websocket URL
-let wsUrl = `ws://localhost:${server.httpPort}`;
+let wsUrl = `ws://localhost:${httpPort}`;
 
 // HTTP server
 const httpServer = http.createServer(app);
@@ -63,7 +70,7 @@ socketServer.broadcast = (data) => {
 http.createServer((request, response) => {
 	const params = request.url.substr(1).split('/');
 
-	if (params[0] !== server.streamSecret) {
+	if (params[0] !== streamSecret) {
 		console.log(
 			`Failed Stream Connection: 
         ${request.socket.remoteAddress}:${request.socket.remotePort}`
@@ -92,15 +99,15 @@ http.createServer((request, response) => {
 		}
 	});
 })
-	.listen(server.streamPort);
+	.listen(streamPort);
 
 // Start generate streaming
-require('./utils/stream')();
+require('./utils/stream')(camPort, camFps, frameSize, httpPort, wsPort, streamPort, streamSecret);
 
 // Get ngrok url for local server
 (async function() {
 	// IIFE: Immediately Invoked Function Expression
-	const httpUrl = await ngrok.connect(server.httpPort);
+	const httpUrl = await ngrok.connect(httpPort);
 	wsUrl = httpUrl.toString().replace(/^https?:\/\//, 'wss://');
 
 	console.log('Ngrok HTTP URL:', httpUrl);

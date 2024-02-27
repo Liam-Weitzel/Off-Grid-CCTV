@@ -2,7 +2,29 @@ const path = require('path');
 const fs = require('fs');
 
 const { cv, grabFrames } = require('./opencv-helpers');
-const { opencv, classNames } = require('./config');
+
+camPort = parseInt(process.argv[2]);
+camFps = parseInt(process.argv[3]);
+frameSize = parseInt(process.argv[4]);
+httpPort = parseInt(process.argv[5]);
+wsPort = parseInt(process.argv[6]);
+streamPort = parseInt(process.argv[7]);
+streamSecret = process.argv[8];
+
+classNames = {
+	0: 'person',
+	1: 'bicycle',
+	2: 'car',
+	3: 'motorcycle',
+	4: 'truck',
+	5: 'cat',
+	6: 'dog',
+	7: 'horse',
+	8: 'sheep',
+	9: 'cow',
+	10: 'bear',
+	11: 'zebra',
+};
 
 if (!cv.xmodules.dnn) {
 	throw new Error('exiting: opencv4nodejs compiled without dnn module');
@@ -29,7 +51,7 @@ if (!fs.existsSync(modelPath) || !fs.existsSync(configPath)) {
 const net = cv.readNetFromTensorflow(modelPath, configPath);
 
 // set webcam interval
-const camInterval = 1000 / opencv.camFps;
+const camInterval = 1000 / camFps;
 
 const objectDetect = (img) => {
 	// object detection model works with 300 x 300 images
@@ -85,10 +107,10 @@ const objectDetect = (img) => {
 
 const runWebcamObjectDetect = (src, objectDetect) =>
 	grabFrames(src, camInterval, (frame) => {
-		const frameResized = frame.resizeToMax(opencv.frameSize);
+		const frameResized = frame.resizeToMax(frameSize);
 
 		// detect objects
 		objectDetect(frameResized);
 	});
 
-runWebcamObjectDetect(opencv.camPort, objectDetect);
+runWebcamObjectDetect(camPort, objectDetect);
