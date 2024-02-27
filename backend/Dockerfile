@@ -69,6 +69,7 @@ rm -rf opencv && \
 npm install -g opencv4nodejs --unsafe-perm && \
 apt-get update && \
 apt-get -y install ffmpeg && \
+apt-get -y install v4l-utils && \
 npm install && \
 apt-get purge -y build-essential curl wget unzip git cmake && \
 apt-get autoremove -y --purge
