@@ -1,8 +1,0 @@
-Add flyback diodes to relay coils
-Use OSD controls to switch between black and white mode in control panel & automatically
-
-Allow user to set auto black and white mode threshhold independently
-Allow user to set IR led threshold indpenedently
-Allow user to set IR Cut filter switcher threshold independently
-
-Start work on OpenIPC camera
