@@ -72,10 +72,10 @@ const objectDetect = (img) => {
 
 	for (let y = 0; y < numRows; y += 1) {
 		const confidence = outputBlob.at([0, 0, y, 2]);
-		if (confidence > 0.5) {
+		if (confidence > 0.8) {
 			const classId = outputBlob.at([0, 0, y, 1]);
 			const className = classNames[classId];
-			const boxX = imgWidth * outputBlob.at([0, 0, y, 3]);
+			/* const boxX = imgWidth * outputBlob.at([0, 0, y, 3]);
 			const boxY = imgHeight * outputBlob.at([0, 0, y, 4]);
 			const boxWidht = imgWidth * outputBlob.at([0, 0, y, 5]);
 			const boxHeight = imgHeight * outputBlob.at([0, 0, y, 6]);
@@ -97,7 +97,8 @@ const objectDetect = (img) => {
 			const thickness = 2;
 
 			// put text on the object
-			img.putText(text, org, fontFace, fontScale, textColor, thickness);
+			img.putText(text, org, fontFace, fontScale, textColor, thickness); */
+			console.warn(className);
 		}
 	}
 
