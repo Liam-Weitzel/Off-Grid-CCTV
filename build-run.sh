@@ -68,6 +68,4 @@ echo "Build successful! docker-compose up"
 cd ${path}
 sudo docker-compose up
 
-#sudo docker run -it backend:latest /bin/bash
-#sudo docker exec -it off-grid-cctv_backend_1 /bin/bash
-#sudo docker system prune -a
+echo "sudo docker run -it -p 8080-8083:8080-8083 --mount src=\"\$(pwd)/../videostore\",target=\"/server/videostore\",type=bind --mount src=\"\$(pwd)/../sqlite\",target=\"/server/sqlite\",type=bind --mount src=\"\$(pwd)/dev\",target=\"/server/dev\",type=bind --privileged backend:latest /bin/bash"

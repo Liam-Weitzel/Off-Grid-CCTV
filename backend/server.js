@@ -1,111 +1,43 @@
 const express = require('express');
-const WebSocket = require('ws');
-const http = require('http');
-const path = require('path');
-const ngrok = require('ngrok');
+const cors = require('cors');
+const startStream = require('./startStream');
+const { exec } = require('child_process');
 
-const { server } = require('./utils/config');
-
-// App parameters
 const app = express();
-app.set('port', server.httpPort);
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors());
+app.use(express.json());
 
-// View engine setup
-app.set('views', path.join(__dirname, 'views'));
+/* app.set('views', __dirname);
 app.set('view engine', 'pug');
 
-// Default Websocket URL
-let wsUrl = `ws://localhost:${server.httpPort}`;
+app.get('/8081', async (req, res) => {
+  res.render('index', { title: 'Object Detection on Live Stream', url: 'ws://localhost:8081'});
+}); */
 
-// HTTP server
-const httpServer = http.createServer(app);
-httpServer.listen(app.get('port'), '0.0.0.0', () => {
-	console.log('HTTP server listening on port ' + app.get('port'));
+app.get('/getWebSockets', async (req, res) => {
+  res.send('ws://localhost:8081');
 });
 
-app.get('/', (req, res) => {
-	res.render('index', { title: 'Object Detection on Live Stream', url: wsUrl });
+app.listen(8080, () => console.log('api localhost:8080'))
+
+const { ffmpegStream, detectionStream } = startStream(1, 30, 640, 8081, 8082, 8083, 'camera1', ['-f', 'image2pipe', '-', '-i', '-', '-f', 'mpegts', '-c:v', 'mpeg1video', '-b:v', '1000k', '-maxrate:v', '1000k', '-bufsize', '500k', '-an', `http://localhost:8083/camera1`]);
+
+//Start a stream for all plugged in cameras
+exec('v4l2-ctl --list-devices', (err, stdout) => {
+  if (err) {
+    console.error(`exec error: ${err}`);
+    return;
+  }
+
+  const usbCameraPaths = [];
+  const lines = stdout.split("\n");
+  lines.forEach(line => {
+    if (line.includes("/dev/video")) { 
+      usbCameraPaths.push(line.trim());
+    }
+  });
+
+  usbCameraPaths.forEach(usbCameraPath => {
+    console.log(usbCameraPath);
+  });
 });
-
-// Websocket server
-const socketServer = new WebSocket.Server({ server: httpServer });
-
-socketServer.connectionCount = 0;
-
-socketServer.on('connection', (socket, upgradeReq) => {
-	socketServer.connectionCount++;
-
-	console.log(
-		`New WebSocket Connection: 
-    ${(upgradeReq || socket.upgradeReq).socket.remoteAddress}
-    ${(upgradeReq || socket.upgradeReq).headers['user-agent']}
-    (${socketServer.connectionCount} total)`
-	);
-
-	socket.on('close', () => {
-		socketServer.connectionCount--;
-		console.log(
-			'Disconnected WebSocket (' + socketServer.connectionCount + ' total)'
-		);
-	});
-});
-
-socketServer.broadcast = (data) => {
-	socketServer.clients.forEach((client) => {
-		if (client.readyState === WebSocket.OPEN) {
-			client.send(data);
-		}
-	});
-};
-
-// HTTP Server to accept incomming local MPEG-TS Stream from ffmpeg
-http.createServer((request, response) => {
-	const params = request.url.substr(1).split('/');
-
-	if (params[0] !== server.streamSecret) {
-		console.log(
-			`Failed Stream Connection: 
-        ${request.socket.remoteAddress}:${request.socket.remotePort}`
-		);
-		response.end();
-	}
-
-	response.connection.setTimeout(0);
-
-	console.log(
-		`Stream Connected: 
-      ${request.socket.remoteAddress}:${request.socket.remotePort}`
-	);
-
-	request.on('data', (data) => {
-		socketServer.broadcast(data);
-		if (request.socket.recording) {
-			request.socket.recording.write(data);
-		}
-	});
-
-	request.on('end', () => {
-		console.log('close');
-		if (request.socket.recording) {
-			request.socket.recording.close();
-		}
-	});
-})
-	.listen(server.streamPort);
-
-// Start generate streaming
-require('./utils/stream')();
-
-// Get ngrok url for local server
-(async function() {
-	// IIFE: Immediately Invoked Function Expression
-	const httpUrl = await ngrok.connect(server.httpPort);
-	wsUrl = httpUrl.toString().replace(/^https?:\/\//, 'wss://');
-
-	console.log('Ngrok HTTP URL:', httpUrl);
-	console.log('Ngrok Websocket URL:', wsUrl);
-	console.log();
-})().catch((error) => console.log(error.message));
-
-module.exports.app = app;
