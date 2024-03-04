@@ -1,41 +1,67 @@
 .App {
-  text-align: center;
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  position: relative;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  width: 100vw;
+  height: 100vh;
 }
 
 .control-panel {
   position: absolute;
-  top: 0;
-  right: 0;
-  max-width: 320px;
+  left: 50%; 
+  transform: translate(-50%);
   background: #fff;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-  padding: 12px 24px;
-  margin: 20px;
-  font-size: 13px;
-  line-height: 2;
-  color: #6b6b76;
-  text-transform: uppercase;
-  outline: none;
+  bottom: 2vh;
 }
 
-.map {
-  width: 99vw;
-  height: 100vh;
+.action-popup {
+  bottom: 30vh;
 }
 
 .video-wrapper {
   width: 640px;
   height: 360px;
-  background: aliceblue;
 }
+
+/* Mapbox gl component CSS below */
+
+.mapboxgl-popup-content {
+  padding: 0;
+  background: rgba(0, 0, 0, 0);
+  position: relative;
+}
+
+.marker-popup img { 
+  transition: all .1s ease-in-out; 
+  border: 2px solid #fff;
+}
+
+.marker-popup:hover img{ 
+  transform: scale(1.2);
+  border: 0px;
+}
+
+.marker-popup svg {
+  visibility:hidden;
+}
+
+.marker-popup:hover svg {
+  visibility:visible;
+  transform: scale(1.2);
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: block;
+  margin: auto;
+  opacity: 0.8;
+}
+
+.marker-popup:hover .mapboxgl-popup-tip {
+  display: none;
+}
+
+.mapboxgl-popup-close-button {
+  display: none;
+}
+
