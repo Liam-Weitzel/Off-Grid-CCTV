@@ -1,11 +1,11 @@
 import { React, useState, useMemo } from 'react';
-import JsmpegPlayer from './components/JsmpegPlayer';
+import JsmpegPlayer from './components/jsmpegPlayer';
 import './App.css';
 import { createRoot } from 'react-dom/client';
 import Map, { Source, Layer, Marker, Popup, NavigationControl, FullscreenControl } from 'react-map-gl';
-import Camera_SVG from './components/camera_svg.js';
-import Fullscreen_SVG from './components/fullscreen_svg.js';
-import ControlPanel from './components/control-panel';
+import CameraSvg from './components/cameraSvg.js';
+import FullscreenSvg from './components/fullscreenSvg.js';
+import ControlPanel from './components/controlPanel';
 
 const backendIP = '192.168.92.22';
 const apiPort = '8080';
@@ -20,8 +20,8 @@ const initialViewState = {
 };
 
 const cameraGeoData = [
-  {"name":"camera1","image":"http://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Above_Gotham.jpg/240px-Above_Gotham.jpg","latitude":36.90453150945084,"longitude":15.013785520105046},
-  {"name":"camera2","image":"http://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Above_Gotham.jpg/240px-Above_Gotham.jpg","latitude":36.90353150945084,"longitude":15.013185520105046}
+  {"key":"camera1","image":"http://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Above_Gotham.jpg/240px-Above_Gotham.jpg","latitude":36.90453150945084,"longitude":15.013785520105046, "httpPort":8084},
+  {"key":"camera2","image":"http://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Above_Gotham.jpg/240px-Above_Gotham.jpg","latitude":36.90353150945084,"longitude":15.013185520105046, "httpPort":8081}
 ];
 
 const skyLayer = {
@@ -35,7 +35,6 @@ const skyLayer = {
 };
 
 export default function App() {
-  let jsmpegPlayer = null;
   const [cameras, setCameras] = useState([]);
   const [popupInfo, setPopupInfo] = useState(null);
 
@@ -52,7 +51,7 @@ export default function App() {
         setPopupInfo(camera);
       }}
       >
-      <Camera_SVG />
+      <CameraSvg />
       </Marker>
     )),
     []
@@ -74,14 +73,11 @@ export default function App() {
       /> 
 
       {cameras.map((camera) => (
-        <div key={camera.secret}>
-        <p> {camera.secret} </p>
         <JsmpegPlayer
         wrapperClassName="video-wrapper"
-        videoUrl={'ws://' + backendIP + ':' + camera.httpPort}
+        videoUrl={'ws://' + backendIP + ':' + 8081}
         onRef={ref => jsmpegPlayer = ref}
         />
-        </div>
       ))}
       {cameras.length === 0 && <p>No cameras found! </p>} 
       </header> */}
@@ -112,15 +108,22 @@ export default function App() {
     {pins}
 
     {popupInfo && (
-      <Popup className = "marker-popup"
+      <Popup key={popupInfo.key}
+      className = "marker-popup"
       anchor="top"
       longitude={Number(popupInfo.longitude)}
       latitude={Number(popupInfo.latitude)}
-      onClose={() => setPopupInfo(null)}
+      onClose={() => {
+        setPopupInfo(null);
+      }}
       >
-      <img width="100%" src={popupInfo.image} />
-      <Fullscreen_SVG />
+      <JsmpegPlayer
+      wrapperClassName="video-wrapper"
+      videoUrl={'ws://' + backendIP + ':' + popupInfo.httpPort}
+      />
+      <FullscreenSvg />
       </Popup>
+      
     )}
 
     <ControlPanel />

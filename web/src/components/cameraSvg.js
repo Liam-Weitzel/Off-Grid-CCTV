@@ -9,7 +9,7 @@ const SVGStyle = {
   opacity:'0.8'
 };
 
-function Camera_SVG({size = 50}) {
+function CameraSvg({size = 50}) {
   return (
     <svg height={size} viewBox="0 0 24 24" style={SVGStyle}>
       <path d={ICON} />
@@ -17,4 +17,4 @@ function Camera_SVG({size = 50}) {
   );
 }
 
-export default React.memo(Camera_SVG);
+export default React.memo(CameraSvg);

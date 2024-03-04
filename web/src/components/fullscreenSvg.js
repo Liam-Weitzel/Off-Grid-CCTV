@@ -13,7 +13,7 @@ const SVGStyle = {
   opacity:'0.8'
 };
 
-function Fullscreen_SVG({size = "20%"}) {
+function FullscreenSvg({size = "20%"}) {
   return (
     <svg style={SVGStyle} width={size} viewBox="0 0 384.97 384.97">
     <path d={Line1}/>
@@ -22,4 +22,4 @@ function Fullscreen_SVG({size = "20%"}) {
   );
 }
 
-export default React.memo(Fullscreen_SVG); 
+export default React.memo(FullscreenSvg); 

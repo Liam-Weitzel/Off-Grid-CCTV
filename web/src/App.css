@@ -17,11 +17,6 @@
   bottom: 30vh;
 }
 
-.video-wrapper {
-  width: 640px;
-  height: 360px;
-}
-
 /* Mapbox gl component CSS below */
 
 .mapboxgl-popup-content {
@@ -30,12 +25,15 @@
   position: relative;
 }
 
-.marker-popup img { 
+.marker-popup .video-wrapper { 
   transition: all .1s ease-in-out; 
   border: 2px solid #fff;
+  width: 240px;
+  height: 180px;
+  transform: scale(1.0);
 }
 
-.marker-popup:hover img{ 
+.marker-popup:hover .video-wrapper{ 
   transform: scale(1.2);
   border: 0px;
 }
