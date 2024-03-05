@@ -1,4 +1,4 @@
-import { React, useState, useMemo } from 'react';
+import { React, useState, useEffect, useMemo } from 'react';
 import JsmpegPlayer from './components/jsmpegPlayer';
 import './App.css';
 import { createRoot } from 'react-dom/client';
@@ -11,40 +11,43 @@ const backendIP = '192.168.92.22';
 const apiPort = '8080';
 const mapBoxToken = 'pk.eyJ1IjoibGlhbXdlaXR6ZWwiLCJhIjoiNmIwZTUyNWRjMDg5NjVjMTczMTYyOWI2NWZkNmMxZTAifQ.5FiYxafq7rS9Bp1llpWdpw';
 
+const response = await fetch (`http://${backendIP}:${apiPort}/fetchConfigs`);
+const configs = await response.json();
+
 const initialViewState = { 
-  latitude: 36.90453150945084,
-  longitude: 15.013785520105046,
-  zoom: 16,
-  bearing: -50,
-  pitch: 0
+  latitude: configs.latitude,
+  longitude: configs.longitude,
+  zoom: configs.zoom,
+  bearing: configs.bearing,
+  pitch: configs.pitch
 };
 
-const cameraGeoData = [
-  {"key":"camera1","image":"http://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Above_Gotham.jpg/240px-Above_Gotham.jpg","latitude":36.90453150945084,"longitude":15.013785520105046, "httpPort":8084},
-  {"key":"camera2","image":"http://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Above_Gotham.jpg/240px-Above_Gotham.jpg","latitude":36.90353150945084,"longitude":15.013185520105046, "httpPort":8081}
-];
-
 const skyLayer = {
-  id: 'sky',
-  type: 'sky',
-  paint: {
-    'sky-type': 'atmosphere',
-    'sky-atmosphere-sun': [0.0, 0.0],
-    'sky-atmosphere-sun-intensity': 15
-  }
+  id: configs.id,
+  type: configs.type,
+  paint: configs.paint
 };
 
 export default function App() {
   const [cameras, setCameras] = useState([]);
   const [popupInfo, setPopupInfo] = useState(null);
+  const [pins, setPins] = useState(null);
 
-  const pins = useMemo(
-    () =>
-    cameraGeoData.map((camera, index) => (
+  useEffect(() => {
+    return () => { //this runs once on app start
+      fetchCameras();
+    };
+  }, []);
+
+  const fetchCameras = async () => {
+    const response = await fetch (`http://${backendIP}:${apiPort}/fetchCameras`);
+    const data = await response.json();
+    setCameras(data);
+    setPins(data.map((camera, index) => (
       <Marker
       key={`marker-${index}`}
-      longitude={camera.longitude}
-      latitude={camera.latitude}
+      longitude={parseFloat(camera.lon)}
+      latitude={parseFloat(camera.lat)}
       anchor="bottom"
       onClick={e => {
         e.originalEvent.stopPropagation();
@@ -53,34 +56,11 @@ export default function App() {
       >
       <CameraSvg />
       </Marker>
-    )),
-    []
-  );
-
-  const searchCameras = async (q) => {
-    const response = await fetch (`http://${backendIP}:${apiPort}/searchCameras?` + new URLSearchParams({q}));
-    const data = await response.json();
-    setCameras(data);
+    )));
   };
 
   return (
     <div className="App">
-    {/* <header className="App-header">
-      <input 
-      type="text"
-      placeholder="search"
-      onChange={(e) => searchCameras(e.target.value)}
-      /> 
-
-      {cameras.map((camera) => (
-        <JsmpegPlayer
-        wrapperClassName="video-wrapper"
-        videoUrl={'ws://' + backendIP + ':' + 8081}
-        onRef={ref => jsmpegPlayer = ref}
-        />
-      ))}
-      {cameras.length === 0 && <p>No cameras found! </p>} 
-      </header> */}
     <Map
     initialViewState={initialViewState}
     maxPitch={60}
@@ -108,11 +88,11 @@ export default function App() {
     {pins}
 
     {popupInfo && (
-      <Popup key={popupInfo.key}
+      <Popup key={popupInfo.name}
       className = "marker-popup"
       anchor="top"
-      longitude={Number(popupInfo.longitude)}
-      latitude={Number(popupInfo.latitude)}
+      longitude={Number(popupInfo.lon)}
+      latitude={Number(popupInfo.lat)}
       onClose={() => {
         setPopupInfo(null);
       }}
@@ -123,7 +103,6 @@ export default function App() {
       />
       <FullscreenSvg />
       </Popup>
-      
     )}
 
     <ControlPanel />

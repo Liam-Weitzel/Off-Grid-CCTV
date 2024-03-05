@@ -51,7 +51,6 @@ export default class JsmpegPlayer extends Component {
       this.video.destroy();
     }
     catch(err) {
-      console.log(err);
     }
   };
 

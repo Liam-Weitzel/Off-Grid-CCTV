@@ -4,6 +4,20 @@ const startStream = require('./startStream');
 const { execSync } = require('child_process');
 const db = require('better-sqlite3')('../sqlite/sqlite.db'); //different path on prod
 
+const configs = { //TODO: move to db
+  latitude: 36.90453150945084,
+  longitude: 15.013785520105046,
+  zoom: 16,
+  bearing: -50,
+  pitch: 0,
+  id: 'sky',
+  type: 'sky',
+  paint: {
+    'sky-type': 'atmosphere',
+    'sky-atmosphere-sun': [0.0, 0.0],
+    'sky-atmosphere-sun-intensity': 15
+  }};
+
 const createTable = db.prepare('CREATE TABLE IF NOT EXISTS camera( port INT(32) PRIMARY KEY NOT NULL, name VARCHAR(255) NOT NULL, path VARCHAR(255) NOT NULL, httpPort INT(32) NOT NULL, wsPort INT(32) NOT NULL, ffmpegPort INT(32) NOT NULL, lat VARCHAR(255), lon VARCHAR(255), camFps INT(32) NOT NULL, camResolution INT(32) NOT NULL, bv VARCHAR(255) NOT NULL, maxRate VARCHAR(255) NOT NULL, bufSize VARCHAR(255) NOT NULL)');
 createTable.run();
 
@@ -52,10 +66,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.get('/searchCameras', (req, res) => {
-  const q = req.query.q.toLowerCase() || '';
-  const results = cameras.filter(camera => camera.name.toLowerCase().includes(q));
-  res.send(results);
+app.get('/fetchCameras', (req, res) => {
+  res.send(cameras);
+});
+
+app.get('/fetchConfigs', (req, res) => {
+  res.send(configs);
 });
 
 app.listen(8080, () => console.log('api localhost:8080'))
