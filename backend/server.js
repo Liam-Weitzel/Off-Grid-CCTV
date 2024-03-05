@@ -4,6 +4,9 @@ const startStream = require('./startStream');
 const { execSync } = require('child_process');
 const db = require('better-sqlite3')('../sqlite/sqlite.db'); //different path on prod
 
+const createTable = db.prepare('CREATE TABLE IF NOT EXISTS camera( port INT(32) PRIMARY KEY NOT NULL, name VARCHAR(255) NOT NULL, path VARCHAR(255) NOT NULL, httpPort INT(32) NOT NULL, wsPort INT(32) NOT NULL, ffmpegPort INT(32) NOT NULL, lat VARCHAR(255), lon VARCHAR(255), camFps INT(32) NOT NULL, camResolution INT(32) NOT NULL, bv VARCHAR(255) NOT NULL, maxRate VARCHAR(255) NOT NULL, bufSize VARCHAR(255) NOT NULL)');
+createTable.run();
+
 const cameras = [];
 
 const stdout = execSync('v4l2-ctl --list-devices').toString();
@@ -15,22 +18,34 @@ lines.forEach(line => {
   }
 });
 
-currPort = 8080;
 usbCameraPaths.forEach(usbCameraPath => {
-  const camera = {
-    camPort: parseInt(usbCameraPath.replace(/[^0-9]/g, '')),
-    camFps: 30,
-    camResolution: 640, 
-    httpPort: parseInt(currPort+1),
-    wsPort: parseInt(currPort+2),
-    ffmpegPort: parseInt(currPort+3),
-    secret: ('camera'+parseInt(usbCameraPath.replace(/[^0-9]/g, ''))).toString(),
-    bv: '1000k',
-    maxrate: '1000k',
-    bufsize: '500k'
-  };
-  cameras.push(camera);
-  currPort += 3;
+  const isCameraInTable = db.prepare('SELECT * FROM camera WHERE port = ?').bind(parseInt(usbCameraPath.replace(/[^0-9]/g, '')));
+  const res = isCameraInTable.get();
+  if(!res) {
+    const lastPort = db.prepare('SELECT COALESCE((SELECT MAX(ffmpegPort) FROM camera), 8080) AS lastPort').get().lastPort;
+    console.log(lastPort);
+    const camera = {
+      port: parseInt(usbCameraPath.replace(/[^0-9]/g, '')),
+      name: ('camera'+parseInt(usbCameraPath.replace(/[^0-9]/g, ''))).toString(),
+      path: usbCameraPath,
+      httpPort: parseInt(lastPort+1),
+      wsPort: parseInt(lastPort+2),
+      ffmpegPort: parseInt(lastPort+3),
+      lat: null,
+      lon: null,
+      camFps: 30,
+      camResolution: 640,
+      bv: '1000k',
+      maxRate: '1000k',
+      bufSize: '500k',
+    };
+
+    cameras.push(camera);
+    const insertCamera = db.prepare('INSERT INTO camera (port, name, path, httpPort, wsPort, ffmpegPort, lat, lon, camFps, camResolution, bv, maxRate, bufSize) VALUES (@port, @name, @path, @httpPort, @wsPort, @ffmpegPort, @lat, @lon, @camFps, @camResolution, @bv, @maxRate, @bufSize)');
+    insertCamera.run(camera);
+  } else {
+    cameras.push(res);
+  }
 });
 
 const app = express();
@@ -39,14 +54,14 @@ app.use(express.json());
 
 app.get('/searchCameras', (req, res) => {
   const q = req.query.q.toLowerCase() || '';
-  const results = cameras.filter(camera => camera.secret.toLowerCase().includes(q));
+  const results = cameras.filter(camera => camera.name.toLowerCase().includes(q));
   res.send(results);
 });
 
 app.listen(8080, () => console.log('api localhost:8080'))
 
 cameras.forEach((camera) => {
-  const { ffmpegStream, detectionStream } = startStream(camera.camPort, camera.camFps, camera.camResolution, camera.httpPort, camera.wsPort, camera.ffmpegPort, camera.secret, ['-f', 'image2pipe', '-', '-i', '-', '-f', 'mpegts', '-c:v', 'mpeg1video', '-b:v', camera.bv, '-maxrate:v', camera.maxrate, '-bufsize', camera.bufsize, '-an', `http://localhost:${camera.ffmpegPort}/${camera.secret}`]); 
+  const { ffmpegStream, detectionStream } = startStream(camera.port, camera.camFps, camera.camResolution, camera.httpPort, camera.wsPort, camera.ffmpegPort, camera.name.toString(), ['-f', 'image2pipe', '-', '-i', '-', '-f', 'mpegts', '-c:v', 'mpeg1video', '-b:v', camera.bv.toString(), '-maxrate:v', camera.maxRate.toString(), '-bufsize', camera.bufSize.toString(), '-an', `http://localhost:${camera.ffmpegPort}/${camera.name}`]); 
  
   detectionStream.on('exit', () => {
     //exit gracefully
