@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const startStream = require('./startStream');
 const { execSync } = require('child_process');
+const db = require('better-sqlite3')('../sqlite/sqlite.db'); //different path on prod
 
 const cameras = [];
 
