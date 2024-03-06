@@ -1,26 +1,37 @@
 import { React, useState, memo} from 'react';
+import Draggable from 'react-draggable';
 
 function ControlPanel(props) {
-  const [addCameraPopUpVisible, setAddCameraPopUpVisible] = useState(false);
-  const [removeCameraPopUpVisible, setRemoveCameraPopUpVisible] = useState(false);
-  const [refreshCameraPopUpVisible, setRefreshCameraPopUpVisible] = useState(false);
-  
+  const [addCameraPopup, setAddCameraPopup] = useState(false);
+  const [removeCameraPopup, setRemoveCameraPopup] = useState(false);
+  const [refreshCameraPopup, setRefreshCameraPopup] = useState(false);
+
   const addCamera = () => {
-    setAddCameraPopUpVisible(true);
-    setRefreshCameraPopUpVisible(false);
-    setRemoveCameraPopUpVisible(false);
+    props.setControlPanelOpen(true)
+    setAddCameraPopup(true)
+    setRemoveCameraPopup(false)
+    setRefreshCameraPopup(false)
   }
 
   const removeCamera = () => {
-    setAddCameraPopUpVisible(false);
-    setRefreshCameraPopUpVisible(false);
-    setRemoveCameraPopUpVisible(true);
+    props.setControlPanelOpen(true)
+    setAddCameraPopup(false)
+    setRemoveCameraPopup(true)
+    setRefreshCameraPopup(false)
   }
 
   const refreshCamera = () => {
-    setAddCameraPopUpVisible(false);
-    setRefreshCameraPopUpVisible(true);
-    setRemoveCameraPopUpVisible(false);
+    props.setControlPanelOpen(true)
+    setAddCameraPopup(false)
+    setRemoveCameraPopup(false)
+    setRefreshCameraPopup(true)
+  }
+
+  const closePopup = () => {
+    props.setControlPanelOpen(false)
+    setAddCameraPopup(false)
+    setRemoveCameraPopup(false)
+    setRefreshCameraPopup(false)
   }
 
   return (
@@ -30,18 +41,41 @@ function ControlPanel(props) {
       <button className="remove-camera-icon" type="button" aria-label="Remove camera" aria-disabled="false" onClick={removeCamera}><span className="mapboxgl-ctrl-icon" aria-hidden="true" title="Remove camera"></span></button>
       <button className="refresh-camera-icon" type="button" aria-label="Refresh camera" aria-disabled="false" onClick={refreshCamera}><span className="mapboxgl-ctrl-icon" aria-hidden="true" title="Refresh camera"></span></button>
     </div>
-    {(addCameraPopUpVisible || removeCameraPopUpVisible || refreshCameraPopUpVisible) && (
+    {(addCameraPopup || removeCameraPopup || refreshCameraPopup) && (
+    <Draggable>
     <div className="control-panel action-popup">
-      {addCameraPopUpVisible && (
+      {addCameraPopup && (
+        <>
+        <button onClick={closePopup}>close</button>
+        <button>save</button>
         <p> lets add that camera </p>
+        {props.cameras.map((camera) => 
+          <p onClick={()=>props.addCamera(camera)}> {camera.name} </p>
+        )}
+        </>
       )}
-      {removeCameraPopUpVisible && (
+      {removeCameraPopup && (
+        <>
+        <button onClick={closePopup}>close</button>
+        <button>save</button>
         <p> lets remove that camera </p>
+        {props.cameras.map((camera) => 
+          <p onClick={()=>props.removeCamera(camera)}> {camera.name} </p>
+        )}
+        </>
       )}
-      {refreshCameraPopUpVisible && (
+      {refreshCameraPopup && (
+        <>
+        <button onClick={closePopup}>close</button>
+        <button>save</button>
         <p> lets refresh that camera </p>
+        {props.cameras.map((camera) => 
+          <p onclick={()=>props.refreshCamera(camera)}> {camera.name} </p>
+        )}
+        </>
       )}
     </div>
+    </Draggable>
     )}
     </div>
   );

@@ -15,6 +15,16 @@
 
 .action-popup {
   bottom: 30vh;
+  padding: 20px;
+  border-radius: 4px;
+  border: 1px solid silver;
+  border-radius: 3px;
+  box-shadow: 0 0 4px #afafaf;
+  width: fit-content;
+  padding: 10px;
+  position: fixed;
+  font-size: 15px;
+  cursor: move;
 }
 
 .add-camera-icon {

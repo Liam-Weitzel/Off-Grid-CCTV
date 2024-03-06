@@ -1,10 +1,11 @@
-import { React, useState, useEffect, useMemo } from 'react';
+import { React, useState, useEffect } from 'react';
 import JsmpegPlayer from './components/jsmpegPlayer';
 import './App.css';
 import { createRoot } from 'react-dom/client';
 import Map, { Source, Layer, Marker, Popup, NavigationControl, FullscreenControl } from 'react-map-gl';
-import CameraSvg from './components/cameraSvg.js';
-import FullscreenSvg from './components/fullscreenSvg.js';
+import CameraSvg from './components/cameraSvg';
+import TempCameraSvg from './components/tempCameraSvg'
+import FullscreenSvg from './components/fullscreenSvg';
 import ControlPanel from './components/controlPanel';
 
 const backendIP = '192.168.92.22';
@@ -32,6 +33,8 @@ export default function App() {
   const [cameras, setCameras] = useState([]);
   const [popupInfo, setPopupInfo] = useState(null);
   const [pins, setPins] = useState(null);
+  const [lastClickedPos, setLastClickedPos] = useState([]);
+  const [controlPanelOpen, setControlPanelOpen] = useState(false);
 
   useEffect(() => {
     return () => { //this runs once on app start
@@ -39,25 +42,68 @@ export default function App() {
     };
   }, []);
 
+  const handleClick = (e) => {
+    const [lon, lat] = e.lngLat.toArray();
+    if(controlPanelOpen) setLastClickedPos({ lon, lat });
+  };
+
   const fetchCameras = async () => {
     const response = await fetch (`http://${backendIP}:${apiPort}/fetchCameras`);
     const data = await response.json();
     setCameras(data);
     setPins(data.map((camera, index) => (
+      ( !isNaN(camera.lon) && !isNaN(camera.lat) && camera.lat != null && camera.lon != null && (
       <Marker
       key={`marker-${index}`}
-      longitude={parseFloat(camera.lon)}
-      latitude={parseFloat(camera.lat)}
+      longitude={camera.lon}
+      latitude={camera.lat}
       anchor="bottom"
       onClick={e => {
         e.originalEvent.stopPropagation();
-        setPopupInfo(camera);
+        setPopupInfo({name: camera.name, lon: camera.lon, lat: camera.lat, httpPort: camera.httpPort});
       }}
       >
       <CameraSvg />
-      </Marker>
+      </Marker>))
     )));
   };
+
+  useEffect(() => { //Remove temp camera marker when controlPanel closes
+    if(!controlPanelOpen && pins != null ) {
+      setLastClickedPos([]);
+      let pinsCopy = [...pins];
+      pinsCopy.forEach(function(pin, index, object){
+        if(pin.key === 'temp') {
+          object.splice(index, 1);
+        }
+      });
+      setPins(pinsCopy);
+    }
+  }, [controlPanelOpen]);
+
+  useEffect(() => { //Add temp camera marker when controlPanel is open
+    ( !isNaN(lastClickedPos.lon) && !isNaN(lastClickedPos.lat) && pins != null && controlPanelOpen && (
+    setPins(pins => [...pins.slice(0, -1), (
+      <Marker
+      key={'temp'}
+      longitude={lastClickedPos.lon.toString()}
+      latitude={lastClickedPos.lat.toString()}
+      >
+      <TempCameraSvg />
+      </Marker>)])))
+  }, [lastClickedPos, controlPanelOpen]);
+
+  const addCamera = async (camera) => {
+
+  }
+
+  const removeCamera = async (camera) => {
+
+  }
+
+  const refreshCamera = async (camera) => {
+
+  }
 
   return (
     <div className="App">
@@ -73,6 +119,7 @@ export default function App() {
     touchRotate={true}
     mapboxAccessToken={mapBoxToken}
     terrain={{source: 'mapbox-dem', exaggeration: 2.5}}
+    onDblClick={handleClick}
     >
     <Source
     id="mapbox-dem"
@@ -105,7 +152,14 @@ export default function App() {
       </Popup>
     )}
 
-    <ControlPanel />
+    <ControlPanel 
+      lastClickedPos={lastClickedPos}
+      setControlPanelOpen={setControlPanelOpen}
+      cameras={cameras}
+      addCamera={addCamera}
+      removeCamera={removeCamera}
+      refreshCamera={refreshCamera}
+    />
     </Map>
     </div>
   );
