@@ -82,15 +82,23 @@ export default function App() {
   }, [controlPanelOpen]);
 
   useEffect(() => { //Add temp camera marker when controlPanel is open
-    ( !isNaN(lastClickedPos.lon) && !isNaN(lastClickedPos.lat) && pins != null && controlPanelOpen && (
-    setPins(pins => [...pins.slice(0, -1), (
-      <Marker
-      key={'temp'}
-      longitude={lastClickedPos.lon.toString()}
-      latitude={lastClickedPos.lat.toString()}
-      >
-      <TempCameraSvg />
-      </Marker>)])))
+    if(!isNaN(lastClickedPos.lon) && !isNaN(lastClickedPos.lat) && pins != null && controlPanelOpen) {
+      let pinsCopy = [...pins];
+      pinsCopy.forEach(function(pin, index, object){
+        if(pin.key === 'temp') {
+          object.splice(index, 1);
+        }
+      });
+      setPins([...pinsCopy, (
+        <Marker
+        key={'temp'}
+        longitude={lastClickedPos.lon.toString()}
+        latitude={lastClickedPos.lat.toString()}
+        >
+        <TempCameraSvg />
+        </Marker>)
+      ]);
+    }
   }, [lastClickedPos, controlPanelOpen]);
 
   const addCamera = async (camera) => {
