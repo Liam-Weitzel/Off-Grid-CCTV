@@ -74,11 +74,30 @@ app.get('/fetchConfigs', (req, res) => {
   res.send(configs);
 });
 
+app.post('/setCameraPos', (req, res) => {
+  const updateCamera = db.prepare('UPDATE camera SET lat=@lat, lon=@lon WHERE port=@port');
+
+  updateCamera.run({
+    lat: req.body.lat,
+    lon: req.body.lon,
+    port: req.body.port
+  });
+
+  cameras.map((camera, index) => {
+    if(camera.port == req.body.port) {
+      cameras[index].lon = req.body.lon;
+      cameras[index].lat = req.body.lat;
+    }
+  });
+
+  res.send(cameras.filter(camera => camera.port == req.body.port));
+});
+
 app.listen(8080, () => console.log('api localhost:8080'))
 
 cameras.forEach((camera) => {
   const { ffmpegStream, detectionStream } = startStream(camera.port, camera.camFps, camera.camResolution, camera.httpPort, camera.wsPort, camera.ffmpegPort, camera.name.toString(), ['-f', 'image2pipe', '-', '-i', '-', '-f', 'mpegts', '-c:v', 'mpeg1video', '-b:v', camera.bv.toString(), '-maxrate:v', camera.maxRate.toString(), '-bufsize', camera.bufSize.toString(), '-an', `http://localhost:${camera.ffmpegPort}/${camera.name}`]); 
- 
+
   detectionStream.on('exit', () => {
     //exit gracefully
   });

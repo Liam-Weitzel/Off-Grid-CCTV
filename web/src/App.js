@@ -54,7 +54,7 @@ export default function App() {
     setPins(data.map((camera, index) => (
       ( !isNaN(camera.lon) && !isNaN(camera.lat) && camera.lat != null && camera.lon != null && (
       <Marker
-      key={`marker-${index}`}
+      key={`${camera.port}`}
       longitude={camera.lon}
       latitude={camera.lat}
       anchor="bottom"
@@ -77,13 +77,13 @@ export default function App() {
           object.splice(index, 1);
         }
       });
-      setPins(pinsCopy);
+      setPins([...pinsCopy]);
     }
   }, [controlPanelOpen]);
 
   useEffect(() => { //Add temp camera marker when controlPanel is open
-    if(!isNaN(lastClickedPos.lon) && !isNaN(lastClickedPos.lat) && pins != null && controlPanelOpen) {
-      let pinsCopy = [...pins];
+    if(!isNaN(lastClickedPos.lon) && !isNaN(lastClickedPos.lat) && lastClickedPos.lon != null && lastClickedPos.lat != null && pins != null && controlPanelOpen) {
+      let pinsCopy = pins;
       pinsCopy.forEach(function(pin, index, object){
         if(pin.key === 'temp') {
           object.splice(index, 1);
@@ -103,15 +103,69 @@ export default function App() {
   }, [lastClickedPos, controlPanelOpen]);
 
   const addCamera = async (camera) => {
-    //push longitude and latitude to server
-    //update cameras and pins
+    if(!isNaN(lastClickedPos.lon) && !isNaN(lastClickedPos.lat) && lastClickedPos.lon != null && lastClickedPos.lat != null && pins != null && controlPanelOpen) {
+      camera.lon = lastClickedPos.lon.toString();
+      camera.lat = lastClickedPos.lat.toString();
+
+      let camerasCopy = cameras;
+      camerasCopy.forEach(function(el, index, object){
+        if(el.port === camera.port) {
+          object[index] = camera;
+        }
+      });
+      setCameras([...camerasCopy]);
+
+      setPins([...pins, (
+        <Marker
+        key={`${camera.port}`}
+        longitude={camera.lon}
+        latitude={camera.lat}
+        anchor="bottom"
+        onClick={e => {
+          e.originalEvent.stopPropagation();
+          setPopupInfo({name: camera.name, lon: camera.lon, lat: camera.lat, httpPort: camera.httpPort});
+        }}
+        >
+        <CameraSvg />
+        </Marker>)
+      ]);
+
+      await fetch( `http://${backendIP}:${apiPort}/setCameraPos`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify( camera )
+      });
+    }
   }
 
   const removeCamera = async (camera) => {
+    camera.lon = null; 
+    camera.lat = null;
 
+    let camerasCopy = cameras;
+    camerasCopy.forEach(function(el, index, object){
+      if(el.port === camera.port) {
+        object[index] = camera;
+      }
+    });
+    setCameras([...camerasCopy]);
+
+    let pinsCopy = pins;
+    pinsCopy.forEach(function(pin, index, object){
+      if(pin.key === camera.port.toString()) {
+        object.splice(index, 1);
+      }
+    });
+    setPins([...pinsCopy]);
+
+    await fetch( `http://${backendIP}:${apiPort}/setCameraPos`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify( camera )
+    });
   }
 
-  const refreshCamera = async (camera) => {
+  const editCamera = async (camera) => {
 
   }
 
@@ -168,7 +222,7 @@ export default function App() {
       cameras={cameras}
       addCamera={addCamera}
       removeCamera={removeCamera}
-      refreshCamera={refreshCamera}
+      editCamera={editCamera}
     />
     </Map>
     </div>
