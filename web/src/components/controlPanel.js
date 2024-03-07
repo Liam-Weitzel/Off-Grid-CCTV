@@ -46,11 +46,11 @@ function ControlPanel(props) {
     <div className="control-panel action-popup">
       {addCameraPopup && (
         <>
-        <button onClick={closePopup}>close</button>
-        <button>save</button>
-        <p> lets add that camera </p>
+        <button className="close-popup-button" type="button" aria-label="Close popup" aria-disabled="false" onClick={closePopup}>X</button>
+        <p> Double click a location on the map and select a camera to add: </p>
         {props.cameras.map((camera) => 
-          <p onClick={()=>props.addCamera(camera)}> {camera.name} </p>
+          (isNaN(camera.lon) || isNaN(camera.lat) ? 
+          <p onClick={()=>props.addCamera(camera)}> {camera.name} </p> : null)
         )}
         </>
       )}

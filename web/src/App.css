@@ -25,6 +25,22 @@
   position: fixed;
   font-size: 15px;
   cursor: move;
+  max-width: 250px;
+}
+
+.close-popup-button {
+  position: fixed;
+  width: 29px;
+  height: 29px;
+  top: 0;
+  right: 0;
+  display: inline-block;
+  outline: none;
+  border: 0;
+  box-sizing: border-box;
+  background-color: transparent;
+  cursor: pointer;
+  overflow: hidden;
 }
 
 .add-camera-icon {

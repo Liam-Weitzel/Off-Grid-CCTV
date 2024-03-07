@@ -94,6 +94,7 @@ export default function App() {
         key={'temp'}
         longitude={lastClickedPos.lon.toString()}
         latitude={lastClickedPos.lat.toString()}
+        anchor="bottom"
         >
         <TempCameraSvg />
         </Marker>)
@@ -102,7 +103,8 @@ export default function App() {
   }, [lastClickedPos, controlPanelOpen]);
 
   const addCamera = async (camera) => {
-
+    //push longitude and latitude to server
+    //update cameras and pins
   }
 
   const removeCamera = async (camera) => {
