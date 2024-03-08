@@ -166,7 +166,7 @@ export default function App() {
   }
 
   const editCamera = async (camera) => {
-
+    console.log(camera);
   }
 
   return (

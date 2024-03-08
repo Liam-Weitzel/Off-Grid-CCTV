@@ -6,6 +6,7 @@ function ControlPanel(props) {
   const [removeCameraPopup, setRemoveCameraPopup] = useState(false);
   const [editCameraPopup, setEditCameraPopup] = useState(false);
   const [editCameraPopupChild, setEditCameraPopupChild] = useState(false);
+  const [cameraAttributes, setCameraAttributes] = useState({});
 
   const addCamera = () => {
     props.setControlPanelOpen(true);
@@ -37,6 +38,13 @@ function ControlPanel(props) {
     setRemoveCameraPopup(false);
     setEditCameraPopup(false);
     setEditCameraPopupChild(false);
+  }
+
+  const updateCameraAttribute = (e) => {
+    if(e.target.value != editCameraPopupChild[e.target.id]) {
+      editCameraPopupChild[e.target.id] = e.target.value;
+      setEditCameraPopupChild({...editCameraPopupChild});
+    }
   }
 
   return (
@@ -77,18 +85,23 @@ function ControlPanel(props) {
             <p key={camera.port} className="camera-text" onClick={()=>setEditCameraPopupChild(camera)}> {camera.name} </p>
           )} </>: 
           <> <p> Editing {editCameraPopupChild.name} </p>
-          {Object.values(editCameraPopupChild).map((val,key) => 
-            (<tr>
+          {Object.values(editCameraPopupChild).map((val,key) => (
+            <tr>
               <td>
-              <p> {Object.keys(editCameraPopupChild)[key]}: </p>
+                <p> {Object.keys(editCameraPopupChild)[key]}: </p>
               </td> 
               <td>
-              <input type="text" defaultValue={val}/>
+                <input 
+                id={Object.keys(editCameraPopupChild)[key]}
+                type="text" 
+                defaultValue={val}
+                onChange={e => updateCameraAttribute(e)}
+                />
               </td>
-              </tr>
-            ))} 
-            <button>save</button>
-            </>
+            </tr>
+          ))} 
+          <button onClick={()=>props.editCamera(editCameraPopupChild)}>save</button>
+          </>
         }
         </>
       )}
