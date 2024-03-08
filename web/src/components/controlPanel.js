@@ -5,33 +5,38 @@ function ControlPanel(props) {
   const [addCameraPopup, setAddCameraPopup] = useState(false);
   const [removeCameraPopup, setRemoveCameraPopup] = useState(false);
   const [editCameraPopup, setEditCameraPopup] = useState(false);
+  const [editCameraPopupChild, setEditCameraPopupChild] = useState(false);
 
   const addCamera = () => {
-    props.setControlPanelOpen(true)
-    setAddCameraPopup(true)
-    setRemoveCameraPopup(false)
-    setEditCameraPopup(false)
+    props.setControlPanelOpen(true);
+    setAddCameraPopup(true);
+    setRemoveCameraPopup(false);
+    setEditCameraPopup(false);
+    setEditCameraPopupChild(false);
   }
 
   const removeCamera = () => {
-    props.setControlPanelOpen(false)
-    setAddCameraPopup(false)
-    setRemoveCameraPopup(true)
-    setEditCameraPopup(false)
+    props.setControlPanelOpen(false);
+    setAddCameraPopup(false);
+    setRemoveCameraPopup(true);
+    setEditCameraPopup(false);
+    setEditCameraPopupChild(false);
   }
 
   const editCamera = () => {
-    props.setControlPanelOpen(false)
-    setAddCameraPopup(false)
-    setRemoveCameraPopup(false)
-    setEditCameraPopup(true)
+    props.setControlPanelOpen(false);
+    setAddCameraPopup(false);
+    setRemoveCameraPopup(false);
+    setEditCameraPopup(true);
+    setEditCameraPopupChild(false);
   }
 
   const closePopup = () => {
-    props.setControlPanelOpen(false)
-    setAddCameraPopup(false)
-    setRemoveCameraPopup(false)
-    setEditCameraPopup(false)
+    props.setControlPanelOpen(false);
+    setAddCameraPopup(false);
+    setRemoveCameraPopup(false);
+    setEditCameraPopup(false);
+    setEditCameraPopupChild(false);
   }
 
   return (
@@ -67,14 +72,28 @@ function ControlPanel(props) {
       {editCameraPopup && (
         <>
         <button className="close-popup-button" type="button" aria-label="Close popup" aria-disabled="false" onClick={closePopup}>X</button>
-        <p> Select a camera to edit: </p>
-        {props.cameras.map((camera) => 
-          <p key={camera.port} className="camera-text" onClick={()=>props.editCamera(camera)}> {camera.name} </p>
-        )}
+        {!editCameraPopupChild ? <><p> Select a camera to edit </p>
+          {props.cameras.map((camera) => 
+            <p key={camera.port} className="camera-text" onClick={()=>setEditCameraPopupChild(camera)}> {camera.name} </p>
+          )} </>: 
+          <> <p> Editing {editCameraPopupChild.name} </p>
+          {Object.values(editCameraPopupChild).map((val,key) => 
+            (<tr>
+              <td>
+              <p> {Object.keys(editCameraPopupChild)[key]}: </p>
+              </td> 
+              <td>
+              <input type="text" defaultValue={val}/>
+              </td>
+              </tr>
+            ))} 
+            <button>save</button>
+            </>
+        }
         </>
       )}
-    </div>
-    </Draggable>
+      </div>
+      </Draggable>
     )}
     </div>
   );
