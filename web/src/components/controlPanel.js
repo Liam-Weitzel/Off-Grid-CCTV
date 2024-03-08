@@ -6,7 +6,6 @@ function ControlPanel(props) {
   const [removeCameraPopup, setRemoveCameraPopup] = useState(false);
   const [editCameraPopup, setEditCameraPopup] = useState(false);
   const [editCameraPopupChild, setEditCameraPopupChild] = useState(false);
-  const [cameraAttributes, setCameraAttributes] = useState({});
 
   const addCamera = () => {
     props.setControlPanelOpen(true);
@@ -82,9 +81,9 @@ function ControlPanel(props) {
         <button className="close-popup-button" type="button" aria-label="Close popup" aria-disabled="false" onClick={closePopup}>X</button>
         {!editCameraPopupChild ? <><p> Select a camera to edit </p>
           {props.cameras.map((camera) => 
-            <p key={camera.port} className="camera-text" onClick={()=>setEditCameraPopupChild(camera)}> {camera.name} </p>
+            <p key={camera.port} className="camera-text" onClick={()=>{setEditCameraPopupChild(camera); props.setControlPanelOpen(true)}}> {camera.name} </p>
           )} </>: 
-          <> <p> Editing {editCameraPopupChild.name} </p>
+          <> <p> Editing {editCameraPopupChild.name}. Double click on the map to edit its location</p>
           {Object.values(editCameraPopupChild).map((val,key) => (
             <tr>
               <td>
@@ -100,7 +99,7 @@ function ControlPanel(props) {
               </td>
             </tr>
           ))} 
-          <button onClick={()=>props.editCamera(editCameraPopupChild)}>save</button>
+          <button className="edit-camera-save-button" onClick={()=>props.editCamera(editCameraPopupChild)}>save</button>
           </>
         }
         </>

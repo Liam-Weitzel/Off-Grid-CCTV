@@ -93,6 +93,19 @@ app.post('/setCameraPos', (req, res) => {
   res.send(cameras.filter(camera => camera.port == req.body.port));
 });
 
+app.post('/updateCamera', (req, res) => {
+  const updateCamera = db.prepare('UPDATE camera SET name=@name, path=@path, httpPort=@httpPort, wsPort=@wsPort, ffmpegPort=@ffmpegPort, lat=@lat, lon=@lon, camFps=@camFps, camResolution=@camResolution, bv=@bv, maxRate=@maxRate, bufSize=@bufSize WHERE port=@port');
+  updateCamera.run(req.body);
+
+  cameras.map((camera, index) => {
+    if(camera.port == req.body.port) {
+      cameras[index] = req.body;
+    }
+  });
+
+  res.send(cameras.filter(camera => camera.port == req.body.port));
+});
+
 app.listen(8080, () => console.log('api localhost:8080'))
 
 cameras.forEach((camera) => {

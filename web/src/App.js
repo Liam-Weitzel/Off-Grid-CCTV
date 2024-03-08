@@ -166,7 +166,47 @@ export default function App() {
   }
 
   const editCamera = async (camera) => {
-    console.log(camera);
+    if(!isNaN(lastClickedPos.lon) && !isNaN(lastClickedPos.lat) && lastClickedPos.lon != null && lastClickedPos.lat != null && pins != null && controlPanelOpen) {
+      camera.lon = lastClickedPos.lon.toString();
+      camera.lat = lastClickedPos.lat.toString();
+      setLastClickedPos([]);
+    }
+
+    let camerasCopy = cameras;
+    camerasCopy.forEach(function(el, index, object){
+      if(el.port === camera.port) {
+        object[index] = camera;
+      }
+    });
+    setCameras([...camerasCopy]);
+    
+    let pinsCopy = [...pins];
+    pinsCopy.forEach(function(pin, index, object){
+      if(pin.key == camera.port) {
+        object.splice(index, 1);
+      }
+    });
+    
+    setPins([...pinsCopy, (
+      <Marker
+      key={`${camera.port}`}
+      longitude={camera.lon}
+      latitude={camera.lat}
+      anchor="bottom"
+      onClick={e => {
+        e.originalEvent.stopPropagation();
+        setPopupInfo({name: camera.name, lon: camera.lon, lat: camera.lat, httpPort: camera.httpPort});
+      }}
+      >
+      <CameraSvg />
+      </Marker>)
+    ]);
+
+    await fetch( `http://${backendIP}:${apiPort}/updateCamera`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify( camera )
+    });
   }
 
   return (

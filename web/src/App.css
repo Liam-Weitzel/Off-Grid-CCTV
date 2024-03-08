@@ -33,15 +33,15 @@
 }
 
 .action-popup tr > *:first-child {
-  padding-right: 10px;
-}
-
-.action-popup tr > *:last-child {
-  padding-bottom: 10px;
+  padding-right: 30px;
 }
 
 .action-popup > *:last-child {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+.action-popup > *:last-child {
+  margin-top: 10px;
 }
 
 .close-popup-button {
@@ -61,6 +61,20 @@
 
 .camera-text {
   font-size:20px;
+}
+
+.edit-camera-save-button {
+  position: relative;
+  border-radius:5px;
+  left: 50%;
+  transform: translate(-50%);
+  height: 30px;
+  width: 60px;
+  font-size: 18px;
+  display: inline-block;
+  outline: none;
+  border: 0;
+  box-sizing: border-box;
 }
 
 .camera-text:hover {
