@@ -207,6 +207,8 @@ export default function App() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify( camera )
     });
+
+    setControlPanelOpen(false);
   }
 
   return (
@@ -259,6 +261,7 @@ export default function App() {
     <ControlPanel 
       lastClickedPos={lastClickedPos}
       setControlPanelOpen={setControlPanelOpen}
+      controlPanelOpen={controlPanelOpen}
       cameras={cameras}
       addCamera={addCamera}
       removeCamera={removeCamera}

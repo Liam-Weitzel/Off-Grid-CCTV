@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const startStream = require('./startStream');
 const { execSync } = require('child_process');
-const db = require('better-sqlite3')('../sqlite/sqlite.db'); //different path on prod
+const db = require('better-sqlite3')('./sqlite/sqlite.db');
 
 const configs = { //TODO: move to db
   latitude: 36.90453150945084,

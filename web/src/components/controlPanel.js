@@ -1,4 +1,4 @@
-import { React, useState, memo} from 'react';
+import { React, useState, useEffect, memo} from 'react';
 import Draggable from 'react-draggable';
 
 function ControlPanel(props) {
@@ -38,6 +38,10 @@ function ControlPanel(props) {
     setEditCameraPopup(false);
     setEditCameraPopupChild(false);
   }
+
+  useEffect(() => {
+    if(props.controlPanelOpen == false) closePopup();
+  }, [props.controlPanelOpen]);
 
   const updateCameraAttribute = (e) => {
     if(e.target.value != editCameraPopupChild[e.target.id]) {
@@ -79,25 +83,40 @@ function ControlPanel(props) {
       {editCameraPopup && (
         <>
         <button className="close-popup-button" type="button" aria-label="Close popup" aria-disabled="false" onClick={closePopup}>X</button>
-        {!editCameraPopupChild ? <><p> Select a camera to edit </p>
+        {!editCameraPopupChild ? 
+          <>
+          <p> Select a camera to edit </p>
           {props.cameras.map((camera) => 
-            <p key={camera.port} className="camera-text" onClick={()=>{setEditCameraPopupChild(camera); props.setControlPanelOpen(true)}}> {camera.name} </p>
-          )} </>: 
-          <> <p> Editing {editCameraPopupChild.name}. Double click on the map to edit its location</p>
+            <p 
+            key={camera.port}
+            className="camera-text"
+            onClick={()=>{
+              setEditCameraPopupChild(camera);
+              props.setControlPanelOpen(true)
+            }}> {camera.name} </p>
+          )} 
+          </>
+          : 
+          <> 
+          <p> Editing <a className="important">{editCameraPopupChild.name}</a>. Double click on the map to edit its location. <a className="important">Some settings require a server restart to take effect.</a></p>
           {Object.values(editCameraPopupChild).map((val,key) => (
-            <tr>
+            <>
+            {["port", "path", "lon", "lat"].includes(Object.keys(editCameraPopupChild)[key]) ? null :
+              <tr>
               <td>
-                <p> {Object.keys(editCameraPopupChild)[key]}: </p>
+              <p> {Object.keys(editCameraPopupChild)[key]}: </p>
               </td> 
               <td>
-                <input 
-                id={Object.keys(editCameraPopupChild)[key]}
-                type="text" 
-                defaultValue={val}
-                onChange={e => updateCameraAttribute(e)}
-                />
+              <input 
+              id={Object.keys(editCameraPopupChild)[key]}
+              type="text" 
+              defaultValue={val}
+              onChange={e => updateCameraAttribute(e)}
+              />
               </td>
-            </tr>
+              </tr> 
+            }
+            </>
           ))} 
           <button className="edit-camera-save-button" onClick={()=>props.editCamera(editCameraPopupChild)}>save</button>
           </>

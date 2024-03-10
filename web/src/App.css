@@ -5,6 +5,11 @@
   height: 100vh;
 }
 
+.important {
+  color: red;
+  font-weight: bold;
+}
+
 .control-panel {
   position: absolute;
   left: 50%; 
@@ -68,6 +73,7 @@
   border-radius:5px;
   left: 50%;
   transform: translate(-50%);
+  background: #d3d3d3;
   height: 30px;
   width: 60px;
   font-size: 18px;
