@@ -37,9 +37,7 @@ export default function App() {
   const [controlPanelOpen, setControlPanelOpen] = useState(false);
 
   useEffect(() => {
-    return () => { //this runs once on app start
-      fetchCameras();
-    };
+    fetchCameras();
   }, []);
 
   const handleClick = (e) => {

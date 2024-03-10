@@ -67,14 +67,17 @@ app.use(cors());
 app.use(express.json());
 
 app.get('/fetchCameras', (req, res) => {
+  console.log("fetchCameras");
   res.send(cameras);
 });
 
 app.get('/fetchConfigs', (req, res) => {
+  console.log("fetchConfigs");
   res.send(configs);
 });
 
 app.post('/setCameraPos', (req, res) => {
+  console.log("setCameraPos");
   const updateCamera = db.prepare('UPDATE camera SET lat=@lat, lon=@lon WHERE port=@port');
 
   updateCamera.run({
@@ -94,6 +97,7 @@ app.post('/setCameraPos', (req, res) => {
 });
 
 app.post('/updateCamera', (req, res) => {
+  console.log("updateCamera");
   const updateCamera = db.prepare('UPDATE camera SET name=@name, path=@path, httpPort=@httpPort, wsPort=@wsPort, ffmpegPort=@ffmpegPort, lat=@lat, lon=@lon, camFps=@camFps, camResolution=@camResolution, bv=@bv, maxRate=@maxRate, bufSize=@bufSize WHERE port=@port');
   updateCamera.run(req.body);
 

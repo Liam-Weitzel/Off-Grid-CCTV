@@ -40,7 +40,7 @@ function ControlPanel(props) {
   }
 
   useEffect(() => {
-    if(props.controlPanelOpen == false) closePopup();
+    if(props.controlPanelOpen == false && editCameraPopupChild != false) closePopup();
   }, [props.controlPanelOpen]);
 
   const updateCameraAttribute = (e) => {

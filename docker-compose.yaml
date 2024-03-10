@@ -21,8 +21,8 @@ services:
       SERVICE_NAME: backend
     privileged: true
     volumes:
-      - ./sqlite:/sqlite
-      - ./videostore:/videostore
+      - ./sqlite:/server/sqlite
+      - ./videostore:/server/videostore
     networks:
       network:
         ipv4_address: 192.168.92.22
