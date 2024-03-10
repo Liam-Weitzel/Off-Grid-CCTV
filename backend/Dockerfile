@@ -9,7 +9,7 @@ ENV OPENCV4NODEJS_DISABLE_AUTOBUILD=1
 RUN apt-get update && \
 apt-get install -y build-essential curl && \
 apt-get install -y --no-install-recommends wget unzip git python cmake && \
-curl -sL https://deb.nodesource.com/setup_11.x | bash && \
+curl -sL https://deb.nodesource.com/setup_15.x | bash && \
 apt-get install -y nodejs && node -v && npm -v && \
 rm -rf /var/lib/apt/lists/* && \
 mkdir opencv && \

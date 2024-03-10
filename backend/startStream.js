@@ -39,7 +39,7 @@ const startStream = (camPort, camFps, frameSize, httpPort, wsPort, streamPort, s
   });
 
   ffmpegStream.stderr.on('data', (data) => {
-    //console.log('ffmpeg stderr: ' + data.toString());
+    // console.log('ffmpeg stderr: ' + data.toString());
   });
 
   ffmpegStream.on('exit', (code) => {

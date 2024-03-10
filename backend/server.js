@@ -1,43 +1,120 @@
 const express = require('express');
 const cors = require('cors');
 const startStream = require('./startStream');
-const { exec } = require('child_process');
+const { execSync } = require('child_process');
+const db = require('better-sqlite3')('./sqlite/sqlite.db');
+
+const configs = { //TODO: move to db
+  latitude: 36.90453150945084,
+  longitude: 15.013785520105046,
+  zoom: 16,
+  bearing: -50,
+  pitch: 0,
+  id: 'sky',
+  type: 'sky',
+  paint: {
+    'sky-type': 'atmosphere',
+    'sky-atmosphere-sun': [0.0, 0.0],
+    'sky-atmosphere-sun-intensity': 15
+  }};
+
+const createTable = db.prepare('CREATE TABLE IF NOT EXISTS camera( port INT(32) PRIMARY KEY NOT NULL, name VARCHAR(255) NOT NULL, path VARCHAR(255) NOT NULL, httpPort INT(32) NOT NULL, wsPort INT(32) NOT NULL, ffmpegPort INT(32) NOT NULL, lat VARCHAR(255), lon VARCHAR(255), camFps INT(32) NOT NULL, camResolution INT(32) NOT NULL, bv VARCHAR(255) NOT NULL, maxRate VARCHAR(255) NOT NULL, bufSize VARCHAR(255) NOT NULL)');
+createTable.run();
+
+const cameras = [];
+
+const stdout = execSync('v4l2-ctl --list-devices').toString();
+const usbCameraPaths = [];
+const lines = stdout.split("\n");
+lines.forEach(line => {
+  if (line.includes("/dev/video")) { 
+    usbCameraPaths.push(line.trim());
+  }
+});
+
+usbCameraPaths.forEach(usbCameraPath => {
+  const isCameraInTable = db.prepare('SELECT * FROM camera WHERE port = ?').bind(parseInt(usbCameraPath.replace(/[^0-9]/g, '')));
+  const res = isCameraInTable.get();
+  if(!res) {
+    const lastPort = db.prepare('SELECT COALESCE((SELECT MAX(ffmpegPort) FROM camera), 8080) AS lastPort').get().lastPort;
+    console.log(lastPort);
+    const camera = {
+      port: parseInt(usbCameraPath.replace(/[^0-9]/g, '')),
+      name: ('camera'+parseInt(usbCameraPath.replace(/[^0-9]/g, ''))).toString(),
+      path: usbCameraPath,
+      httpPort: parseInt(lastPort+1),
+      wsPort: parseInt(lastPort+2),
+      ffmpegPort: parseInt(lastPort+3),
+      lat: null,
+      lon: null,
+      camFps: 30,
+      camResolution: 640,
+      bv: '1000k',
+      maxRate: '1000k',
+      bufSize: '500k',
+    };
+
+    cameras.push(camera);
+    const insertCamera = db.prepare('INSERT INTO camera (port, name, path, httpPort, wsPort, ffmpegPort, lat, lon, camFps, camResolution, bv, maxRate, bufSize) VALUES (@port, @name, @path, @httpPort, @wsPort, @ffmpegPort, @lat, @lon, @camFps, @camResolution, @bv, @maxRate, @bufSize)');
+    insertCamera.run(camera);
+  } else {
+    cameras.push(res);
+  }
+});
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-/* app.set('views', __dirname);
-app.set('view engine', 'pug');
+app.get('/fetchCameras', (req, res) => {
+  res.send(cameras);
+});
 
-app.get('/8081', async (req, res) => {
-  res.render('index', { title: 'Object Detection on Live Stream', url: 'ws://localhost:8081'});
-}); */
+app.get('/fetchConfigs', (req, res) => {
+  res.send(configs);
+});
 
-app.get('/getWebSockets', async (req, res) => {
-  res.send('ws://localhost:8081');
+app.post('/setCameraPos', (req, res) => {
+  const updateCamera = db.prepare('UPDATE camera SET lat=@lat, lon=@lon WHERE port=@port');
+
+  updateCamera.run({
+    lat: req.body.lat,
+    lon: req.body.lon,
+    port: req.body.port
+  });
+
+  cameras.map((camera, index) => {
+    if(camera.port == req.body.port) {
+      cameras[index].lon = req.body.lon;
+      cameras[index].lat = req.body.lat;
+    }
+  });
+
+  res.send(cameras.filter(camera => camera.port == req.body.port));
+});
+
+app.post('/updateCamera', (req, res) => {
+  const updateCamera = db.prepare('UPDATE camera SET name=@name, path=@path, httpPort=@httpPort, wsPort=@wsPort, ffmpegPort=@ffmpegPort, lat=@lat, lon=@lon, camFps=@camFps, camResolution=@camResolution, bv=@bv, maxRate=@maxRate, bufSize=@bufSize WHERE port=@port');
+  updateCamera.run(req.body);
+
+  cameras.map((camera, index) => {
+    if(camera.port == req.body.port) {
+      cameras[index] = req.body;
+    }
+  });
+
+  res.send(cameras.filter(camera => camera.port == req.body.port));
 });
 
 app.listen(8080, () => console.log('api localhost:8080'))
 
-const { ffmpegStream, detectionStream } = startStream(1, 30, 640, 8081, 8082, 8083, 'camera1', ['-f', 'image2pipe', '-', '-i', '-', '-f', 'mpegts', '-c:v', 'mpeg1video', '-b:v', '1000k', '-maxrate:v', '1000k', '-bufsize', '500k', '-an', `http://localhost:8083/camera1`]);
+cameras.forEach((camera) => {
+  const { ffmpegStream, detectionStream } = startStream(camera.port, camera.camFps, camera.camResolution, camera.httpPort, camera.wsPort, camera.ffmpegPort, camera.name.toString(), ['-f', 'image2pipe', '-', '-i', '-', '-f', 'mpegts', '-c:v', 'mpeg1video', '-b:v', camera.bv.toString(), '-maxrate:v', camera.maxRate.toString(), '-bufsize', camera.bufSize.toString(), '-an', `http://localhost:${camera.ffmpegPort}/${camera.name}`]); 
 
-//Start a stream for all plugged in cameras
-exec('v4l2-ctl --list-devices', (err, stdout) => {
-  if (err) {
-    console.error(`exec error: ${err}`);
-    return;
-  }
-
-  const usbCameraPaths = [];
-  const lines = stdout.split("\n");
-  lines.forEach(line => {
-    if (line.includes("/dev/video")) { 
-      usbCameraPaths.push(line.trim());
-    }
+  detectionStream.on('exit', () => {
+    //exit gracefully
   });
-
-  usbCameraPaths.forEach(usbCameraPath => {
-    console.log(usbCameraPath);
+  ffmpegStream.on('exit', () => {
+    //exit gracefully
   });
 });

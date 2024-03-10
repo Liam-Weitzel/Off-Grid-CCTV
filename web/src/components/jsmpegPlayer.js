@@ -47,6 +47,14 @@ export default class JsmpegPlayer extends Component {
   };
 
   destroy() {
-    this.video.destroy();
+    try {
+      this.video.destroy();
+    }
+    catch(err) {
+    }
+  };
+
+  componentWillUnmount() {
+    this.destroy();
   };
 };
