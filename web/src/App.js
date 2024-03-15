@@ -12,8 +12,24 @@ const backendIP = '192.168.92.22';
 const apiPort = '8080';
 const mapBoxToken = 'pk.eyJ1IjoibGlhbXdlaXR6ZWwiLCJhIjoiNmIwZTUyNWRjMDg5NjVjMTczMTYyOWI2NWZkNmMxZTAifQ.5FiYxafq7rS9Bp1llpWdpw';
 
-const response = await fetch (`http://${backendIP}:${apiPort}/fetchConfigs`);
-const configs = await response.json();
+const getConfigs = await fetch (`http://${backendIP}:${apiPort}/fetchConfigs`);
+let configs = await getConfigs.json();
+
+if(configs.notset) {
+  const tempConfigs = {
+    zoom: 16,
+    latitude: '36.90453150945084', 
+    longitude: '15.013785520105046', 
+    bearing: -50, 
+    pitch: 0
+  };
+  const setConfigs = await fetch( `http://${backendIP}:${apiPort}/setConfigs`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify( tempConfigs )
+  });
+  configs = await setConfigs.json();
+}
 
 const initialViewState = { 
   latitude: configs.latitude,
@@ -24,9 +40,13 @@ const initialViewState = {
 };
 
 const skyLayer = {
-  id: configs.id,
-  type: configs.type,
-  paint: configs.paint
+  id: 'sky',
+  type: 'sky',
+  paint: {
+    'sky-type': 'atmosphere',
+    'sky-atmosphere-sun': [0.0, 0.0],
+    'sky-atmosphere-sun-intensity': 15
+  }
 };
 
 export default function App() {

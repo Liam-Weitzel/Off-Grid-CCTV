@@ -4,24 +4,14 @@ const startStream = require('./startStream');
 const { execSync } = require('child_process');
 const db = require('better-sqlite3')('./sqlite/sqlite.db');
 
-const configs = { //TODO: move to db
-  latitude: 36.90453150945084,
-  longitude: 15.013785520105046,
-  zoom: 16,
-  bearing: -50,
-  pitch: 0,
-  id: 'sky',
-  type: 'sky',
-  paint: {
-    'sky-type': 'atmosphere',
-    'sky-atmosphere-sun': [0.0, 0.0],
-    'sky-atmosphere-sun-intensity': 15
-  }};
-
-const createTable = db.prepare('CREATE TABLE IF NOT EXISTS camera( port INT(32) PRIMARY KEY NOT NULL, name VARCHAR(255) NOT NULL, path VARCHAR(255) NOT NULL, httpPort INT(32) NOT NULL, wsPort INT(32) NOT NULL, ffmpegPort INT(32) NOT NULL, lat VARCHAR(255), lon VARCHAR(255), camFps INT(32) NOT NULL, camResolution INT(32) NOT NULL, bv VARCHAR(255) NOT NULL, maxRate VARCHAR(255) NOT NULL, bufSize VARCHAR(255) NOT NULL)');
-createTable.run();
+const createCameraTable = db.prepare('CREATE TABLE IF NOT EXISTS camera( port INT(32) PRIMARY KEY NOT NULL, name VARCHAR(255) NOT NULL, path VARCHAR(255) NOT NULL, httpPort INT(32) NOT NULL, wsPort INT(32) NOT NULL, ffmpegPort INT(32) NOT NULL, lat VARCHAR(255), lon VARCHAR(255), camFps INT(32) NOT NULL, camResolution INT(32) NOT NULL, bv VARCHAR(255) NOT NULL, maxRate VARCHAR(255) NOT NULL, bufSize VARCHAR(255) NOT NULL)');
+createCameraTable.run();
+const createConfigTable = db.prepare('CREATE TABLE IF NOT EXISTS config( zoom INT(32) NOT NULL, latitude VARCHAR(255) NOT NULL, longitude VARCHAR(255) NOT NULL, bearing INT(32) NOT NULL, pitch INT(32) NOT NULL)');
+createConfigTable.run();
 
 const cameras = [];
+const getConfigs = db.prepare('SELECT * FROM config LIMIT 1');
+let configs = getConfigs.get();
 
 const stdout = execSync('v4l2-ctl --list-devices').toString();
 const usbCameraPaths = [];
@@ -73,7 +63,8 @@ app.get('/fetchCameras', (req, res) => {
 
 app.get('/fetchConfigs', (req, res) => {
   console.log("fetchConfigs");
-  res.send(configs);
+  if(configs) res.send(configs);
+  else res.send({notset: true});
 });
 
 app.post('/setCameraPos', (req, res) => {
@@ -94,6 +85,27 @@ app.post('/setCameraPos', (req, res) => {
   });
 
   res.send(cameras.filter(camera => camera.port == req.body.port));
+});
+
+app.post('/setConfigs', (req, res) => {
+  console.log("setConfigs");
+  const newConfigs = {
+    zoom: req.body.zoom,
+    latitude: req.body.latitude,
+    longitude: req.body.longitude,
+    bearing: req.body.bearing,
+    pitch: req.body.pitch
+  }
+
+  const clearTable = db.prepare('DELETE FROM config'); 
+  clearTable.run();
+  const updateConfigs = db.prepare('INSERT INTO config (zoom, latitude, longitude, bearing, pitch) VALUES (@zoom, @latitude, @longitude, @bearing, @pitch)');
+  updateConfigs.run(newConfigs);
+
+  configs = newConfigs;
+  console.log(configs);
+
+  res.send(configs);
 });
 
 app.post('/updateCamera', (req, res) => {
