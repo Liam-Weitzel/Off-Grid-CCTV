@@ -16,12 +16,17 @@ const getConfigs = await fetch (`http://${backendIP}:${apiPort}/fetchConfigs`);
 let configs = await getConfigs.json();
 
 if(configs.notset) {
+  let zoom = prompt('zoom');
+  let bearing = prompt('bearing');
+  let pitch = prompt('pitch');
+  let latitude = prompt('latitude');
+  let longitude = prompt('longitude');
   const tempConfigs = {
-    zoom: 16,
-    latitude: '36.90453150945084', 
-    longitude: '15.013785520105046', 
-    bearing: -50, 
-    pitch: 0
+    zoom: zoom,
+    bearing: bearing,
+    pitch: pitch,
+    latitude: latitude,
+    longitude: longitude
   };
   const setConfigs = await fetch( `http://${backendIP}:${apiPort}/setConfigs`, {
     method: 'POST',

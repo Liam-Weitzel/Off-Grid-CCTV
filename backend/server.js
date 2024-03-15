@@ -103,7 +103,6 @@ app.post('/setConfigs', (req, res) => {
   updateConfigs.run(newConfigs);
 
   configs = newConfigs;
-  console.log(configs);
 
   res.send(configs);
 });
