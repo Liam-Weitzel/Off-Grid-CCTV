@@ -7,6 +7,7 @@ import CameraSvg from './components/cameraSvg';
 import TempCameraSvg from './components/tempCameraSvg'
 import FullscreenSvg from './components/fullscreenSvg';
 import ControlPanel from './components/controlPanel';
+import PopOutVideo from './components/popOutVideo.js';
 
 const backendIP = '192.168.92.22';
 const apiPort = '8080';
@@ -60,6 +61,7 @@ export default function App() {
   const [pins, setPins] = useState(null);
   const [lastClickedPos, setLastClickedPos] = useState([]);
   const [controlPanelOpen, setControlPanelOpen] = useState(false);
+  const [popOutVideoInfo, setPopOutVideoInfo] = useState([]);
 
   useEffect(() => {
     fetchCameras();
@@ -189,6 +191,8 @@ export default function App() {
   }
 
   const editCamera = async (camera) => {
+    camera.name = camera.name.replace(/\s/g, '')
+
     if(!isNaN(lastClickedPos.lon) && !isNaN(lastClickedPos.lat) && lastClickedPos.lon != null && lastClickedPos.lat != null && pins != null && controlPanelOpen) {
       camera.lon = lastClickedPos.lon.toString();
       camera.lat = lastClickedPos.lat.toString();
@@ -264,7 +268,14 @@ export default function App() {
     {pins}
 
     {popupInfo && (
-      <Popup key={popupInfo.name}
+      <a 
+      key={popupInfo.name}
+      onClick={()=>{
+        setPopOutVideoInfo([...popOutVideoInfo, {httpPort:popupInfo.httpPort, name:popupInfo.name} ]);
+        setPopupInfo(null);
+      }}
+      >
+      <Popup
       className = "marker-popup"
       anchor="top"
       longitude={Number(popupInfo.lon)}
@@ -278,8 +289,17 @@ export default function App() {
       videoUrl={'ws://' + backendIP + ':' + popupInfo.httpPort}
       />
       <FullscreenSvg />
-      </Popup>
+      </Popup></a>
     )}
+
+    {popOutVideoInfo.map((popOutVideo) => (
+      <PopOutVideo 
+        key = {popOutVideo.httpPort}
+        httpPort = { popOutVideo.httpPort }
+        backendIP = { backendIP }
+        name = { popOutVideo.name }
+      />
+    ))}
 
     <ControlPanel 
       lastClickedPos={lastClickedPos}
