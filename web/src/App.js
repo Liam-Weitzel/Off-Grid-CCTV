@@ -213,7 +213,7 @@ export default function App() {
         object.splice(index, 1);
       }
     });
-    
+
     setPins([...pinsCopy, (
       <Marker
       key={`${camera.port}`}
@@ -237,6 +237,17 @@ export default function App() {
 
     setControlPanelOpen(false);
   }
+
+
+  const closePopOutVideo = async (port) => {
+    let popOutVideoInfoCopy = popOutVideoInfo;
+    popOutVideoInfoCopy.forEach(function(popOut, index, object){
+      if(popOut === port) {
+        object.splice(index, 1);
+      }
+    });
+    setPopOutVideoInfo([...popOutVideoInfoCopy]);
+  };
 
   return (
     <div className="App">
@@ -271,8 +282,10 @@ export default function App() {
       <a 
       key={popupInfo.name}
       onClick={()=>{
-        setPopOutVideoInfo([...popOutVideoInfo, {httpPort:popupInfo.httpPort, name:popupInfo.name} ]);
-        setPopupInfo(null);
+        if(!popOutVideoInfo.includes(popupInfo.httpPort)) {
+          setPopOutVideoInfo([...popOutVideoInfo, popupInfo.httpPort]);
+          setPopupInfo(null);
+        }
       }}
       >
       <Popup
@@ -294,10 +307,10 @@ export default function App() {
 
     {popOutVideoInfo.map((popOutVideo) => (
       <PopOutVideo 
-        key = {popOutVideo.httpPort}
-        httpPort = { popOutVideo.httpPort }
+        key = { popOutVideo }
+        httpPort = { popOutVideo }
         backendIP = { backendIP }
-        name = { popOutVideo.name }
+        closePopOutVideo = { closePopOutVideo }
       />
     ))}
 
