@@ -9,7 +9,7 @@ import FullscreenSvg from './components/fullscreenSvg';
 import ControlPanel from './components/controlPanel';
 import PopOutVideo from './components/popOutVideo.js';
 
-const backendIP = '192.168.92.22';
+const backendIP = window.location.hostname;
 const apiPort = '8080';
 const mapBoxToken = 'pk.eyJ1IjoibGlhbXdlaXR6ZWwiLCJhIjoiNmIwZTUyNWRjMDg5NjVjMTczMTYyOWI2NWZkNmMxZTAifQ.5FiYxafq7rS9Bp1llpWdpw';
 
