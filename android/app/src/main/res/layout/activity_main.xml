@@ -9,7 +9,7 @@
     <com.mapbox.maps.MapView
         android:id="@+id/mapView"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="600dp"
         android:layout_x="77dp"
         android:layout_y="157dp"
         app:layout_constraintBottom_toBottomOf="parent"

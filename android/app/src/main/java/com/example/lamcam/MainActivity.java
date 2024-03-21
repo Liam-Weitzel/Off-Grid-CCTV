@@ -16,7 +16,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 
 import com.mapbox.geojson.Point;
+import com.mapbox.maps.CameraBoundsOptions;
 import com.mapbox.maps.CameraOptions;
+import com.mapbox.maps.CoordinateBounds;
 import com.mapbox.maps.MapView;
 import com.mapbox.maps.MapboxMap;
 import com.mapbox.maps.Style;
@@ -41,15 +43,24 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mapView = findViewById(R.id.mapView);
+
         mapboxMap = mapView.getMapboxMap();
         mapboxMap.setCamera(
                 new CameraOptions.Builder()
-                        .center(Point.fromLngLat(-98.0, 39.5))
+                        .center(Point.fromLngLat(15.013785520105046, 36.90453150945084))
                         .pitch(0.0)
-                        .zoom(14.0)
-                        .bearing(0.0)
+                        .zoom(16.0)
+                        .bearing(-50.0)
                         .build()
         );
+
+        CameraBoundsOptions options = new CameraBoundsOptions.Builder()
+                .bounds(CoordinateBounds.singleton(Point.fromLngLat(15.013785520105046, 36.90453150945084)))
+                .maxPitch(60.0)
+                .minZoom(14.0)
+                .maxZoom(17.0)
+                .build();
+        mapboxMap.setBounds(options);
         mapboxMap.loadStyle(createStyle());
 
         WebView wv = (WebView) findViewById(R.id.webView);
@@ -68,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         builder.addSource(rasterDemSource);
 
         Terrain terrain = new Terrain("TERRAIN_SOURCE");
-        terrain.exaggeration(1.5);
+        terrain.exaggeration(2.5);
         builder.setTerrain(terrain);
 
         return builder.build();
