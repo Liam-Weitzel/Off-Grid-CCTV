@@ -18,7 +18,12 @@ import androidx.appcompat.content.res.AppCompatResources;
 import com.mapbox.geojson.Point;
 import com.mapbox.maps.CameraOptions;
 import com.mapbox.maps.MapView;
+import com.mapbox.maps.MapboxMap;
 import com.mapbox.maps.Style;
+import com.mapbox.maps.extension.style.StyleContract;
+import com.mapbox.maps.extension.style.StyleExtensionImpl;
+import com.mapbox.maps.extension.style.sources.generated.RasterDemSource;
+import com.mapbox.maps.extension.style.terrain.generated.Terrain;
 import com.mapbox.maps.plugin.Plugin;
 import com.mapbox.maps.plugin.annotation.AnnotationConfig;
 import com.mapbox.maps.plugin.annotation.AnnotationPlugin;
@@ -28,6 +33,7 @@ import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions;
 
 public class MainActivity extends AppCompatActivity {
     private MapView mapView;
+    private MapboxMap mapboxMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mapView = findViewById(R.id.mapView);
-        mapView.getMapboxMap().setCamera(
+        mapboxMap = mapView.getMapboxMap();
+        mapboxMap.setCamera(
                 new CameraOptions.Builder()
                         .center(Point.fromLngLat(-98.0, 39.5))
                         .pitch(0.0)
@@ -43,15 +50,7 @@ public class MainActivity extends AppCompatActivity {
                         .bearing(0.0)
                         .build()
         );
-        mapView.getMapboxMap().loadStyle(
-                Style.SATELLITE,
-                new Style.OnStyleLoaded() {
-                    @Override
-                    public void onStyleLoaded(Style style) {
-                        addAnnotationToMap();
-                    }
-                }
-        );
+        mapboxMap.loadStyle(createStyle());
 
         WebView wv = (WebView) findViewById(R.id.webView);
         wv.setWebViewClient(new WebViewClient());
@@ -59,6 +58,20 @@ public class MainActivity extends AppCompatActivity {
         wv.loadUrl(String.valueOf(Uri.parse(URL)));
         WebSettings webSettings = wv.getSettings();
         webSettings.setJavaScriptEnabled(true);
+    }
+
+    private StyleContract.StyleExtension createStyle() {
+        StyleExtensionImpl.Builder builder = new StyleExtensionImpl.Builder(Style.SATELLITE);
+
+        RasterDemSource rasterDemSource = new RasterDemSource(new RasterDemSource.Builder("TERRAIN_SOURCE").tileSize(514));
+        rasterDemSource.url("mapbox://mapbox.mapbox-terrain-dem-v1");
+        builder.addSource(rasterDemSource);
+
+        Terrain terrain = new Terrain("TERRAIN_SOURCE");
+        terrain.exaggeration(1.5);
+        builder.setTerrain(terrain);
+
+        return builder.build();
     }
 
     private void addAnnotationToMap() {
