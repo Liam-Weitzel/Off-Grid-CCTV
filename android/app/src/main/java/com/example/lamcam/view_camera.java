@@ -18,7 +18,7 @@ public class view_camera extends AppCompatActivity {
 
         WebView wv = (WebView) findViewById(R.id.webView);
         wv.setWebViewClient(new WebViewClient());
-        String URL = "http://" + intent.getStringExtra("serverip") + ":" + intent.getStringExtra("apiport") + "/viewCamera?url=ws://" + intent.getStringExtra("serverip") + ":" + intent.getStringExtra("wsport") + "/";;
+        String URL = "http://" + intent.getStringExtra("serverIp") + ":" + intent.getStringExtra("apiPort") + "/viewCamera?url=ws://" + intent.getStringExtra("serverIp") + ":" + intent.getStringExtra("wsPort") + "/";;
         wv.loadUrl(URL);
         WebSettings webSettings = wv.getSettings();
         webSettings.setJavaScriptEnabled(true);

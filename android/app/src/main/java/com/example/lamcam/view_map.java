@@ -34,11 +34,14 @@ import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions;
 public class view_map extends AppCompatActivity {
     private MapView mapView;
     private MapboxMap mapboxMap;
+    private String serverIp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_map);
+        Intent intent = getIntent();
+        serverIp = intent.getStringExtra("serverIp");
 
         mapView = findViewById(R.id.mapView);
         mapboxMap = mapView.getMapboxMap();
@@ -55,7 +58,7 @@ public class view_map extends AppCompatActivity {
         CameraBoundsOptions options = new CameraBoundsOptions.Builder()
                 .bounds(CoordinateBounds.singleton(Point.fromLngLat(15.013785520105046, 36.90453150945084)))
                 .maxPitch(60.0)
-                .minZoom(14.0)
+                .minZoom(15.0)
                 .maxZoom(17.0)
                 .build();
         mapboxMap.setBounds(options);
@@ -91,9 +94,9 @@ public class view_map extends AppCompatActivity {
             pointAnnotationManager.addClickListener(pointAnnotation -> {
                 Toast.makeText(view_map.this, "id: " + pointAnnotation.getId(), Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(this, view_camera.class);
-                intent.putExtra("wsport", "8081");
-                intent.putExtra("serverip", "192.168.43.158");
-                intent.putExtra("apiport", "8080");
+                intent.putExtra("wsPort", "8081");
+                intent.putExtra("serverIp", serverIp);
+                intent.putExtra("apiPort", "8080");
                 startActivity(intent);
                 return false;
             });
