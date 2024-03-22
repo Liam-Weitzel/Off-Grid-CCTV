@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import androidx.annotation.DrawableRes;
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mapView = findViewById(R.id.mapView);
-
         mapboxMap = mapView.getMapboxMap();
+
         mapboxMap.setCamera(
                 new CameraOptions.Builder()
                         .center(Point.fromLngLat(15.013785520105046, 36.90453150945084))
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         mapboxMap.setBounds(options);
         mapboxMap.loadStyle(createStyle());
+        addAnnotationToMap();
 
         WebView wv = (WebView) findViewById(R.id.webView);
         wv.setWebViewClient(new WebViewClient());
@@ -86,14 +88,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addAnnotationToMap() {
-        Bitmap bitmap = bitmapFromDrawableRes(this, R.drawable.red_marker);
+        Bitmap bitmap = bitmapFromDrawableRes(this, R.drawable.camera);
         if (bitmap != null) {
             AnnotationPlugin annotationApi = mapView.getPlugin(Plugin.MAPBOX_ANNOTATION_PLUGIN_ID);
             PointAnnotationManager pointAnnotationManager = (PointAnnotationManager) annotationApi.createAnnotationManager(AnnotationType.PointAnnotation, new AnnotationConfig());
             PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions()
-                    .withPoint(Point.fromLngLat(18.06, 59.31))
+                    .withPoint(Point.fromLngLat(15.013785520105046, 36.90453150945084))
                     .withIconImage(bitmap);
             pointAnnotationManager.create(pointAnnotationOptions);
+
+            pointAnnotationManager.addClickListener(pointAnnotation -> {
+                Toast.makeText(MainActivity.this, "id: " + pointAnnotation.getId(), Toast.LENGTH_LONG).show();
+                return false;
+            });
         }
     }
 
