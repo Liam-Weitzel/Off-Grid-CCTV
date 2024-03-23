@@ -7,19 +7,21 @@ import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.view.ViewGroup;
 
 import androidx.annotation.DrawableRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 
 import com.mapbox.geojson.Point;
+import com.mapbox.maps.AnnotatedFeature;
 import com.mapbox.maps.CameraBoundsOptions;
 import com.mapbox.maps.CameraOptions;
 import com.mapbox.maps.CoordinateBounds;
 import com.mapbox.maps.MapView;
 import com.mapbox.maps.MapboxMap;
 import com.mapbox.maps.Style;
+import com.mapbox.maps.ViewAnnotationOptions;
 import com.mapbox.maps.extension.style.StyleContract;
 import com.mapbox.maps.extension.style.StyleExtensionImpl;
 import com.mapbox.maps.extension.style.sources.generated.RasterDemSource;
@@ -30,6 +32,7 @@ import com.mapbox.maps.plugin.annotation.AnnotationPlugin;
 import com.mapbox.maps.plugin.annotation.AnnotationType;
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager;
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions;
+import com.mapbox.maps.viewannotation.ViewAnnotationManager;
 
 public class view_map extends AppCompatActivity {
     private MapView mapView;
@@ -92,12 +95,23 @@ public class view_map extends AppCompatActivity {
             pointAnnotationManager.create(pointAnnotationOptions);
 
             pointAnnotationManager.addClickListener(pointAnnotation -> {
-                Toast.makeText(view_map.this, "id: " + pointAnnotation.getId(), Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(this, view_camera.class);
-                intent.putExtra("wsPort", "8081");
-                intent.putExtra("serverIp", serverIp);
-                intent.putExtra("apiPort", "8080");
-                startActivity(intent);
+                camera_preview cameraPreview = new camera_preview(this);
+                cameraPreview.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)); // Set the desired layout parameters
+                cameraPreview.init(serverIp, "8080", "8084");
+                AnnotatedFeature annotatedFeature = new AnnotatedFeature(Point.fromLngLat(15.013785520105046, 36.90453150945084));
+
+                ViewAnnotationOptions options = new ViewAnnotationOptions.Builder()
+                        .annotatedFeature(annotatedFeature)
+                        .width(800.0)
+                        .height(800.0)
+                        .allowOverlap(true)
+                        .visible(true)
+                        .build();
+
+                // Assuming mapView is your MapView object
+                ViewAnnotationManager viewAnnotationManager = mapView.getViewAnnotationManager();
+                viewAnnotationManager.addViewAnnotation(cameraPreview, options);
+
                 return false;
             });
         }
