@@ -2,6 +2,7 @@ package com.example.lamcam;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ public class camera_preview extends FrameLayout {
         WebView wv = new WebView(getContext());
         wv.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         wv.setWebViewClient(new WebViewClient());
+        wv.setBackgroundColor(Color.TRANSPARENT);
         wv.setClickable(false);
         String URL = "http://" + serverIp + ":" + apiPort + "/viewCamera?url=ws://" + serverIp + ":" + wsPort + "/";
         wv.loadUrl(URL);

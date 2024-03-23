@@ -99,7 +99,6 @@ public class view_map extends AppCompatActivity {
                 cameraPreview.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)); // Set the desired layout parameters
                 cameraPreview.init(serverIp, "8080", "8084");
                 AnnotatedFeature annotatedFeature = new AnnotatedFeature(Point.fromLngLat(15.013785520105046, 36.90453150945084));
-
                 ViewAnnotationOptions options = new ViewAnnotationOptions.Builder()
                         .annotatedFeature(annotatedFeature)
                         .width(800.0)
