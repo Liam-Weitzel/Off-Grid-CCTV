@@ -8,12 +8,12 @@ import android.webkit.WebViewClient;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class view_camera extends AppCompatActivity {
+public class CameraActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_camera);
+        setContentView(R.layout.activity_camera);
         Intent intent = getIntent();
 
         WebView wv = (WebView) findViewById(R.id.webView);

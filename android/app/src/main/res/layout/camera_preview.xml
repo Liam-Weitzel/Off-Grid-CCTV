@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     >
 
-    <com.example.lamcam.camera_preview
+    <com.example.lamcam.CameraPreview
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

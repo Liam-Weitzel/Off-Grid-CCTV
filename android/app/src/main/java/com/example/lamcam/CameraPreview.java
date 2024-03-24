@@ -11,14 +11,11 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 
-/**
- * TODO: document your custom view class.
- */
-public class camera_preview extends FrameLayout {
+public class CameraPreview extends FrameLayout {
 
     private Context mContext;
 
-    public camera_preview(Context context) {
+    public CameraPreview(Context context) {
         super(context);
         mContext = context;
     }
@@ -44,10 +41,10 @@ public class camera_preview extends FrameLayout {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    Intent intent = new Intent(mContext, view_camera.class);
-                    intent.putExtra("wsPort", "8084");
+                    Intent intent = new Intent(mContext, CameraActivity.class);
+                    intent.putExtra("wsPort", wsPort);
                     intent.putExtra("serverIp", serverIp);
-                    intent.putExtra("apiPort", "8080");
+                    intent.putExtra("apiPort", apiPort);
                     mContext.startActivity(intent);
                     return true;
                 }

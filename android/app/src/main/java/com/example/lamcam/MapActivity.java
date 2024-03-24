@@ -1,6 +1,5 @@
 package com.example.lamcam;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,6 +10,7 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.DrawableRes;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,10 +37,18 @@ import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager;
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions;
 import com.mapbox.maps.viewannotation.ViewAnnotationManager;
 
-public class view_map extends AppCompatActivity {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.GET;
+
+public class MapActivity extends AppCompatActivity {
     private MapView mapView;
     private MapboxMap mapboxMap;
     private String serverIp;
+    private static final String apiPort = "8080";
 
     private static final int MAX_CLICK_DURATION = 1000;
     private static final int MAX_CLICK_DISTANCE = 15;
@@ -48,32 +56,55 @@ public class view_map extends AppCompatActivity {
     private float pressedX;
     private float pressedY;
 
+    interface FetchConfigs{
+        @GET("/fetchConfigs")
+        Call<ConfigsData> getConfigs();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_map);
+        setContentView(R.layout.activity_map);
         Intent intent = getIntent();
         serverIp = intent.getStringExtra("serverIp");
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://" + serverIp + ":" + apiPort + "/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        FetchConfigs configs = retrofit.create(FetchConfigs.class);
+
+        configs.getConfigs().enqueue(new Callback<ConfigsData>() {
+            @Override
+            public void onResponse(Call<ConfigsData> call, Response<ConfigsData> response) {
+                mapboxMap.setCamera(
+                        new CameraOptions.Builder()
+                                .center(Point.fromLngLat(Double.parseDouble(response.body().longitude), Double.parseDouble(response.body().latitude)))
+                                .pitch(Double.parseDouble(response.body().pitch))
+                                .zoom(Double.parseDouble(response.body().zoom))
+                                .bearing(Double.parseDouble(response.body().bearing))
+                                .build()
+                );
+
+                CameraBoundsOptions options = new CameraBoundsOptions.Builder()
+                        .bounds(CoordinateBounds.singleton(Point.fromLngLat(Double.parseDouble(response.body().longitude), Double.parseDouble(response.body().latitude))))
+                        .maxPitch(60.0)
+                        .minZoom(Double.parseDouble(response.body().zoom)-1)
+                        .maxZoom(Double.parseDouble(response.body().zoom)+1)
+                        .build();
+                mapboxMap.setBounds(options);
+            }
+
+            @Override
+            public void onFailure(Call<ConfigsData> call, Throwable throwable) {
+                Toast.makeText(getApplicationContext(),"Cannot connect to server, please try again !!",Toast.LENGTH_SHORT).show();
+            }
+        });
 
         mapView = findViewById(R.id.mapView);
         mapboxMap = mapView.getMapboxMap();
 
-        mapboxMap.setCamera(
-                new CameraOptions.Builder()
-                        .center(Point.fromLngLat(15.013785520105046, 36.90453150945084))
-                        .pitch(0.0)
-                        .zoom(16.0)
-                        .bearing(-50.0)
-                        .build()
-        );
-
-        CameraBoundsOptions options = new CameraBoundsOptions.Builder()
-                .bounds(CoordinateBounds.singleton(Point.fromLngLat(15.013785520105046, 36.90453150945084)))
-                .maxPitch(60.0)
-                .minZoom(15.0)
-                .maxZoom(17.0)
-                .build();
-        mapboxMap.setBounds(options);
         mapboxMap.loadStyle(createStyle());
 
         addAnnotationToMap();
@@ -112,9 +143,9 @@ public class view_map extends AppCompatActivity {
     }
 
     private void openCameraPreview() {
-        camera_preview cameraPreview = new camera_preview(this);
+        CameraPreview cameraPreview = new CameraPreview(this);
         cameraPreview.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)); // Set the desired layout parameters
-        cameraPreview.init(serverIp, "8080", "8084");
+        cameraPreview.init(serverIp, apiPort, "8081");
         AnnotatedFeature annotatedFeature = new AnnotatedFeature(Point.fromLngLat(15.013785520105046, 36.90453150945084));
         ViewAnnotationOptions options = new ViewAnnotationOptions.Builder()
                 .annotatedFeature(annotatedFeature)
@@ -130,7 +161,6 @@ public class view_map extends AppCompatActivity {
 
     private void clickHandler() {
         mapView.setOnTouchListener(new View.OnTouchListener() {
-            @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getActionMasked()) {

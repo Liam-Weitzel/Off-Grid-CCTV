@@ -1,5 +1,6 @@
 package com.example.lamcam;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     private TextInputLayout serverIp;
     private CheckBox rememberIp;
     boolean isRemember;
+    public static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,12 +30,14 @@ public class MainActivity extends AppCompatActivity {
         if(isRemember) {
             serverIp.getEditText().setText(pref.getString("serverIp",""));
         }
+
+        context = getApplicationContext();
     }
 
     public void connectButtonClickHandler(View view) {
         SharedPreferences pref = getSharedPreferences("config", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
-        Intent intent = new Intent(this, view_map.class);
+        Intent intent = new Intent(this, MapActivity.class);
         intent.putExtra("serverIp", serverIp.getEditText().getText().toString());
         editor.putBoolean("remember", rememberIp.isChecked());
         if(rememberIp.isChecked()) editor.putString("serverIp", serverIp.getEditText().getText().toString());

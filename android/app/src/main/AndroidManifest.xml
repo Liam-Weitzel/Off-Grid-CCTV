@@ -17,7 +17,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".view_map"
+            android:name=".MapActivity"
             android:exported="true"
             android:label = "View Map"
             android:parentActivityName=".MainActivity">
@@ -27,14 +27,14 @@
                     ".MainActivity" />
         </activity>
         <activity
-            android:name=".view_camera"
+            android:name=".CameraActivity"
             android:exported="true"
             android:label = "View Camera"
-            android:parentActivityName=".view_map">
+            android:parentActivityName=".MapActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=
-                    ".view_map" />
+                    ".MapActivity" />
         </activity>
         <activity
             android:name=".MainActivity"
