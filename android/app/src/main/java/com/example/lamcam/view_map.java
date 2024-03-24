@@ -1,5 +1,6 @@
 package com.example.lamcam;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -7,6 +8,8 @@ import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.DrawableRes;
@@ -39,6 +42,12 @@ public class view_map extends AppCompatActivity {
     private MapboxMap mapboxMap;
     private String serverIp;
 
+    private static final int MAX_CLICK_DURATION = 1000;
+    private static final int MAX_CLICK_DISTANCE = 15;
+    private long pressStartTime;
+    private float pressedX;
+    private float pressedY;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +77,7 @@ public class view_map extends AppCompatActivity {
         mapboxMap.loadStyle(createStyle());
 
         addAnnotationToMap();
+        clickHandler();
     }
 
     private StyleContract.StyleExtension createStyle() {
@@ -95,25 +105,67 @@ public class view_map extends AppCompatActivity {
             pointAnnotationManager.create(pointAnnotationOptions);
 
             pointAnnotationManager.addClickListener(pointAnnotation -> {
-                camera_preview cameraPreview = new camera_preview(this);
-                cameraPreview.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)); // Set the desired layout parameters
-                cameraPreview.init(serverIp, "8080", "8084");
-                AnnotatedFeature annotatedFeature = new AnnotatedFeature(Point.fromLngLat(15.013785520105046, 36.90453150945084));
-                ViewAnnotationOptions options = new ViewAnnotationOptions.Builder()
-                        .annotatedFeature(annotatedFeature)
-                        .width(800.0)
-                        .height(800.0)
-                        .allowOverlap(true)
-                        .visible(true)
-                        .build();
-
-                // Assuming mapView is your MapView object
-                ViewAnnotationManager viewAnnotationManager = mapView.getViewAnnotationManager();
-                viewAnnotationManager.addViewAnnotation(cameraPreview, options);
-
+                openCameraPreview();
                 return false;
             });
         }
+    }
+
+    private void openCameraPreview() {
+        camera_preview cameraPreview = new camera_preview(this);
+        cameraPreview.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)); // Set the desired layout parameters
+        cameraPreview.init(serverIp, "8080", "8084");
+        AnnotatedFeature annotatedFeature = new AnnotatedFeature(Point.fromLngLat(15.013785520105046, 36.90453150945084));
+        ViewAnnotationOptions options = new ViewAnnotationOptions.Builder()
+                .annotatedFeature(annotatedFeature)
+                .width(800.0)
+                .height(800.0)
+                .allowOverlap(true)
+                .visible(true)
+                .build();
+
+        ViewAnnotationManager viewAnnotationManager = mapView.getViewAnnotationManager();
+        viewAnnotationManager.addViewAnnotation(cameraPreview, options);
+    }
+
+    private void clickHandler() {
+        mapView.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getActionMasked()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        pressStartTime = System.currentTimeMillis();
+                        pressedX = event.getX();
+                        pressedY = event.getY();
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP:
+                        long pressDuration = System.currentTimeMillis() - pressStartTime;
+                        if (pressDuration < MAX_CLICK_DURATION && distance(pressedX, pressedY, event.getX(), event.getY()) < MAX_CLICK_DISTANCE) {
+                            ViewAnnotationManager viewAnnotationManager = mapView.getViewAnnotationManager();
+                            if(!viewAnnotationManager.getAnnotations().isEmpty()) {
+                                viewAnnotationManager.removeAllViewAnnotations();
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                return false;
+            }
+        });
+    }
+
+    private float distance(float x1, float y1, float x2, float y2) {
+        float dx = x1 - x2;
+        float dy = y1 - y2;
+        float distanceInPx = (float) Math.sqrt(dx * dx + dy * dy);
+        return pxToDp(distanceInPx);
+    }
+
+    private float pxToDp(float px) {
+        return px / getResources().getDisplayMetrics().density;
     }
 
     private Bitmap bitmapFromDrawableRes(Context context, @DrawableRes int resourceId) {
@@ -138,5 +190,4 @@ public class view_map extends AppCompatActivity {
             return bitmap;
         }
     }
-
 }
