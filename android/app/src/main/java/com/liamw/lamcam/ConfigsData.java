@@ -1,4 +1,4 @@
-package com.example.lamcam;
+package com.liamw.lamcam;
 
 public class ConfigsData {
     private String zoom;

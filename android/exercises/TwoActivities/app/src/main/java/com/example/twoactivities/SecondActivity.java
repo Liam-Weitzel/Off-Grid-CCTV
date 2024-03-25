@@ -1,4 +1,4 @@
-package com.example.twoactivities;
+package com.liamw.twoactivities;
 
 import android.content.Intent;
 import android.os.Bundle;

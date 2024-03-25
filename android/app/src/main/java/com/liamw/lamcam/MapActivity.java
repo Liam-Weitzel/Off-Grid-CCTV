@@ -1,4 +1,4 @@
-package com.example.lamcam;
+package com.liamw.lamcam;
 
 import android.content.Context;
 import android.content.Intent;
@@ -127,9 +127,7 @@ public class MapActivity extends AppCompatActivity {
 
         mapView = findViewById(R.id.mapView);
         mapboxMap = mapView.getMapboxMap();
-
         mapboxMap.loadStyle(createStyle());
-
         clickHandler();
     }
 
@@ -172,7 +170,7 @@ public class MapActivity extends AppCompatActivity {
         ViewAnnotationOptions options = new ViewAnnotationOptions.Builder()
                 .annotatedFeature(annotatedFeature)
                 .width(Double.parseDouble(camera.getCamResolution()))
-                .height(Double.parseDouble(camera.getCamResolution())*0.75)m
+                .height(Double.parseDouble(camera.getCamResolution())*0.75)
                 .allowOverlap(true)
                 .visible(true)
                 .build();

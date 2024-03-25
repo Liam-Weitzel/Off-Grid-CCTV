@@ -1,4 +1,4 @@
-package com.example.implicitintents;
+package com.liamw.implicitintents;
 
 import android.content.Context;
 

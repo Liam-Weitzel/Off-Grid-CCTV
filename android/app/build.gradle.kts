@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.lamcam"
+    namespace = "com.liamw.lamcam"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.lamcam"
+        applicationId = "com.liamw.lamcam"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

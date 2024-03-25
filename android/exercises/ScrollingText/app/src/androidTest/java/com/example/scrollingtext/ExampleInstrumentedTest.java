@@ -1,4 +1,4 @@
-package com.example.scrollingtext;
+package com.liamw.scrollingtext;
 
 import android.content.Context;
 

@@ -1,4 +1,4 @@
-package com.example.implicitintents;
+package com.liamw.implicitintents;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ShareCompat;
