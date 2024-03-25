@@ -37,6 +37,8 @@ import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager;
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions;
 import com.mapbox.maps.viewannotation.ViewAnnotationManager;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -61,6 +63,11 @@ public class MapActivity extends AppCompatActivity {
         Call<ConfigsData> getConfigs();
     }
 
+    interface FetchCameras{
+        @GET("/fetchCameras")
+        Call<List<CameraData>> getCameras();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,25 +87,41 @@ public class MapActivity extends AppCompatActivity {
             public void onResponse(Call<ConfigsData> call, Response<ConfigsData> response) {
                 mapboxMap.setCamera(
                         new CameraOptions.Builder()
-                                .center(Point.fromLngLat(Double.parseDouble(response.body().longitude), Double.parseDouble(response.body().latitude)))
-                                .pitch(Double.parseDouble(response.body().pitch))
-                                .zoom(Double.parseDouble(response.body().zoom))
-                                .bearing(Double.parseDouble(response.body().bearing))
+                                .center(Point.fromLngLat(Double.parseDouble(response.body().getLongitude()), Double.parseDouble(response.body().getLatitude())))
+                                .pitch(Double.parseDouble(response.body().getPitch()))
+                                .zoom(Double.parseDouble(response.body().getZoom()))
+                                .bearing(Double.parseDouble(response.body().getBearing()))
                                 .build()
                 );
 
                 CameraBoundsOptions options = new CameraBoundsOptions.Builder()
-                        .bounds(CoordinateBounds.singleton(Point.fromLngLat(Double.parseDouble(response.body().longitude), Double.parseDouble(response.body().latitude))))
+                        .bounds(CoordinateBounds.singleton(Point.fromLngLat(Double.parseDouble(response.body().getLongitude()), Double.parseDouble(response.body().getLatitude()))))
                         .maxPitch(60.0)
-                        .minZoom(Double.parseDouble(response.body().zoom)-1)
-                        .maxZoom(Double.parseDouble(response.body().zoom)+1)
+                        .minZoom(Double.parseDouble(response.body().getZoom())-1)
+                        .maxZoom(Double.parseDouble(response.body().getZoom())+1)
                         .build();
                 mapboxMap.setBounds(options);
             }
 
             @Override
             public void onFailure(Call<ConfigsData> call, Throwable throwable) {
-                Toast.makeText(getApplicationContext(),"Cannot connect to server, please try again !!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"Cannot fetch configs from server!! Please try again",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        FetchCameras cameras = retrofit.create(FetchCameras.class);
+
+        cameras.getCameras().enqueue(new Callback<List<CameraData>>() {
+            @Override
+            public void onResponse(Call<List<CameraData>> call, Response<List<CameraData>> response) {
+                for(CameraData camera : response.body()){
+                    addAnnotationToMap(camera);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CameraData>> call, Throwable throwable) {
+                Toast.makeText(getApplicationContext(),"Cannot fetch cameras from server!! Please try again",Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -107,7 +130,6 @@ public class MapActivity extends AppCompatActivity {
 
         mapboxMap.loadStyle(createStyle());
 
-        addAnnotationToMap();
         clickHandler();
     }
 
@@ -125,32 +147,32 @@ public class MapActivity extends AppCompatActivity {
         return builder.build();
     }
 
-    private void addAnnotationToMap() {
+    private void addAnnotationToMap(CameraData camera) {
         Bitmap bitmap = bitmapFromDrawableRes(this, R.drawable.camera);
         if (bitmap != null) {
             AnnotationPlugin annotationApi = mapView.getPlugin(Plugin.MAPBOX_ANNOTATION_PLUGIN_ID);
             PointAnnotationManager pointAnnotationManager = (PointAnnotationManager) annotationApi.createAnnotationManager(AnnotationType.PointAnnotation, new AnnotationConfig());
             PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions()
-                    .withPoint(Point.fromLngLat(15.013785520105046, 36.90453150945084))
+                    .withPoint(Point.fromLngLat(Double.parseDouble(camera.getLon()), Double.parseDouble(camera.getLat())))
                     .withIconImage(bitmap);
             pointAnnotationManager.create(pointAnnotationOptions);
 
             pointAnnotationManager.addClickListener(pointAnnotation -> {
-                openCameraPreview();
+                openCameraPreview(camera);
                 return false;
             });
         }
     }
 
-    private void openCameraPreview() {
+    private void openCameraPreview(CameraData camera) {
         CameraPreview cameraPreview = new CameraPreview(this);
-        cameraPreview.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)); // Set the desired layout parameters
-        cameraPreview.init(serverIp, apiPort, "8081");
-        AnnotatedFeature annotatedFeature = new AnnotatedFeature(Point.fromLngLat(15.013785520105046, 36.90453150945084));
+        cameraPreview.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        cameraPreview.init(serverIp, apiPort, camera.getHttpPort());
+        AnnotatedFeature annotatedFeature = new AnnotatedFeature(Point.fromLngLat(Double.parseDouble(camera.getLon()), Double.parseDouble(camera.getLat())));
         ViewAnnotationOptions options = new ViewAnnotationOptions.Builder()
                 .annotatedFeature(annotatedFeature)
-                .width(800.0)
-                .height(800.0)
+                .width(Double.parseDouble(camera.getCamResolution()))
+                .height(Double.parseDouble(camera.getCamResolution())*0.75)m
                 .allowOverlap(true)
                 .visible(true)
                 .build();

@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const startStream = require('./startStream');
 const { execSync } = require('child_process');
-const db = require('better-sqlite3')('../sqlite/sqlite.db');
+const db = require('better-sqlite3')('./sqlite/sqlite.db');
 const path = require('path');
 
 const createCameraTable = db.prepare('CREATE TABLE IF NOT EXISTS camera( port INT(32) PRIMARY KEY NOT NULL, name VARCHAR(255) NOT NULL, path VARCHAR(255) NOT NULL, httpPort INT(32) NOT NULL, wsPort INT(32) NOT NULL, ffmpegPort INT(32) NOT NULL, lat VARCHAR(255), lon VARCHAR(255), camFps INT(32) NOT NULL, camResolution INT(32) NOT NULL, bv VARCHAR(255) NOT NULL, maxRate VARCHAR(255) NOT NULL, bufSize VARCHAR(255) NOT NULL)');

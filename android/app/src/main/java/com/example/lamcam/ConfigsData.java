@@ -1,11 +1,11 @@
 package com.example.lamcam;
 
 public class ConfigsData {
-    String zoom;
-    String latitude;
-    String longitude;
-    String bearing;
-    String pitch;
+    private String zoom;
+    private String latitude;
+    private String longitude;
+    private String bearing;
+    private String pitch;
 
     public String getZoom() {
         return zoom;
