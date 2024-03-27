@@ -7,15 +7,15 @@ import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.MotionEvent;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 
+import com.mapbox.android.gestures.MoveGestureDetector;
 import com.mapbox.geojson.Point;
 import com.mapbox.maps.AnnotatedFeature;
 import com.mapbox.maps.CameraBoundsOptions;
@@ -35,6 +35,10 @@ import com.mapbox.maps.plugin.annotation.AnnotationPlugin;
 import com.mapbox.maps.plugin.annotation.AnnotationType;
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager;
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions;
+import com.mapbox.maps.plugin.compass.CompassPlugin;
+import com.mapbox.maps.plugin.gestures.GesturesPlugin;
+import com.mapbox.maps.plugin.gestures.OnMoveListener;
+import com.mapbox.maps.plugin.scalebar.ScaleBarPlugin;
 import com.mapbox.maps.viewannotation.ViewAnnotationManager;
 
 import java.util.List;
@@ -51,12 +55,6 @@ public class MapActivity extends AppCompatActivity {
     private MapboxMap mapboxMap;
     private String serverIp;
     private static final String apiPort = "8080";
-
-    private static final int MAX_CLICK_DURATION = 1000;
-    private static final int MAX_CLICK_DISTANCE = 15;
-    private long pressStartTime;
-    private float pressedX;
-    private float pressedY;
 
     interface FetchConfigs{
         @GET("/fetchConfigs")
@@ -132,6 +130,11 @@ public class MapActivity extends AppCompatActivity {
     }
 
     private StyleContract.StyleExtension createStyle() {
+        CompassPlugin compassPlugin = mapView.getPlugin(Plugin.MAPBOX_COMPASS_PLUGIN_ID);
+        compassPlugin.setEnabled(false);
+        ScaleBarPlugin scaleBarPlugin = mapView.getPlugin(Plugin.MAPBOX_SCALEBAR_PLUGIN_ID);
+        scaleBarPlugin.setEnabled(false);
+
         StyleExtensionImpl.Builder builder = new StyleExtensionImpl.Builder(Style.SATELLITE);
 
         RasterDemSource rasterDemSource = new RasterDemSource(new RasterDemSource.Builder("TERRAIN_SOURCE").tileSize(514));
@@ -180,42 +183,61 @@ public class MapActivity extends AppCompatActivity {
     }
 
     private void clickHandler() {
-        mapView.setOnTouchListener(new View.OnTouchListener() {
+        GesturesPlugin gesturesPlugin = mapView.getPlugin(Plugin.MAPBOX_GESTURES_PLUGIN_ID);
+        gesturesPlugin.setRotateEnabled(false);
+        gesturesPlugin.setPitchEnabled(false);
+        gesturesPlugin.setRotateDecelerationEnabled(false);
+        gesturesPlugin.setSimultaneousRotateAndPinchToZoomEnabled(false);
+        gesturesPlugin.setIncreasePinchToZoomThresholdWhenRotating(false);
+        gesturesPlugin.getGesturesManager().getRotateGestureDetector().setEnabled(false);
+
+        gesturesPlugin.addOnMoveListener(new OnMoveListener() {
+            Double bearing;
+            Double pitch;
+            float pressedX;
+            float pressedY;
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getActionMasked()) {
-                    case MotionEvent.ACTION_DOWN: {
-                        pressStartTime = System.currentTimeMillis();
-                        pressedX = event.getX();
-                        pressedY = event.getY();
-                        break;
-                    }
-                    case MotionEvent.ACTION_UP:
-                        long pressDuration = System.currentTimeMillis() - pressStartTime;
-                        if (pressDuration < MAX_CLICK_DURATION && distance(pressedX, pressedY, event.getX(), event.getY()) < MAX_CLICK_DISTANCE) {
-                            ViewAnnotationManager viewAnnotationManager = mapView.getViewAnnotationManager();
-                            if(!viewAnnotationManager.getAnnotations().isEmpty()) {
-                                viewAnnotationManager.removeAllViewAnnotations();
-                            }
-                        }
-                        break;
-                    default:
-                        break;
-                }
+            public void onMoveBegin(@NonNull MoveGestureDetector moveGestureDetector) {
+                bearing = mapboxMap.getCameraState().getBearing();
+                pitch = mapboxMap.getCameraState().getPitch();
+                pressedX = moveGestureDetector.getLastDistanceX();
+                pressedY = moveGestureDetector.getLastDistanceY();
+            }
+
+            @Override
+            public boolean onMove(@NonNull MoveGestureDetector moveGestureDetector) {
+
+                bearing += (double) ((moveGestureDetector.getLastDistanceX()-pressedX)/11);
+                pitch += (double) ((moveGestureDetector.getLastDistanceY()-pressedY)/15);
+
+                if(pitch > 60.0) pitch = 60.0;
+                if(pitch < 0.0) pitch = 0.0;
+
+                mapboxMap.setCamera(
+                        new CameraOptions.Builder()
+                                .center(mapboxMap.getCameraState().getCenter())
+                                .pitch(pitch)
+                                .zoom(mapboxMap.getCameraState().getZoom())
+                                .bearing(bearing)
+                                .build()
+                );
+
                 return false;
             }
+
+            @Override
+            public void onMoveEnd(@NonNull MoveGestureDetector moveGestureDetector) {
+
+            }
         });
-    }
 
-    private float distance(float x1, float y1, float x2, float y2) {
-        float dx = x1 - x2;
-        float dy = y1 - y2;
-        float distanceInPx = (float) Math.sqrt(dx * dx + dy * dy);
-        return pxToDp(distanceInPx);
-    }
-
-    private float pxToDp(float px) {
-        return px / getResources().getDisplayMetrics().density;
+        gesturesPlugin.addOnMapClickListener(point -> {
+            ViewAnnotationManager viewAnnotationManager = mapView.getViewAnnotationManager();
+            if(!viewAnnotationManager.getAnnotations().isEmpty()) {
+                viewAnnotationManager.removeAllViewAnnotations();
+            }
+            return false;
+        });
     }
 
     private Bitmap bitmapFromDrawableRes(Context context, @DrawableRes int resourceId) {
