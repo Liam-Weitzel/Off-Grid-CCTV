@@ -1,0 +1,13 @@
+train: ./train/images
+val: ./valid/images
+test: ./test/images
+
+nc: 12
+names: ['bicycle', 'bus', 'car', 'cat', 'cow', 'dog', 'horse', 'moto', 'person', 'sheep', 'train', 'truck']
+
+roboflow:
+  workspace: test-p9qvs
+  project: security-detection-2heob
+  version: 2
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/test-p9qvs/security-detection-2heob/dataset/2

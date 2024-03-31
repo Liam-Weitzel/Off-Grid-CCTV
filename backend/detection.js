@@ -41,9 +41,7 @@ const configPath = path.resolve(
 
 if (!fs.existsSync(modelPath) || !fs.existsSync(configPath)) {
   console.log('could not find tensorflow object detection model');
-  console.log(
-    'download the model from: https://github.com/opencv/opencv/wiki/TensorFlow-Object-Detection-API#use-existing-config-file-for-your-model'
-  );
+  console.log('download the model from: https://github.com/opencv/opencv/wiki/TensorFlow-Object-Detection-API#use-existing-config-file-for-your-model');
   throw new Error('exiting: could not find tensorflow object detection model');
 }
 

@@ -1,0 +1,4 @@
+venv/
+runs/
+weights/
+yolov8n.pt
