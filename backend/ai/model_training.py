@@ -2,7 +2,7 @@ from ultralytics import YOLO
 
 # # Train
 # model = YOLO('yolov8n.pt')
-# model.train(data='data/duomo/data.yaml', epochs=200, imgsz=640)
+# model.train(data='data/hadji_dimitar_square/data.yaml', epochs=100, imgsz=320)
 
 # # Run trained model on images
 # model = YOLO('./saved_runs/doumo_200_epochs/weights/best.pt')#.load('')
@@ -25,10 +25,10 @@ from ultralytics import YOLO
 
 # Run model on live stream
 import cv2
-cap = cv2.VideoCapture("http://88.53.197.250/mjpg/video.mjpg")
+cap = cv2.VideoCapture("http://cam1.sliven.net/axis-cgi/mjpg/video.cgi")
+model = YOLO('./saved_runs/hadji_dimitar_square_100_epochs/weights/best.pt')
 while True:
     ret, frame = cap.read()
-    model = YOLO('./saved_runs/doumo_200_epochs/weights/best.pt')#.load('')
     detections = model(frame)[0]
     for data in detections.boxes.data.tolist():
         confidence = data[4]
