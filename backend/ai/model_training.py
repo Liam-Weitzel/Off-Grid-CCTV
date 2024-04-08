@@ -1,8 +1,8 @@
 from ultralytics import YOLO
 
-# Train
-model = YOLO('yolov8n.pt')
-model.train(data='data/kielce_university_of_technology/data.yaml', epochs=100, imgsz=320)
+# # Train
+# model = YOLO('yolov8n.pt')
+# model.train(data='data/kielce_university_of_technology/data.yaml', epochs=100, imgsz=320)
 
 # # Run trained model on images
 # model = YOLO('./saved_runs/doumo_200_epochs/weights/best.pt')#.load('')
@@ -23,20 +23,20 @@ model.train(data='data/kielce_university_of_technology/data.yaml', epochs=100, i
 # metrics.box.map75  # map75
 # metrics.box.maps   # a list contains map50-95 of each category
 
-# # Run model on live stream
-# import cv2
-# cap = cv2.VideoCapture("http://laura.paide.ee:8888/mjpg/video.mjpg")
-# model = YOLO('./saved_runs/keskvaljak_100/weights/best.pt')
-# while True:
-#     ret, frame = cap.read()
-#     detections = model(frame)[0]
-#     for data in detections.boxes.data.tolist():
-#         confidence = data[4]
-#         if float(confidence) < 0.2:
-#             continue
-#         xmin, ymin, xmax, ymax = int(data[0]), int(data[1]), int(data[2]), int(data[3])
-#         cv2.rectangle(frame, (xmin, ymin) , (xmax, ymax), (255, 0, 0), 2)
-#     cv2.imshow('video', frame)
-#     k = cv2.waitKey(30) & 0xff
-#     if k == 27: 
-#         break
+# Run model on live stream
+import cv2
+cap = cv2.VideoCapture("rtp://127.0.0.1:1234")
+model = YOLO('./saved_runs/kielce_university_of_technology_100/weights/best.pt')
+while True:
+    ret, frame = cap.read()
+    detections = model(frame)[0]
+    for data in detections.boxes.data.tolist():
+        confidence = data[4]
+        if float(confidence) < 0.01:
+            continue
+        xmin, ymin, xmax, ymax = int(data[0]), int(data[1]), int(data[2]), int(data[3])
+        cv2.rectangle(frame, (xmin, ymin) , (xmax, ymax), (255, 0, 0), 2)
+    cv2.imshow('video', frame)
+    k = cv2.waitKey(30) & 0xff
+    if k == 27: 
+        break
