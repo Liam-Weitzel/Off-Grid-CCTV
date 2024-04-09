@@ -2,7 +2,7 @@ from ultralytics import YOLO
 
 # # Train
 # model = YOLO('yolov8n.pt')
-# model.train(data='data/kielce_university_of_technology/data.yaml', epochs=100, imgsz=320)
+# model.train(data='data/kielce_university_of_technology/data.yaml', epochs=200, imgsz=320)
 
 # # Run trained model on images
 # model = YOLO('./saved_runs/doumo_200_epochs/weights/best.pt')#.load('')
