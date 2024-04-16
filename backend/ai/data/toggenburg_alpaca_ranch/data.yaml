@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 1
+names: ['sheep']
+
+roboflow:
+  workspace: test-p9qvs
+  project: cctv-toggenburg_alpaca_ranch
+  version: 1
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/test-p9qvs/cctv-toggenburg_alpaca_ranch/dataset/1
