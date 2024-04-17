@@ -2,12 +2,12 @@ train: ../train/images
 val: ../valid/images
 test: ../test/images
 
-nc: 1
-names: ['sheep']
+nc: 2
+names: ['car', 'sheep']
 
 roboflow:
   workspace: test-p9qvs
   project: cctv-toggenburg_alpaca_ranch
-  version: 1
+  version: 2
   license: CC BY 4.0
-  url: https://universe.roboflow.com/test-p9qvs/cctv-toggenburg_alpaca_ranch/dataset/1
+  url: https://universe.roboflow.com/test-p9qvs/cctv-toggenburg_alpaca_ranch/dataset/2
