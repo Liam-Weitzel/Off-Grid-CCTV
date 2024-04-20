@@ -1,0 +1,1 @@
+<annotation><folder>images</folder><filename>image20240403062206_jpg.png</filename><size><width>320</width><height>240</height><depth>3</depth></size><object><name>car</name><pose>Unspecified</pose><truncated>0</truncated><occluded>0</occluded><difficult>0</difficult><bndbox><xmin>148</xmin><ymin>144</ymin><xmax>170</xmax><ymax>171</ymax></bndbox></object></annotation>

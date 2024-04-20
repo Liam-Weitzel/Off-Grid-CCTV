@@ -40,3 +40,7 @@ model.train(data='data/toggenburg_alpaca_ranch/data.yaml', epochs=200, imgsz=480
 #     k = cv2.waitKey(30) & 0xff
 #     if k == 27: 
 #         break
+
+# # Tune hyperparameters
+# model = YOLO('yolov8n.pt')
+# model.tune(data='data/toggenburg_alpaca_ranch/data.yaml', epochs=30, iterations=300, optimizer='AdamW', plots=False, save=False, val=False)
