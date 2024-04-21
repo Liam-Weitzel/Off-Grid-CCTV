@@ -179,7 +179,7 @@ PRE_TRAINED_BOOL = True):
         model.train()
         progress_bar = tqdm(data_loader, desc="Training", leave=True)
         for batch in progress_bar:
-            images = batch["images"]
+            images = batch["images"].to(device)
             targets = [{k: v.to(device) for k, v in t.items()} for t in batch['targets']]
 
             loss_dict = model(images, targets)
