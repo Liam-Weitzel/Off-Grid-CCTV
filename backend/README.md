@@ -1,37 +1,33 @@
-# live-stream-object-detection
+# LamCam back-end
 
-Share your webcam stream with real-time object detection to the public by Node.js.
+Live sound event & object detection on multiple USB camera's streamed to the world using Node.js.
+
+## System design
+
+Picture here
 
 ## Technologies
 
-This project using the following technologies to go:
+Explain what every technology is used for
 
-- [opencv4nodejs](https://github.com/justadudewhohacks/opencv4nodejs): Use it to capture webcam frames and more power
-- [TensorFlow Object Detection](https://github.com/tensorflow/models/tree/master/research/object_detection): Use it to detect objects on a frame
-- [FFmpeg](http://ffmpeg.org/): Use it to compress frames and make the live streaming
-- [ws](https://github.com/websockets/ws): Use it to send stream to web browser
-- [JSMpeg](https://jsmpeg.com/): Use it to decode streaming from server for web browser
-- [ngrok](https://ngrok.com/): Use it to get public and secure URL for exposing the local web server
-- [express](https://expressjs.com/): Use it to make a web server
+- [opencv4nodejs](https://github.com/justadudewhohacks/opencv4nodejs)
+- [TensorFlow Object Detection](https://github.com/tensorflow/models/tree/master/research/object_detection)
+- [FFmpeg](http://ffmpeg.org/)
+- [ws](https://github.com/websockets/ws)
+- [JSMpeg](https://jsmpeg.com/)
+- [ngrok](https://ngrok.com/)
+- [express](https://expressjs.com/)
+- [cors](https://github.com/expressjs/cors)
+- [sqlite](https://github.com/sqlite/sqlite)
+- [v4l-utils](https://github.com/gjasny/v4l-utils)
 
 ## Requirements
 
-- A webcam, e.g. laptop-integrated webcam, USB webcam
-- [Node.js 8 or higher](https://nodejs.org/)
-- [OpenCV 3.3.1 or higher](https://opencv.org/)
-- [FFmpeg 3.3 or higher](https://www.ffmpeg.org/download.html)
+- A webcam, e.g. laptop-integrated webcam, USB webcam. Preferably multiple plugged in simultaneously
+- Docker
 
-## Installation
+## Development
 
-The below commands to install the project.
 
-1. `npm install`
-2. `node server.js`
+## API Endpoints
 
-## Running the demo
-
-- Make sure you are still in the `project_root` directory
-- To run the server: `node server.js` then you will get the `Ngrok HTTP URL` in terminal
-- To run the demo, open a browser and go to `Ngrok HTTP URL`
-
-The app should be up and running!
