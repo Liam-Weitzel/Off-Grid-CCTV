@@ -10,7 +10,7 @@ author:
 
 ## Abstract
 
-This paper presents a benchmark of various object detection model architectures on five new small datasets consisting of images from analog video streams with conditions of interference. We provide the observation that live object detection on analog video streams with conditions of interference is possible with commendable performance and accuracy. The model architectures tested are Yolov8, Faster-RCNN, Masked-RCNN, and Retinanet. From these Yolov8 performed the best in terms of inference speed, although Faster-RCNN showed the highest accuracy. The hyperparameters, amount of training, and whether the model was pre-trained where adjusted and tested against.
+The expansion of the modern trend to utilize object detection in real time digital CCTV footage to wireless analog CCTV systems still presents challenges due to the high levels of noise of analog video. In this paper we aim to present a benchmark of various object detection model architectures on five new small datasets consisting of images from analog video streams with conditions of interference. The model architectures tested are Yolov8, Faster-RCNN, Masked-RCNN, and Retinanet. We compared the models using different hyperparameters, amount of training, and with or without pre-training. From this comparison we found that Yolov8 performed the best in terms of inference time, although Faster-RCNN showed the highest accuracy. We provide the observation that live object detection on analog video streams with conditions of interference is possible with commendable performance and accuracy.
 
 ## Introduction
 
@@ -19,8 +19,6 @@ Modern wireless closed-circuit television systems (CCTV) generally use IP camera
 It is common practice to analyze the video streams of modern CCTV systems in real-time using object detection artificial intelligence models for security purposes. The present paper will explore how the performance of various object detection AI models can be optimized when trained on small amounts of data and applied to analog video streams in conditions of interference. Literature specifically covering object detection on analog video systems is non-existent. Regardless, the type of noise that analog video introduces is not unique, and literature regarding object detection on degraded and noisy video streams is plentiful. This is the gap in the current literature that the present paper aims to bridge.
 
 The research topic will be explored by training various object detection models on five different analog CCTV cameras. The data for each camera was gathered over the course of 24 hours with an interval of four and a half minutes. The hyperparameters, amount of training, and whether the model was pre-trained will be adjusted and compared using industry-standard evaluation metrics.
-
-\newpage
 
 ## Literature Review
 ### Latest developments in object detection
@@ -156,91 +154,119 @@ Similarly, using recall we can deduce how many objects were correctly labeled ou
 The F1 score is simply a harmonic mean of precision and recall, allowing us to combine precision and recall into a 'score'.
 $$ F1 = 2 * ((Precision + Recall) / (Precision * Recall)) $$
 
-Before analyzing the results, it is important to note that not all results are shown in the present paper's 'results' section. For a complete breakdown of the results see the supplementary data section. Regardless, a selection of representative results has been assembled and will be reviewed in the interest of brevity instead.
+Before analyzing the results, it is important to note that not all results are shown in the present paper. For a complete breakdown of the results see the supplementary data. A selection of representative results has been assembled and will be reviewed in the interest of brevity instead.
+
+\newpage
 
 ### Best performing final model comparison
 
-A comparison of the best models trained on the Doumo dataset.  
-
+A comparison of the best models trained on the Doumo dataset:  
 ![](./saved_runs/train34/F1_curve.png){width=50%}
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_150_-data-duomo-valid-images_f1_over_confidence.png){width=50%}  
-Figure 552. \hfill Figure 120.  
+a. \hfill b.  
 
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_150_-data-duomo-valid-images_f1_over_confidence.png){width=50%}
 ![](./saved_runs/retinanet_resnet50_fpn_True_150_-data-duomo-valid-images_f1_over_confidence.png){width=50%}  
-Figure 260. \hfill Figure 340.  
+c. \hfill d.  
 
-Figure 552 depicts the F1 over confidence graph for the pre-trained and hyperparameter-tuned yolov8n model trained on the Duomo dataset for 150 epochs. 
-Figure 120 depicts the F1 over confidence graph for the pre-trained Faster-RCNN model trained on the Duomo dataset for 150 epochs. 
-Figure 260 depicts the F1 over confidence graph for the pre-trained Masked-RCNN model trained on the Duomo dataset for 150 epochs. 
-Figure 340 depicts the F1 over confidence graph for the pre-trained Retinanet model trained on the Duomo dataset for 150 epochs. 
+\begin{center}
+Figure 1. F1 over confidence graph for the pre-trained and hyperparameter-tuned a) Yolov8n, b) Faster-RCNN, c) Masked-RCNN, and d) Retinanet models trained for 150 epochs on the Duomo dataset.
+\end{center}
 
-A comparison of the best models trained on the Hadji Dimitar Square dataset.
+Figure 1 indicates that the models trained using the Masked-RCNN (c) and Faster-RCNN (b) architectures undoubtedly outpreformed the models trained using the Retinanet (d) and Yolov8n (a) architectures on the Duomo dataset.  
 
+\newpage
+
+A comparison of the best models trained on the Hadji Dimitar Square dataset:  
 ![](./saved_runs/train37/F1_curve.png){width=50%}
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_150_-data-hadji_dimitar_square-valid-images_f1_over_confidence.png){width=50%}  
-Figure 570. \hfill Figure 124.
+a. \hfill b.
 
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_150_-data-hadji_dimitar_square-valid-images_f1_over_confidence.png){width=50%}
 ![](./saved_runs/retinanet_resnet50_fpn_True_150_-data-hadji_dimitar_square-valid-images_f1_over_confidence.png){width=50%}  
-Figure 264. \hfill Figure 344.  
+c. \hfill d.  
 
-Figure 570 depicts the F1 over confidence graph for the pre-trained and hyperparameter-tuned yolov8n model trained on the Hadji Dimitar Square dataset for 150 epochs. 
-Figure 124 depicts the F1 over confidence graph for the pre-trained Faster-RCNN model trained on the Hadji Dimitar Square dataset for 150 epochs. 
-Figure 264 depicts the F1 over confidence graph for the pre-trained Masked-RCNN model trained on the Hadji Dimitar Square dataset for 150 epochs. 
-Figure 344 depicts the F1 over confidence graph for the pre-trained Retinanet model trained on the Hadji Dimitar Square dataset for 150 epochs. 
+\begin{center}
+Figure 2. F1 over confidence graph for the pre-trained and hyperparameter-tuned a) Yolov8n, b) Faster-RCNN, c) Masked-RCNN, and d) Retinanet models trained for 150 epochs on the Hadji Dimitar Square dataset.
+\end{center}
+
+Figure 2 further supports the observations made from figure 1. Models trained using the Masked-RCNN (c) and Faster-RCNN (b) architectures again clearly outpreformed the models trained using the Retinanet (d) and Yolov8n (a) architectures on the Hadji Dimitar Square dataset.  
+
+\newpage
 
 ### Effect of hyper-parameter tuning 
 
-A comparison of hyperparameter tuned model against a non-hyperparameter tuned model trained on the Hadji Dimitar Square dataset.
-
+A comparison of a hyperparameter tuned model against a non-hyperparameter tuned model trained on the Hadji Dimitar Square dataset:  
 ![](./saved_runs/train37/F1_curve.png){width=50%}
 ![](./saved_runs/train6/F1_curve.png){width=50%}  
-Figure 570. \hfill Figure 390.  
+a. \hfill b.  
 
-Figure 570 depicts the F1 over confidence graph for the pre-trained and hyperparameter-tuned yolov8n model trained on the Hadji Dimitar Square dataset for 150 epochs. Instead, Figure 390 depicts the F1 over confidence graph for the pre-trained but not hyperparameter-tuned yolov8n model trained on the Hadji Dimitar Square dataset for 150 epochs.
+\begin{center}
+Figure 3. F1 over confidence graph for the a) hyperparameter tuned, and b) non-hyperparmeter-tuned Yolov8n model trained for 150 epochs on the Hadji Dimitar Square dataset.
+\end{center}
 
-A comparison of hyperparameter tuned model against a non-hyperparameter tuned model trained on the Keskväljak dataset.
+Figure 3 indicates that the hyperparameter tuned model expressed a slight performance increase over its non-hyperparameter tuned counterpart.
 
+A comparison of a hyperparameter tuned model against a non-hyperparameter tuned model trained on the Keskväljak dataset:  
 ![](./saved_runs/train40/F1_curve.png){width=50%}
 ![](./saved_runs/train9/F1_curve.png){width=50%}  
-Figure 588. \hfill Figure 408.  
+a. \hfill b.  
 
-Figure 588 depicts the F1 over confidence graph for the pre-trained and hyperparameter-tuned yolov8n model trained on the Keskväljak dataset for 150 epochs. Instead, Figure 408 depicts the F1 over confidence graph for the pre-trained but not hyperparameter-tuned yolov8n model trained on the Keskväljak dataset for 150 epochs.
+\begin{center}
+Figure 4. F1 over confidence graph for the a) hyperparameter tuned, and b) non-hyperparmeter-tuned Yolov8n model trained for 150 epochs on the Keskväljak dataset.
+\end{center}
+
+Figure 4, contrarily to figure 3 indicates that the hyperparameter tuned model expressed a slight performance decrease over its non-hyperparameter tuned counterpart. Through further analysis of the supplementary data, the conclusion is derived that the effect of hyperparameter tuning on a models performance on the tested datasets is unpredictable.
+
+\newpage
 
 ### Effect of pre-training
 
-Comparing the peformance of a Yolov8n pre-trained model against a Yolov8n non-pre-trained model that were both trained on the Doumo dataset for 150 epochs.
-
+Comparing the peformance of a Yolov8n pre-trained model against a Yolov8n non-pre-trained model that were both trained on the Doumo dataset for 150 epochs:  
 ![](./saved_runs/train19/F1_curve.png){width=50%}
 ![](./saved_runs/train3/F1_curve.png){width=50%}  
-Figure 462. \hfill Figure 372.  
+a. \hfill b.  
 
-Figure 372 depicts the F1 over confidence graph for the pre-trained yolov8n model trained on the Doumo dataset for 150 epochs. Instead, Figure 462 depicts the F1 over confidence graph for the non-pre-trained yolov8n model trained on the Doumo dataset for 150 epochs.
+\begin{center}
+Figure 5. F1 over confidence graph for the a) pre-trained, and b) non pre-trained Yolov8n model trained for 150 epochs on the Doumo dataset.
+\end{center}
 
-Comparing the peformance of a Faster-RCNN pre-trained model against a Faster-RCNN non-pre-trained model that were both trained on the Keskväljak dataset for 150 epochs.
+A negligable effect of pre-training can be observed from figure 5. The pre-trained model peformed slightly better than the non pre-trained model on the Duomo dataset.
 
+Comparing the peformance of a Faster-RCNN pre-trained model against a Faster-RCNN non pre-trained model that were both trained on the Keskväljak dataset for 150 epochs:  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_150_-data-keskvaljak-valid-images_f1_over_confidence.png){width=50%}
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_150_-data-keskvaljak-valid-images_f1_over_confidence.png){width=50%}  
-Figure 48. \hfill Figure 128.  
+a. \hfill b.  
 
-Figure 128 depicts the f1 over confidence graph for the pre-trained Faster-RCNN model trained on the Keskväljak dataset for 150 epochs. Instead, figure 48 depicts the f1 over confidence graph for the non-pre-trained Faster-RCNN model trained on the Keskväljak dataset for 150 epochs.
+\begin{center}
+Figure 6. F1 over confidence graph for the a) pre-trained, and b) non pre-trained Faster-RCNN model trained for 150 epochs on the Keskväljak dataset.
+\end{center}
 
-Comparing the peformance of a Yolov8n pre-trained model against a Yolov8n non-pre-trained model that were both trained on the Keskväljak dataset for 150 epochs.
+Similarly to figure 5, figure 6 indicates that models trained on the Keskväljak dataset express a negligable increase in performance when pre-trained.
 
+Comparing the peformance of a Yolov8n pre-trained model against a Yolov8n non-pre-trained model that were both trained on the Keskväljak dataset for 150 epochs:  
 ![](./saved_runs/train25/F1_curve.png){width=50%}
 ![](./saved_runs/train9/F1_curve.png){width=50%}  
-Figure 498. \hfill Figure 408.  
+a. \hfill b.  
 
-Figure 408 depicts the f1 over confidence graph for the pre-trained yolov8n model trained on the Keskväljak dataset for 150 epochs. Instead, figure 498 depicts the f1 over confidence graph for the non-pre-trained yolov8n model trained on the Keskväljak dataset for 150 epochs.
+\begin{center}
+Figure 7. F1 over confidence graph for the a) pre-trained, and b) non pre-trained Yolov8n model trained for 150 epochs on the Keskväljak dataset.
+\end{center}
 
-Comparing the peformance of a Masked-RCNN pre-trained model against a Masked-RCNN non-pre-trained model that were both trained on the Keskväljak dataset for 150 epochs.
+A very significant increase in performance is observed in figure 7, notably on the same dataset as figure 6, Keskväljak. Figure 6, and figure 7 only differ in the model architecture used, and a significant change was observed. This indicates that the effect of pre-training fluctuates dramatically based on the model architecture.
 
+Comparing the peformance of a Masked-RCNN pre-trained model against a Masked-RCNN non-pre-trained model that were both trained on the Keskväljak dataset for 150 epochs:  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_150_-data-keskvaljak-valid-images_f1_over_confidence.png){width=50%}
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_150_-data-keskvaljak-valid-images_f1_over_confidence.png){width=50%}  
-Figure 188. \hfill Figure 268.  
+a. \hfill b.  
 
-Figure 268 depicts the f1 over confidence graph for the pre-trained Masked-RCNN model trained on the Keskväljak dataset for 150 epochs. Instead, figure 188 depicts the f1 over confidence graph for the non-pre-trained Masked-RCNN model trained on the Keskväljak dataset for 150 epochs.
+\begin{center}
+Figure 8. F1 over confidence graph for the a) pre-trained, and b) non pre-trained Masked-RCNN model trained for 150 epochs on the Keskväljak dataset.
+\end{center}
+
+Figure 8 exhibits the same characteristics as figure 7, further supporting the observations made from figure 6 and 7. Again, only the model architecture used during training was varied between figure 6, 7, and 8.
+
+\newpage
 
 ### Effect of training on specialized data
 
@@ -250,13 +276,17 @@ A comparison of the effectiveness of training on data similar to the evaluation 
 ![](./saved_runs/train/F1_curve.png){width=25%}
 ![](./saved_runs/train2/F1_curve.png){width=25%}
 ![](./saved_runs/train3/F1_curve.png){width=25%}  
-Figure 720. \hfill Figure 360. \hfill Figure 366. \hfill Figure 372.  
+a. \hfill b. \hfill c. \hfill d.  
 
-Figure 720 depicts the F1 over confidence graph for the pre-trained Yolov8n model trained on the Duomo dataset for 0 epochs. The second figure, 360. depicts the F1 over confidence graph for the pre-trained Yolov8n model trained on the Duomo dataset for 50 epochs. The third figure, 366. depicts the F1 over confidence graph for the pre-trained Yolov8n model trained on the Duomo dataset for 100 epochs. Lastly, the fourth figure, 372. depicts the F1 over confidence graph for the pre-trained Yolov8n model trained on the Duomo dataset for 150 epochs.
+\begin{center}
+Figure 9. F1 over confidence graph for the pre-trained Yolov8n model trained for a) 0, b) 50, c) 100, d) 150 epochs on the Duomo dataset.
+\end{center}
+
+From figure 9 and further analysis of the supplementary data, it is clear that training increases performance significantly until reaching 100 epochs at which point peformance stagnates. This was observed on all datasets and all model architectures.
 
 ## Discussion
 
-Suprisingly, when trained for 150 epochs, the model architectures: Masked-RCNN, and Faster-RCNN consistently outperformed Yolov8n eventhough Yolov8n was the only model that was hyperparameter tuned for 300 iterations using the AdamW optimization algorithm. Furthermore, both the Masked-RCNN and Faster-RCNN use a Resnet50 backend. This backend is considerably outdated compared to Yolov8 which was released in 2023. Nonetheless, it's important to mention that Yolov8n has a considerably faster inference time than Masked-RCNN and Faster-RCNN and is able to keep up with a 3 fps live stream when Masked-RCNN and Faster-RCNN are only able to infer one frame every two seconds.
+Suprisingly, when trained for 150 epochs, the model architectures: Masked-RCNN, and Faster-RCNN consistently outperformed Yolov8n eventhough Yolov8n was the only model that was hyperparameter tuned for 300 iterations using the AdamW optimization algorithm. Furthermore, both the Masked-RCNN and Faster-RCNN use a Resnet50 backend. This backend is considerably outdated compared to Yolov8 which was released in 2023. Nonetheless, it's important to mention that Yolov8n has a considerably faster inference time than Masked-RCNN and Faster-RCNN and is able to keep up with a 3 fps live stream when Masked-RCNN and Faster-RCNN are only able to infer one frame every two seconds on equivalent hardware.
 
 The effect of hyper parameter tuning on Yolov8 across all datasets did not give any conclusive results. Depending on the dataset, the accuracy increased or decreased. There was no generalizable result observed.
 
@@ -372,1454 +402,1389 @@ Zong, Z., Song, G. and Liu, Y. (2022) “DETRs with Collaborative Hybrid Assignm
 
 ## Supplementary data
 
-Figure 1. f1_over_confidence, fasterrcnn, pre-trained=False, epochs=50, data=duomo  
+Figure s1. f1_over_confidence, fasterrcnn, pre-trained=False, epochs=50, data=duomo  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_50_-data-duomo-valid-images_f1_over_confidence.png)  
-Figure 2. precision_over_confidence, fasterrcnn, pre-trained=False, epochs=50, data=duomo  
+Figure s2. precision_over_confidence, fasterrcnn, pre-trained=False, epochs=50, data=duomo  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_50_-data-duomo-valid-images_precision_over_confidence.png)  
-Figure 3. precision_over_recall, fasterrcnn, pre-trained=False, epochs=50, data=duomo  
+Figure s3. precision_over_recall, fasterrcnn, pre-trained=False, epochs=50, data=duomo  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_50_-data-duomo-valid-images_precision_over_recall.png)  
-Figure 4. recall_over_confidence, fasterrcnn, pre-trained=False, epochs=50, data=duomo  
+Figure s4. recall_over_confidence, fasterrcnn, pre-trained=False, epochs=50, data=duomo  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_50_-data-duomo-valid-images_recall_over_confidence.png)  
-Figure 5. f1_over_confidence, fasterrcnn, pre-trained=False, epochs=50, data=hadji_dimitar_square  
+Figure s5. f1_over_confidence, fasterrcnn, pre-trained=False, epochs=50, data=hadji_dimitar_square  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_50_-data-hadji_dimitar_square-valid-images_f1_over_confidence.png)  
-Figure 6. precision_over_confidence, fasterrcnn, pre-trained=False, epochs=50, data=hadji_dimitar_square  
+Figure s6. precision_over_confidence, fasterrcnn, pre-trained=False, epochs=50, data=hadji_dimitar_square  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_50_-data-hadji_dimitar_square-valid-images_precision_over_confidence.png)  
-Figure 7. precision_over_recall, fasterrcnn, pre-trained=False, epochs=50, data=hadji_dimitar_square  
+Figure s7. precision_over_recall, fasterrcnn, pre-trained=False, epochs=50, data=hadji_dimitar_square  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_50_-data-hadji_dimitar_square-valid-images_precision_over_recall.png)  
-Figure 8. recall_over_confidence, fasterrcnn, pre-trained=False, epochs=50, data=hadji_dimitar_square  
+Figure s8. recall_over_confidence, fasterrcnn, pre-trained=False, epochs=50, data=hadji_dimitar_square  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_50_-data-hadji_dimitar_square-valid-images_recall_over_confidence.png)  
-Figure 9. f1_over_confidence, fasterrcnn, pre-trained=False, epochs=50, data=keskvaljak  
+Figure s9. f1_over_confidence, fasterrcnn, pre-trained=False, epochs=50, data=keskvaljak  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_50_-data-keskvaljak-valid-images_f1_over_confidence.png)  
-Figure 10. precision_over_confidence, fasterrcnn, pre-trained=False, epochs=50, data=keskvaljak  
+Figure s10. precision_over_confidence, fasterrcnn, pre-trained=False, epochs=50, data=keskvaljak  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_50_-data-keskvaljak-valid-images_precision_over_confidence.png)  
-Figure 11. precision_over_recall, fasterrcnn, pre-trained=False, epochs=50, data=keskvaljak  
+Figure s11. precision_over_recall, fasterrcnn, pre-trained=False, epochs=50, data=keskvaljak  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_50_-data-keskvaljak-valid-images_precision_over_recall.png)  
-Figure 12. recall_over_confidence, fasterrcnn, pre-trained=False, epochs=50, data=keskvaljak  
+Figure s12. recall_over_confidence, fasterrcnn, pre-trained=False, epochs=50, data=keskvaljak  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_50_-data-keskvaljak-valid-images_recall_over_confidence.png)  
-Figure 13. f1_over_confidence, fasterrcnn, pre-trained=False, epochs=50, data=kielce_university_of_technology  
+Figure s13. f1_over_confidence, fasterrcnn, pre-trained=False, epochs=50, data=kielce_university_of_technology  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_50_-data-kielce_university_of_technology-valid-images_f1_over_confidence.png)  
-Figure 14. precision_over_confidence, fasterrcnn, pre-trained=False, epochs=50, data=kielce_university_of_technology  
+Figure s14. precision_over_confidence, fasterrcnn, pre-trained=False, epochs=50, data=kielce_university_of_technology  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_50_-data-kielce_university_of_technology-valid-images_precision_over_confidence.png)  
-Figure 15. precision_over_recall, fasterrcnn, pre-trained=False, epochs=50, data=kielce_university_of_technology  
+Figure s15. precision_over_recall, fasterrcnn, pre-trained=False, epochs=50, data=kielce_university_of_technology  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_50_-data-kielce_university_of_technology-valid-images_precision_over_recall.png)  
-Figure 16. recall_over_confidence, fasterrcnn, pre-trained=False, epochs=50, data=kielce_university_of_technology  
+Figure s16. recall_over_confidence, fasterrcnn, pre-trained=False, epochs=50, data=kielce_university_of_technology  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_50_-data-kielce_university_of_technology-valid-images_recall_over_confidence.png)  
-Figure 17. f1_over_confidence, fasterrcnn, pre-trained=False, epochs=50, data=toggenburg_alpaca_ranch  
+Figure s17. f1_over_confidence, fasterrcnn, pre-trained=False, epochs=50, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_50_-data-toggenburg_alpaca_ranch-valid-images_f1_over_confidence.png)  
-Figure 18. precision_over_confidence, fasterrcnn, pre-trained=False, epochs=50, data=toggenburg_alpaca_ranch  
+Figure s18. precision_over_confidence, fasterrcnn, pre-trained=False, epochs=50, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_50_-data-toggenburg_alpaca_ranch-valid-images_precision_over_confidence.png)  
-Figure 19. precision_over_recall, fasterrcnn, pre-trained=False, epochs=50, data=toggenburg_alpaca_ranch  
+Figure s19. precision_over_recall, fasterrcnn, pre-trained=False, epochs=50, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_50_-data-toggenburg_alpaca_ranch-valid-images_precision_over_recall.png)  
-Figure 20. recall_over_confidence, fasterrcnn, pre-trained=False, epochs=50, data=toggenburg_alpaca_ranch  
+Figure s20. recall_over_confidence, fasterrcnn, pre-trained=False, epochs=50, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_50_-data-toggenburg_alpaca_ranch-valid-images_recall_over_confidence.png)  
-Figure 21. f1_over_confidence, fasterrcnn, pre-trained=False, epochs=100, data=duomo  
+Figure s21. f1_over_confidence, fasterrcnn, pre-trained=False, epochs=100, data=duomo  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_100_-data-duomo-valid-images_f1_over_confidence.png)  
-Figure 22. precision_over_confidence, fasterrcnn, pre-trained=False, epochs=100, data=duomo  
+Figure s22. precision_over_confidence, fasterrcnn, pre-trained=False, epochs=100, data=duomo  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_100_-data-duomo-valid-images_precision_over_confidence.png)  
-Figure 23. recall_over_confidence, fasterrcnn, pre-trained=False, epochs=100, data=duomo  
+Figure s23. recall_over_confidence, fasterrcnn, pre-trained=False, epochs=100, data=duomo  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_100_-data-duomo-valid-images_recall_over_confidence.png)  
-Figure 24. f1_over_confidence, fasterrcnn, pre-trained=False, epochs=100, data=hadji_dimitar_square  
+Figure s24. f1_over_confidence, fasterrcnn, pre-trained=False, epochs=100, data=hadji_dimitar_square  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_100_-data-hadji_dimitar_square-valid-images_f1_over_confidence.png)  
-Figure 25. precision_over_confidence, fasterrcnn, pre-trained=False, epochs=100, data=hadji_dimitar_square  
+Figure s25. precision_over_confidence, fasterrcnn, pre-trained=False, epochs=100, data=hadji_dimitar_square  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_100_-data-hadji_dimitar_square-valid-images_precision_over_confidence.png)  
-Figure 26. precision_over_recall, fasterrcnn, pre-trained=False, epochs=100, data=hadji_dimitar_square  
+Figure s26. precision_over_recall, fasterrcnn, pre-trained=False, epochs=100, data=hadji_dimitar_square  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_100_-data-hadji_dimitar_square-valid-images_precision_over_recall.png)  
-Figure 27. recall_over_confidence, fasterrcnn, pre-trained=False, epochs=100, data=hadji_dimitar_square  
+Figure s27. recall_over_confidence, fasterrcnn, pre-trained=False, epochs=100, data=hadji_dimitar_square  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_100_-data-hadji_dimitar_square-valid-images_recall_over_confidence.png)  
-Figure 28. f1_over_confidence, fasterrcnn, pre-trained=False, epochs=100, data=keskvaljak  
+Figure s28. f1_over_confidence, fasterrcnn, pre-trained=False, epochs=100, data=keskvaljak  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_100_-data-keskvaljak-valid-images_f1_over_confidence.png)  
-Figure 29. precision_over_confidence, fasterrcnn, pre-trained=False, epochs=100, data=keskvaljak  
+Figure s29. precision_over_confidence, fasterrcnn, pre-trained=False, epochs=100, data=keskvaljak  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_100_-data-keskvaljak-valid-images_precision_over_confidence.png)  
-Figure 30. precision_over_recall, fasterrcnn, pre-trained=False, epochs=100, data=keskvaljak  
+Figure s30. precision_over_recall, fasterrcnn, pre-trained=False, epochs=100, data=keskvaljak  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_100_-data-keskvaljak-valid-images_precision_over_recall.png)  
-Figure 31. recall_over_confidence, fasterrcnn, pre-trained=False, epochs=100, data=keskvaljak  
+Figure s31. recall_over_confidence, fasterrcnn, pre-trained=False, epochs=100, data=keskvaljak  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_100_-data-keskvaljak-valid-images_recall_over_confidence.png)  
-Figure 32. f1_over_confidence, fasterrcnn, pre-trained=False, epochs=100, data=kielce_university_of_technology  
+Figure s32. f1_over_confidence, fasterrcnn, pre-trained=False, epochs=100, data=kielce_university_of_technology  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_100_-data-kielce_university_of_technology-valid-images_f1_over_confidence.png)  
-Figure 33. precision_over_confidence, fasterrcnn, pre-trained=False, epochs=100, data=kielce_university_of_technology  
+Figure s33. precision_over_confidence, fasterrcnn, pre-trained=False, epochs=100, data=kielce_university_of_technology  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_100_-data-kielce_university_of_technology-valid-images_precision_over_confidence.png)  
-Figure 34. precision_over_recall, fasterrcnn, pre-trained=False, epochs=100, data=kielce_university_of_technology  
+Figure s34. precision_over_recall, fasterrcnn, pre-trained=False, epochs=100, data=kielce_university_of_technology  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_100_-data-kielce_university_of_technology-valid-images_precision_over_recall.png)  
-Figure 35. recall_over_confidence, fasterrcnn, pre-trained=False, epochs=100, data=kielce_university_of_technology  
+Figure s35. recall_over_confidence, fasterrcnn, pre-trained=False, epochs=100, data=kielce_university_of_technology  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_100_-data-kielce_university_of_technology-valid-images_recall_over_confidence.png)  
-Figure 36. f1_over_confidence, fasterrcnn, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch  
+Figure s36. f1_over_confidence, fasterrcnn, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_100_-data-toggenburg_alpaca_ranch-valid-images_f1_over_confidence.png)  
-Figure 37. precision_over_confidence, fasterrcnn, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch  
+Figure s37. precision_over_confidence, fasterrcnn, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_100_-data-toggenburg_alpaca_ranch-valid-images_precision_over_confidence.png)  
-Figure 38. precision_over_recall, fasterrcnn, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch  
+Figure s38. precision_over_recall, fasterrcnn, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_100_-data-toggenburg_alpaca_ranch-valid-images_precision_over_recall.png)  
-Figure 39. recall_over_confidence, fasterrcnn, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch  
+Figure s39. recall_over_confidence, fasterrcnn, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_100_-data-toggenburg_alpaca_ranch-valid-images_recall_over_confidence.png)  
-Figure 40. f1_over_confidence, fasterrcnn, pre-trained=False, epochs=150, data=duomo  
+Figure s40. f1_over_confidence, fasterrcnn, pre-trained=False, epochs=150, data=duomo  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_150_-data-duomo-valid-images_f1_over_confidence.png)  
-Figure 41. precision_over_confidence, fasterrcnn, pre-trained=False, epochs=150, data=duomo  
+Figure s41. precision_over_confidence, fasterrcnn, pre-trained=False, epochs=150, data=duomo  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_150_-data-duomo-valid-images_precision_over_confidence.png)  
-Figure 42. precision_over_recall, fasterrcnn, pre-trained=False, epochs=150, data=duomo  
+Figure s42. precision_over_recall, fasterrcnn, pre-trained=False, epochs=150, data=duomo  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_150_-data-duomo-valid-images_precision_over_recall.png)  
-Figure 43. recall_over_confidence, fasterrcnn, pre-trained=False, epochs=150, data=duomo  
+Figure s43. recall_over_confidence, fasterrcnn, pre-trained=False, epochs=150, data=duomo  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_150_-data-duomo-valid-images_recall_over_confidence.png)  
-Figure 44. f1_over_confidence, fasterrcnn, pre-trained=False, epochs=150, data=hadji_dimitar_square  
+Figure s44. f1_over_confidence, fasterrcnn, pre-trained=False, epochs=150, data=hadji_dimitar_square  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_150_-data-hadji_dimitar_square-valid-images_f1_over_confidence.png)  
-Figure 45. precision_over_confidence, fasterrcnn, pre-trained=False, epochs=150, data=hadji_dimitar_square  
+Figure s45. precision_over_confidence, fasterrcnn, pre-trained=False, epochs=150, data=hadji_dimitar_square  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_150_-data-hadji_dimitar_square-valid-images_precision_over_confidence.png)  
-Figure 46. precision_over_recall, fasterrcnn, pre-trained=False, epochs=150, data=hadji_dimitar_square  
+Figure s46. precision_over_recall, fasterrcnn, pre-trained=False, epochs=150, data=hadji_dimitar_square  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_150_-data-hadji_dimitar_square-valid-images_precision_over_recall.png)  
-Figure 47. recall_over_confidence, fasterrcnn, pre-trained=False, epochs=150, data=hadji_dimitar_square  
+Figure s47. recall_over_confidence, fasterrcnn, pre-trained=False, epochs=150, data=hadji_dimitar_square  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_150_-data-hadji_dimitar_square-valid-images_recall_over_confidence.png)  
-Figure 48. f1_over_confidence, fasterrcnn, pre-trained=False, epochs=150, data=keskvaljak  
+Figure s48. f1_over_confidence, fasterrcnn, pre-trained=False, epochs=150, data=keskvaljak  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_150_-data-keskvaljak-valid-images_f1_over_confidence.png)  
-Figure 49. precision_over_confidence, fasterrcnn, pre-trained=False, epochs=150, data=keskvaljak  
+Figure s49. precision_over_confidence, fasterrcnn, pre-trained=False, epochs=150, data=keskvaljak  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_150_-data-keskvaljak-valid-images_precision_over_confidence.png)  
-Figure 50. precision_over_recall, fasterrcnn, pre-trained=False, epochs=150, data=keskvaljak  
+Figure s50. precision_over_recall, fasterrcnn, pre-trained=False, epochs=150, data=keskvaljak  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_150_-data-keskvaljak-valid-images_precision_over_recall.png)  
-Figure 51. recall_over_confidence, fasterrcnn, pre-trained=False, epochs=150, data=keskvaljak  
+Figure s51. recall_over_confidence, fasterrcnn, pre-trained=False, epochs=150, data=keskvaljak  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_150_-data-keskvaljak-valid-images_recall_over_confidence.png)  
-Figure 52. f1_over_confidence, fasterrcnn, pre-trained=False, epochs=150, data=kielce_university_of_technology  
+Figure s52. f1_over_confidence, fasterrcnn, pre-trained=False, epochs=150, data=kielce_university_of_technology  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_150_-data-kielce_university_of_technology-valid-images_f1_over_confidence.png)  
-Figure 53. precision_over_confidence, fasterrcnn, pre-trained=False, epochs=150, data=kielce_university_of_technology  
+Figure s53. precision_over_confidence, fasterrcnn, pre-trained=False, epochs=150, data=kielce_university_of_technology  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_150_-data-kielce_university_of_technology-valid-images_precision_over_confidence.png)  
-Figure 54. precision_over_recall, fasterrcnn, pre-trained=False, epochs=150, data=kielce_university_of_technology  
+Figure s54. precision_over_recall, fasterrcnn, pre-trained=False, epochs=150, data=kielce_university_of_technology  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_150_-data-kielce_university_of_technology-valid-images_precision_over_recall.png)  
-Figure 55. recall_over_confidence, fasterrcnn, pre-trained=False, epochs=150, data=kielce_university_of_technology  
+Figure s55. recall_over_confidence, fasterrcnn, pre-trained=False, epochs=150, data=kielce_university_of_technology  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_150_-data-kielce_university_of_technology-valid-images_recall_over_confidence.png)  
-Figure 56. over_confidence, fasterrcnn, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch  
+Figure s56. over_confidence, fasterrcnn, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_150_-data-toggenburg_alpaca_ranch-valid-images_f1_over_confidence.png)  
-Figure 57. precision_over_confidence, fasterrcnn, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch  
+Figure s57. precision_over_confidence, fasterrcnn, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_150_-data-toggenburg_alpaca_ranch-valid-images_precision_over_confidence.png)  
-Figure 58. precision_over_recall, fasterrcnn, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch  
+Figure s58. precision_over_recall, fasterrcnn, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_150_-data-toggenburg_alpaca_ranch-valid-images_precision_over_recall.png)  
-Figure 59. recall_over_confidence, fasterrcnn, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch  
+Figure s59. recall_over_confidence, fasterrcnn, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_False_150_-data-toggenburg_alpaca_ranch-valid-images_recall_over_confidence.png)  
-Figure 60. confidence, fasterrcnn, pre-trained=True, epochs=0, data=duomo  
+Figure s60. confidence, fasterrcnn, pre-trained=True, epochs=0, data=duomo  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_0_-data-duomo-valid-images_f1_over_confidence.png)  
-Figure 61. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=0, data=duomo  
+Figure s61. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=0, data=duomo  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_0_-data-duomo-valid-images_precision_over_confidence.png)  
-Figure 62. precision_over_recall, fasterrcnn, pre-trained=True, epochs=0, data=duomo  
+Figure s62. precision_over_recall, fasterrcnn, pre-trained=True, epochs=0, data=duomo  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_0_-data-duomo-valid-images_precision_over_recall.png)  
-Figure 63. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=0, data=duomo  
+Figure s63. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=0, data=duomo  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_0_-data-duomo-valid-images_recall_over_confidence.png)  
-Figure 64. f1_over_confidence, fasterrcnn, pre-trained=True, epochs=0, data=hadji_dimitar_square  
+Figure s64. f1_over_confidence, fasterrcnn, pre-trained=True, epochs=0, data=hadji_dimitar_square  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_0_-data-hadji_dimitar_square-valid-images_f1_over_confidence.png)  
-Figure 65. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=0, data=hadji_dimitar_square  
+Figure s65. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=0, data=hadji_dimitar_square  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_0_-data-hadji_dimitar_square-valid-images_precision_over_confidence.png)  
-Figure 66. precision_over_recall, fasterrcnn, pre-trained=True, epochs=0, data=hadji_dimitar_square  
+Figure s66. precision_over_recall, fasterrcnn, pre-trained=True, epochs=0, data=hadji_dimitar_square  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_0_-data-hadji_dimitar_square-valid-images_precision_over_recall.png)  
-Figure 67. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=0, data=hadji_dimitar_square  
+Figure s67. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=0, data=hadji_dimitar_square  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_0_-data-hadji_dimitar_square-valid-images_recall_over_confidence.png)  
-Figure 68. f1_over_confidence, fasterrcnn, pre-trained=True, epochs=0, data=keskvaljak  
+Figure s68. f1_over_confidence, fasterrcnn, pre-trained=True, epochs=0, data=keskvaljak  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_0_-data-keskvaljak-valid-images_f1_over_confidence.png)  
-Figure 69. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=0, data=keskvaljak  
+Figure s69. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=0, data=keskvaljak  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_0_-data-keskvaljak-valid-images_precision_over_confidence.png)  
-Figure 70. precision_over_recall, fasterrcnn, pre-trained=True, epochs=0, data=keskvaljak  
+Figure s70. precision_over_recall, fasterrcnn, pre-trained=True, epochs=0, data=keskvaljak  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_0_-data-keskvaljak-valid-images_precision_over_recall.png)  
-Figure 71. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=0, data=keskvaljak  
+Figure s71. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=0, data=keskvaljak  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_0_-data-keskvaljak-valid-images_recall_over_confidence.png)  
-Figure 72. f1_over_confidence, fasterrcnn, pre-trained=True, epochs=0, data=kielce_university_of_technology  
+Figure s72. f1_over_confidence, fasterrcnn, pre-trained=True, epochs=0, data=kielce_university_of_technology  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_0_-data-kielce_university_of_technology-valid-images_f1_over_confidence.png)  
-Figure 73. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=0, data=kielce_university_of_technology  
+Figure s73. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=0, data=kielce_university_of_technology  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_0_-data-kielce_university_of_technology-valid-images_precision_over_confidence.png)  
-Figure 74. precision_over_recall, fasterrcnn, pre-trained=True, epochs=0, data=kielce_university_of_technology  
+Figure s74. precision_over_recall, fasterrcnn, pre-trained=True, epochs=0, data=kielce_university_of_technology  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_0_-data-kielce_university_of_technology-valid-images_precision_over_recall.png)  
-Figure 75. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=0, data=kielce_university_of_technology  
+Figure s75. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=0, data=kielce_university_of_technology  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_0_-data-kielce_university_of_technology-valid-images_recall_over_confidence.png)  
-Figure 76. f1_over_confidence, fasterrcnn, pre-trained=True, epochs=0, data=toggenburg_alpaca_ranch  
+Figure s76. f1_over_confidence, fasterrcnn, pre-trained=True, epochs=0, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_0_-data-toggenburg_alpaca_ranch-valid-images_f1_over_confidence.png)  
-Figure 77. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=0, data=toggenburg_alpaca_ranch  
+Figure s77. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=0, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_0_-data-toggenburg_alpaca_ranch-valid-images_precision_over_confidence.png)  
-Figure 78. precision_over_recall, fasterrcnn, pre-trained=True, epochs=0, data=toggenburg_alpaca_ranch  
+Figure s78. precision_over_recall, fasterrcnn, pre-trained=True, epochs=0, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_0_-data-toggenburg_alpaca_ranch-valid-images_precision_over_recall.png)  
-Figure 79. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=0, data=toggenburg_alpaca_ranch  
+Figure s79. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=0, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_0_-data-toggenburg_alpaca_ranch-valid-images_recall_over_confidence.png)  
-Figure 80. f1_over_confidence, fasterrcnn, pre-trained=True, epochs=50, data=duomo  
+Figure s80. f1_over_confidence, fasterrcnn, pre-trained=True, epochs=50, data=duomo  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_50_-data-duomo-valid-images_f1_over_confidence.png)  
-Figure 81. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=50, data=duomo  
+Figure s81. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=50, data=duomo  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_50_-data-duomo-valid-images_precision_over_confidence.png)  
-Figure 82. precision_over_recall, fasterrcnn, pre-trained=True, epochs=50, data=duomo  
+Figure s82. precision_over_recall, fasterrcnn, pre-trained=True, epochs=50, data=duomo  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_50_-data-duomo-valid-images_precision_over_recall.png)  
-Figure 83. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=50, data=duomo  
+Figure s83. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=50, data=duomo  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_50_-data-duomo-valid-images_recall_over_confidence.png)  
-Figure 84. f1_over_confidence, fasterrcnn, pre-trained=True, epochs=50, data=hadji_dimitar_square  
+Figure s84. f1_over_confidence, fasterrcnn, pre-trained=True, epochs=50, data=hadji_dimitar_square  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_50_-data-hadji_dimitar_square-valid-images_f1_over_confidence.png)  
-Figure 85. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=50, data=hadji_dimitar_square  
+Figure s85. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=50, data=hadji_dimitar_square  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_50_-data-hadji_dimitar_square-valid-images_precision_over_confidence.png)  
-Figure 86. precision_over_recall, fasterrcnn, pre-trained=True, epochs=50, data=hadji_dimitar_square  
+Figure s86. precision_over_recall, fasterrcnn, pre-trained=True, epochs=50, data=hadji_dimitar_square  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_50_-data-hadji_dimitar_square-valid-images_precision_over_recall.png)  
-Figure 87. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=50, data=hadji_dimitar_square  
+Figure s87. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=50, data=hadji_dimitar_square  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_50_-data-hadji_dimitar_square-valid-images_recall_over_confidence.png)  
-Figure 88. f1_over_confidence, fasterrcnn, pre-trained=True, epochs=50, data=keskvaljak  
+Figure s88. f1_over_confidence, fasterrcnn, pre-trained=True, epochs=50, data=keskvaljak  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_50_-data-keskvaljak-valid-images_f1_over_confidence.png)  
-Figure 89. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=50, data=keskvaljak  
+Figure s89. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=50, data=keskvaljak  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_50_-data-keskvaljak-valid-images_precision_over_confidence.png)  
-Figure 90. precision_over_recall, fasterrcnn, pre-trained=True, epochs=50, data=keskvaljak  
+Figure s90. precision_over_recall, fasterrcnn, pre-trained=True, epochs=50, data=keskvaljak  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_50_-data-keskvaljak-valid-images_precision_over_recall.png)  
-Figure 91. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=50, data=keskvaljak  
+Figure s91. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=50, data=keskvaljak  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_50_-data-keskvaljak-valid-images_recall_over_confidence.png)  
-Figure 92. f1_over_confidence, fasterrcnn, pre-trained=True, epochs=50, data=kielce_university_of_technology  
+Figure s92. f1_over_confidence, fasterrcnn, pre-trained=True, epochs=50, data=kielce_university_of_technology  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_50_-data-kielce_university_of_technology-valid-images_f1_over_confidence.png)  
-Figure 93. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=50, data=kielce_university_of_technology  
+Figure s93. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=50, data=kielce_university_of_technology  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_50_-data-kielce_university_of_technology-valid-images_precision_over_confidence.png)  
-Figure 94. precision_over_recall, fasterrcnn, pre-trained=True, epochs=50, data=kielce_university_of_technology  
+Figure s94. precision_over_recall, fasterrcnn, pre-trained=True, epochs=50, data=kielce_university_of_technology  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_50_-data-kielce_university_of_technology-valid-images_precision_over_recall.png)  
-Figure 95. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=50, data=kielce_university_of_technology  
+Figure s95. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=50, data=kielce_university_of_technology  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_50_-data-kielce_university_of_technology-valid-images_recall_over_confidence.png)  
-Figure 96. f1_over_confidence, fasterrcnn, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch  
+Figure s96. f1_over_confidence, fasterrcnn, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_50_-data-toggenburg_alpaca_ranch-valid-images_f1_over_confidence.png)  
-Figure 97. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch  
+Figure s97. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_50_-data-toggenburg_alpaca_ranch-valid-images_precision_over_confidence.png)  
-Figure 98. precision_over_recall, fasterrcnn, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch  
+Figure s98. precision_over_recall, fasterrcnn, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_50_-data-toggenburg_alpaca_ranch-valid-images_precision_over_recall.png)  
-Figure 99. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch  
+Figure s99. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_50_-data-toggenburg_alpaca_ranch-valid-images_recall_over_confidence.png)  
-Figure 100. f1_over_confidence, fasterrcnn, pre-trained=True, epochs=100, data=duomo  
+Figure s100. f1_over_confidence, fasterrcnn, pre-trained=True, epochs=100, data=duomo  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_100_-data-duomo-valid-images_f1_over_confidence.png)  
-Figure 101. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=100, data=duomo  
+Figure s101. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=100, data=duomo  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_100_-data-duomo-valid-images_precision_over_confidence.png)  
-Figure 102. precision_over_recall, fasterrcnn, pre-trained=True, epochs=100, data=duomo  
+Figure s102. precision_over_recall, fasterrcnn, pre-trained=True, epochs=100, data=duomo  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_100_-data-duomo-valid-images_precision_over_recall.png)  
-Figure 103. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=100, data=duomo  
+Figure s103. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=100, data=duomo  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_100_-data-duomo-valid-images_recall_over_confidence.png)  
-Figure 104. f1_over_confidence, fasterrcnn, pre-trained=True, epochs=100, data=hadji_dimitar_square  
+Figure s104. f1_over_confidence, fasterrcnn, pre-trained=True, epochs=100, data=hadji_dimitar_square  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_100_-data-hadji_dimitar_square-valid-images_f1_over_confidence.png)  
-Figure 105. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=100, data=hadji_dimitar_square  
+Figure s105. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=100, data=hadji_dimitar_square  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_100_-data-hadji_dimitar_square-valid-images_precision_over_confidence.png)  
-Figure 106. precision_over_recall, fasterrcnn, pre-trained=True, epochs=100, data=hadji_dimitar_square  
+Figure s106. precision_over_recall, fasterrcnn, pre-trained=True, epochs=100, data=hadji_dimitar_square  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_100_-data-hadji_dimitar_square-valid-images_precision_over_recall.png)  
-Figure 107. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=100, data=hadji_dimitar_square  
+Figure s107. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=100, data=hadji_dimitar_square  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_100_-data-hadji_dimitar_square-valid-images_recall_over_confidence.png)  
-Figure 108. f1_over_confidence, fasterrcnn, pre-trained=True, epochs=100, data=keskvaljak  
+Figure s108. f1_over_confidence, fasterrcnn, pre-trained=True, epochs=100, data=keskvaljak  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_100_-data-keskvaljak-valid-images_f1_over_confidence.png)  
-Figure 109. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=100, data=keskvaljak  
+Figure s109. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=100, data=keskvaljak  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_100_-data-keskvaljak-valid-images_precision_over_confidence.png)  
-Figure 110. precision_over_recall, fasterrcnn, pre-trained=True, epochs=100, data=keskvaljak  
+Figure s110. precision_over_recall, fasterrcnn, pre-trained=True, epochs=100, data=keskvaljak  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_100_-data-keskvaljak-valid-images_precision_over_recall.png)  
-Figure 111. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=100, data=keskvaljak  
+Figure s111. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=100, data=keskvaljak  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_100_-data-keskvaljak-valid-images_recall_over_confidence.png)  
-Figure 112. f1_over_confidence, fasterrcnn, pre-trained=True, epochs=100, data=kielce_university_of_technology  
+Figure s112. f1_over_confidence, fasterrcnn, pre-trained=True, epochs=100, data=kielce_university_of_technology  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_100_-data-kielce_university_of_technology-valid-images_f1_over_confidence.png)  
-Figure 113. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=100, data=kielce_university_of_technology  
+Figure s113. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=100, data=kielce_university_of_technology  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_100_-data-kielce_university_of_technology-valid-images_precision_over_confidence.png)  
-Figure 114. precision_over_recall, fasterrcnn, pre-trained=True, epochs=100, data=kielce_university_of_technology  
+Figure s114. precision_over_recall, fasterrcnn, pre-trained=True, epochs=100, data=kielce_university_of_technology  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_100_-data-kielce_university_of_technology-valid-images_precision_over_recall.png)  
-Figure 115. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=100, data=kielce_university_of_technology  
+Figure s115. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=100, data=kielce_university_of_technology  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_100_-data-kielce_university_of_technology-valid-images_recall_over_confidence.png)  
-Figure 116. f1_over_confidence, fasterrcnn, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch  
+Figure s116. f1_over_confidence, fasterrcnn, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_100_-data-toggenburg_alpaca_ranch-valid-images_f1_over_confidence.png)  
-Figure 117. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch  
+Figure s117. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_100_-data-toggenburg_alpaca_ranch-valid-images_precision_over_confidence.png)  
-Figure 118. precision_over_recall, fasterrcnn, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch  
+Figure s118. precision_over_recall, fasterrcnn, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_100_-data-toggenburg_alpaca_ranch-valid-images_precision_over_recall.png)  
-Figure 119. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch  
+Figure s119. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_100_-data-toggenburg_alpaca_ranch-valid-images_recall_over_confidence.png)  
-Figure 120. f1_over_confidence, fasterrcnn, pre-trained=True, epochs=150, data=duomo  
+Figure s120. f1_over_confidence, fasterrcnn, pre-trained=True, epochs=150, data=duomo  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_150_-data-duomo-valid-images_f1_over_confidence.png)  
-Figure 121. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=150, data=duomo  
+Figure s121. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=150, data=duomo  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_150_-data-duomo-valid-images_precision_over_confidence.png)  
-Figure 122. precision_over_recall, fasterrcnn, pre-trained=True, epochs=150, data=duomo  
+Figure s122. precision_over_recall, fasterrcnn, pre-trained=True, epochs=150, data=duomo  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_150_-data-duomo-valid-images_precision_over_recall.png)  
-Figure 123. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=150, data=duomo  
+Figure s123. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=150, data=duomo  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_150_-data-duomo-valid-images_recall_over_confidence.png)  
-Figure 124. f1_over_confidence, fasterrcnn, pre-trained=True, epochs=150, data=hadji_dimitar_square  
+Figure s124. f1_over_confidence, fasterrcnn, pre-trained=True, epochs=150, data=hadji_dimitar_square  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_150_-data-hadji_dimitar_square-valid-images_f1_over_confidence.png)  
-Figure 125. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=150, data=hadji_dimitar_square  
+Figure s125. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=150, data=hadji_dimitar_square  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_150_-data-hadji_dimitar_square-valid-images_precision_over_confidence.png)  
-Figure 126. precision_over_recall, fasterrcnn, pre-trained=True, epochs=150, data=hadji_dimitar_square  
+Figure s126. precision_over_recall, fasterrcnn, pre-trained=True, epochs=150, data=hadji_dimitar_square  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_150_-data-hadji_dimitar_square-valid-images_precision_over_recall.png)  
-Figure 127. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=150, data=hadji_dimitar_square  
+Figure s127. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=150, data=hadji_dimitar_square  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_150_-data-hadji_dimitar_square-valid-images_recall_over_confidence.png)  
-Figure 128. f1_over_confidence, fasterrcnn, pre-trained=True, epochs=150, data=keskvaljak  
+Figure s128. f1_over_confidence, fasterrcnn, pre-trained=True, epochs=150, data=keskvaljak  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_150_-data-keskvaljak-valid-images_f1_over_confidence.png)  
-Figure 129. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=150, data=keskvaljak  
+Figure s129. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=150, data=keskvaljak  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_150_-data-keskvaljak-valid-images_precision_over_confidence.png)  
-Figure 130. precision_over_recall, fasterrcnn, pre-trained=True, epochs=150, data=keskvaljak  
+Figure s130. precision_over_recall, fasterrcnn, pre-trained=True, epochs=150, data=keskvaljak  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_150_-data-keskvaljak-valid-images_precision_over_recall.png)  
-Figure 131. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=150, data=keskvaljak  
+Figure s131. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=150, data=keskvaljak  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_150_-data-keskvaljak-valid-images_recall_over_confidence.png)  
-Figure 132. f1_over_confidence, fasterrcnn, pre-trained=True, epochs=150, data=kielce_university_of_technology  
+Figure s132. f1_over_confidence, fasterrcnn, pre-trained=True, epochs=150, data=kielce_university_of_technology  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_150_-data-kielce_university_of_technology-valid-images_f1_over_confidence.png)  
-Figure 133. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=150, data=kielce_university_of_technology  
+Figure s133. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=150, data=kielce_university_of_technology  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_150_-data-kielce_university_of_technology-valid-images_precision_over_confidence.png)  
-Figure 134. precision_over_recall, fasterrcnn, pre-trained=True, epochs=150, data=kielce_university_of_technology  
+Figure s134. precision_over_recall, fasterrcnn, pre-trained=True, epochs=150, data=kielce_university_of_technology  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_150_-data-kielce_university_of_technology-valid-images_precision_over_recall.png)  
-Figure 135. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=150, data=kielce_university_of_technology  
+Figure s135. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=150, data=kielce_university_of_technology  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_150_-data-kielce_university_of_technology-valid-images_recall_over_confidence.png)  
-Figure 136. f1_over_confidence, fasterrcnn, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch  
+Figure s136. f1_over_confidence, fasterrcnn, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_150_-data-toggenburg_alpaca_ranch-valid-images_f1_over_confidence.png)  
-Figure 137. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch  
+Figure s137. precision_over_confidence, fasterrcnn, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_150_-data-toggenburg_alpaca_ranch-valid-images_precision_over_confidence.png)  
-Figure 138. precision_over_recall, fasterrcnn, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch  
+Figure s138. precision_over_recall, fasterrcnn, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_150_-data-toggenburg_alpaca_ranch-valid-images_precision_over_recall.png)  
-Figure 139. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch  
+Figure s139. recall_over_confidence, fasterrcnn, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/fasterrcnn_resnet50_fpn_True_150_-data-toggenburg_alpaca_ranch-valid-images_recall_over_confidence.png)  
-Figure 140. f1_over_confidence, maskrcnn, pre-trained=False, epochs=50, data=duomo  
+Figure s140. f1_over_confidence, maskrcnn, pre-trained=False, epochs=50, data=duomo  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_50_-data-duomo-valid-images_f1_over_confidence.png)  
-Figure 141. precision_over_confidence, maskrcnn, pre-trained=False, epochs=50, data=duomo  
+Figure s141. precision_over_confidence, maskrcnn, pre-trained=False, epochs=50, data=duomo  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_50_-data-duomo-valid-images_precision_over_confidence.png)  
-Figure 142. precision_over_recall, maskrcnn, pre-trained=False, epochs=50, data=duomo  
+Figure s142. precision_over_recall, maskrcnn, pre-trained=False, epochs=50, data=duomo  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_50_-data-duomo-valid-images_precision_over_recall.png)  
-Figure 143. recall_over_confidence, maskrcnn, pre-trained=False, epochs=50, data=duomo  
+Figure s143. recall_over_confidence, maskrcnn, pre-trained=False, epochs=50, data=duomo  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_50_-data-duomo-valid-images_recall_over_confidence.png)  
-Figure 144. f1_over_confidence, maskrcnn, pre-trained=False, epochs=50, data=hadji_dimitar_square  
+Figure s144. f1_over_confidence, maskrcnn, pre-trained=False, epochs=50, data=hadji_dimitar_square  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_50_-data-hadji_dimitar_square-valid-images_f1_over_confidence.png)  
-Figure 145. precision_over_confidence, maskrcnn, pre-trained=False, epochs=50, data=hadji_dimitar_square  
+Figure s145. precision_over_confidence, maskrcnn, pre-trained=False, epochs=50, data=hadji_dimitar_square  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_50_-data-hadji_dimitar_square-valid-images_precision_over_confidence.png)  
-Figure 146. precision_over_recall, maskrcnn, pre-trained=False, epochs=50, data=hadji_dimitar_square  
+Figure s146. precision_over_recall, maskrcnn, pre-trained=False, epochs=50, data=hadji_dimitar_square  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_50_-data-hadji_dimitar_square-valid-images_precision_over_recall.png)  
-Figure 147. recall_over_confidence, maskrcnn, pre-trained=False, epochs=50, data=hadji_dimitar_square  
+Figure s147. recall_over_confidence, maskrcnn, pre-trained=False, epochs=50, data=hadji_dimitar_square  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_50_-data-hadji_dimitar_square-valid-images_recall_over_confidence.png)  
-Figure 148. f1_over_confidence, maskrcnn, pre-trained=False, epochs=50, data=keskvaljak  
+Figure s148. f1_over_confidence, maskrcnn, pre-trained=False, epochs=50, data=keskvaljak  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_50_-data-keskvaljak-valid-images_f1_over_confidence.png)  
-Figure 149. precision_over_confidence, maskrcnn, pre-trained=False, epochs=50, data=keskvaljak  
+Figure s149. precision_over_confidence, maskrcnn, pre-trained=False, epochs=50, data=keskvaljak  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_50_-data-keskvaljak-valid-images_precision_over_confidence.png)  
-Figure 150. precision_over_recall, maskrcnn, pre-trained=False, epochs=50, data=keskvaljak  
+Figure s150. precision_over_recall, maskrcnn, pre-trained=False, epochs=50, data=keskvaljak  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_50_-data-keskvaljak-valid-images_precision_over_recall.png)  
-Figure 151. recall_over_confidence, maskrcnn, pre-trained=False, epochs=50, data=keskvaljak  
+Figure s151. recall_over_confidence, maskrcnn, pre-trained=False, epochs=50, data=keskvaljak  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_50_-data-keskvaljak-valid-images_recall_over_confidence.png)  
-Figure 152. f1_over_confidence, maskrcnn, pre-trained=False, epochs=50, data=kielce_university_of_technology  
+Figure s152. f1_over_confidence, maskrcnn, pre-trained=False, epochs=50, data=kielce_university_of_technology  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_50_-data-kielce_university_of_technology-valid-images_f1_over_confidence.png)  
-Figure 153. precision_over_confidence, maskrcnn, pre-trained=False, epochs=50, data=kielce_university_of_technology  
+Figure s153. precision_over_confidence, maskrcnn, pre-trained=False, epochs=50, data=kielce_university_of_technology  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_50_-data-kielce_university_of_technology-valid-images_precision_over_confidence.png)  
-Figure 154. precision_over_recall, maskrcnn, pre-trained=False, epochs=50, data=kielce_university_of_technology  
+Figure s154. precision_over_recall, maskrcnn, pre-trained=False, epochs=50, data=kielce_university_of_technology  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_50_-data-kielce_university_of_technology-valid-images_precision_over_recall.png)  
-Figure 155. recall_over_confidence, maskrcnn, pre-trained=False, epochs=50, data=kielce_university_of_technology  
+Figure s155. recall_over_confidence, maskrcnn, pre-trained=False, epochs=50, data=kielce_university_of_technology  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_50_-data-kielce_university_of_technology-valid-images_recall_over_confidence.png)  
-Figure 156. f1_over_confidence, maskrcnn, pre-trained=False, epochs=50, data=toggenburg_alpaca_ranch  
+Figure s156. f1_over_confidence, maskrcnn, pre-trained=False, epochs=50, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_50_-data-toggenburg_alpaca_ranch-valid-images_f1_over_confidence.png)  
-Figure 157. precision_over_confidence, maskrcnn, pre-trained=False, epochs=50, data=toggenburg_alpaca_ranch  
+Figure s157. precision_over_confidence, maskrcnn, pre-trained=False, epochs=50, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_50_-data-toggenburg_alpaca_ranch-valid-images_precision_over_confidence.png)  
-Figure 158. precision_over_recall, maskrcnn, pre-trained=False, epochs=50, data=toggenburg_alpaca_ranch  
+Figure s158. precision_over_recall, maskrcnn, pre-trained=False, epochs=50, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_50_-data-toggenburg_alpaca_ranch-valid-images_precision_over_recall.png)  
-Figure 159. recall_over_confidence, maskrcnn, pre-trained=False, epochs=50, data=toggenburg_alpaca_ranch  
+Figure s159. recall_over_confidence, maskrcnn, pre-trained=False, epochs=50, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_50_-data-toggenburg_alpaca_ranch-valid-images_recall_over_confidence.png)  
-Figure 160. f1_over_confidence, maskrcnn, pre-trained=False, epochs=100, data=duomo  
+Figure s160. f1_over_confidence, maskrcnn, pre-trained=False, epochs=100, data=duomo  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_100_-data-duomo-valid-images_f1_over_confidence.png)  
-Figure 161. precision_over_confidence, maskrcnn, pre-trained=False, epochs=100, data=duomo  
+Figure s161. precision_over_confidence, maskrcnn, pre-trained=False, epochs=100, data=duomo  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_100_-data-duomo-valid-images_precision_over_confidence.png)  
-Figure 162. precision_over_recall, maskrcnn, pre-trained=False, epochs=100, data=duomo  
+Figure s162. precision_over_recall, maskrcnn, pre-trained=False, epochs=100, data=duomo  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_100_-data-duomo-valid-images_precision_over_recall.png)  
-Figure 163. recall_over_confidence, maskrcnn, pre-trained=False, epochs=100, data=duomo  
+Figure s163. recall_over_confidence, maskrcnn, pre-trained=False, epochs=100, data=duomo  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_100_-data-duomo-valid-images_recall_over_confidence.png)  
-Figure 164. f1_over_confidence, maskrcnn, pre-trained=False, epochs=100, data=hadji_dimitar_square  
+Figure s164. f1_over_confidence, maskrcnn, pre-trained=False, epochs=100, data=hadji_dimitar_square  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_100_-data-hadji_dimitar_square-valid-images_f1_over_confidence.png)  
-Figure 165. precision_over_confidence, maskrcnn, pre-trained=False, epochs=100, data=hadji_dimitar_square  
+Figure s165. precision_over_confidence, maskrcnn, pre-trained=False, epochs=100, data=hadji_dimitar_square  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_100_-data-hadji_dimitar_square-valid-images_precision_over_confidence.png)  
-Figure 166. precision_over_recall, maskrcnn, pre-trained=False, epochs=100, data=hadji_dimitar_square  
+Figure s166. precision_over_recall, maskrcnn, pre-trained=False, epochs=100, data=hadji_dimitar_square  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_100_-data-hadji_dimitar_square-valid-images_precision_over_recall.png)  
-Figure 167. recall_over_confidence, maskrcnn, pre-trained=False, epochs=100, data=hadji_dimitar_square  
+Figure s167. recall_over_confidence, maskrcnn, pre-trained=False, epochs=100, data=hadji_dimitar_square  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_100_-data-hadji_dimitar_square-valid-images_recall_over_confidence.png)  
-Figure 168. f1_over_confidence, maskrcnn, pre-trained=False, epochs=100, data=keskvaljak  
+Figure s168. f1_over_confidence, maskrcnn, pre-trained=False, epochs=100, data=keskvaljak  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_100_-data-keskvaljak-valid-images_f1_over_confidence.png)  
-Figure 169. precision_over_confidence, maskrcnn, pre-trained=False, epochs=100, data=keskvaljak  
+Figure s169. precision_over_confidence, maskrcnn, pre-trained=False, epochs=100, data=keskvaljak  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_100_-data-keskvaljak-valid-images_precision_over_confidence.png)  
-Figure 170. precision_over_recall, maskrcnn, pre-trained=False, epochs=100, data=keskvaljak  
+Figure s170. precision_over_recall, maskrcnn, pre-trained=False, epochs=100, data=keskvaljak  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_100_-data-keskvaljak-valid-images_precision_over_recall.png)  
-Figure 171. recall_over_confidence, maskrcnn, pre-trained=False, epochs=100, data=keskvaljak  
+Figure s171. recall_over_confidence, maskrcnn, pre-trained=False, epochs=100, data=keskvaljak  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_100_-data-keskvaljak-valid-images_recall_over_confidence.png)  
-Figure 172. f1_over_confidence, maskrcnn, pre-trained=False, epochs=100, data=kielce_university_of_technology  
+Figure s172. f1_over_confidence, maskrcnn, pre-trained=False, epochs=100, data=kielce_university_of_technology  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_100_-data-kielce_university_of_technology-valid-images_f1_over_confidence.png)  
-Figure 173. precision_over_confidence, maskrcnn, pre-trained=False, epochs=100, data=kielce_university_of_technology  
+Figure s173. precision_over_confidence, maskrcnn, pre-trained=False, epochs=100, data=kielce_university_of_technology  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_100_-data-kielce_university_of_technology-valid-images_precision_over_confidence.png)  
-Figure 174. precision_over_recall, maskrcnn, pre-trained=False, epochs=100, data=kielce_university_of_technology  
+Figure s174. precision_over_recall, maskrcnn, pre-trained=False, epochs=100, data=kielce_university_of_technology  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_100_-data-kielce_university_of_technology-valid-images_precision_over_recall.png)  
-Figure 175. recall_over_confidence, maskrcnn, pre-trained=False, epochs=100, data=kielce_university_of_technology  
+Figure s175. recall_over_confidence, maskrcnn, pre-trained=False, epochs=100, data=kielce_university_of_technology  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_100_-data-kielce_university_of_technology-valid-images_recall_over_confidence.png)  
-Figure 176. f1_over_confidence, maskrcnn, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch  
+Figure s176. f1_over_confidence, maskrcnn, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_100_-data-toggenburg_alpaca_ranch-valid-images_f1_over_confidence.png)  
-Figure 177. precision_over_confidence, maskrcnn, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch  
+Figure s177. precision_over_confidence, maskrcnn, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_100_-data-toggenburg_alpaca_ranch-valid-images_precision_over_confidence.png)  
-Figure 178. precision_over_recall, maskrcnn, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch  
+Figure s178. precision_over_recall, maskrcnn, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_100_-data-toggenburg_alpaca_ranch-valid-images_precision_over_recall.png)  
-Figure 179. recall_over_confidence, maskrcnn, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch  
+Figure s179. recall_over_confidence, maskrcnn, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_100_-data-toggenburg_alpaca_ranch-valid-images_recall_over_confidence.png)  
-Figure 180. f1_over_confidence, maskrcnn, pre-trained=False, epochs=150, data=duomo  
+Figure s180. f1_over_confidence, maskrcnn, pre-trained=False, epochs=150, data=duomo  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_150_-data-duomo-valid-images_f1_over_confidence.png)  
-Figure 181. precision_over_confidence, maskrcnn, pre-trained=False, epochs=150, data=duomo  
+Figure s181. precision_over_confidence, maskrcnn, pre-trained=False, epochs=150, data=duomo  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_150_-data-duomo-valid-images_precision_over_confidence.png)  
-Figure 182. precision_over_recall, maskrcnn, pre-trained=False, epochs=150, data=duomo  
+Figure s182. precision_over_recall, maskrcnn, pre-trained=False, epochs=150, data=duomo  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_150_-data-duomo-valid-images_precision_over_recall.png)  
-Figure 183. recall_over_confidence, maskrcnn, pre-trained=False, epochs=150, data=duomo  
+Figure s183. recall_over_confidence, maskrcnn, pre-trained=False, epochs=150, data=duomo  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_150_-data-duomo-valid-images_recall_over_confidence.png)  
-Figure 184. f1_over_confidence, maskrcnn, pre-trained=False, epochs=150, data=hadji_dimitar_square  
+Figure s184. f1_over_confidence, maskrcnn, pre-trained=False, epochs=150, data=hadji_dimitar_square  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_150_-data-hadji_dimitar_square-valid-images_f1_over_confidence.png)  
-Figure 185. precision_over_confidence, maskrcnn, pre-trained=False, epochs=150, data=hadji_dimitar_square  
+Figure s185. precision_over_confidence, maskrcnn, pre-trained=False, epochs=150, data=hadji_dimitar_square  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_150_-data-hadji_dimitar_square-valid-images_precision_over_confidence.png)  
-Figure 186. precision_over_recall, maskrcnn, pre-trained=False, epochs=150, data=hadji_dimitar_square  
+Figure s186. precision_over_recall, maskrcnn, pre-trained=False, epochs=150, data=hadji_dimitar_square  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_150_-data-hadji_dimitar_square-valid-images_precision_over_recall.png)  
-Figure 187. recall_over_confidence, maskrcnn, pre-trained=False, epochs=150, data=hadji_dimitar_square  
+Figure s187. recall_over_confidence, maskrcnn, pre-trained=False, epochs=150, data=hadji_dimitar_square  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_150_-data-hadji_dimitar_square-valid-images_recall_over_confidence.png)  
-Figure 188. f1_over_confidence, maskrcnn, pre-trained=False, epochs=150, data=keskvaljak  
+Figure s188. f1_over_confidence, maskrcnn, pre-trained=False, epochs=150, data=keskvaljak  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_150_-data-keskvaljak-valid-images_f1_over_confidence.png)  
-Figure 189. precision_over_confidence, maskrcnn, pre-trained=False, epochs=150, data=keskvaljak  
+Figure s189. precision_over_confidence, maskrcnn, pre-trained=False, epochs=150, data=keskvaljak  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_150_-data-keskvaljak-valid-images_precision_over_confidence.png)  
-Figure 190. precision_over_recall, maskrcnn, pre-trained=False, epochs=150, data=keskvaljak  
+Figure s190. precision_over_recall, maskrcnn, pre-trained=False, epochs=150, data=keskvaljak  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_150_-data-keskvaljak-valid-images_precision_over_recall.png)  
-Figure 191. recall_over_confidence, maskrcnn, pre-trained=False, epochs=150, data=keskvaljak  
+Figure s191. recall_over_confidence, maskrcnn, pre-trained=False, epochs=150, data=keskvaljak  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_150_-data-keskvaljak-valid-images_recall_over_confidence.png)  
-Figure 192. f1_over_confidence, maskrcnn, pre-trained=False, epochs=150, data=kielce_university_of_technology  
+Figure s192. f1_over_confidence, maskrcnn, pre-trained=False, epochs=150, data=kielce_university_of_technology  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_150_-data-kielce_university_of_technology-valid-images_f1_over_confidence.png)  
-Figure 193. precision_over_confidence, maskrcnn, pre-trained=False, epochs=150, data=kielce_university_of_technology  
+Figure s193. precision_over_confidence, maskrcnn, pre-trained=False, epochs=150, data=kielce_university_of_technology  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_150_-data-kielce_university_of_technology-valid-images_precision_over_confidence.png)  
-Figure 194. precision_over_recall, maskrcnn, pre-trained=False, epochs=150, data=kielce_university_of_technology  
+Figure s194. precision_over_recall, maskrcnn, pre-trained=False, epochs=150, data=kielce_university_of_technology  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_150_-data-kielce_university_of_technology-valid-images_precision_over_recall.png)  
-Figure 195. recall_over_confidence, maskrcnn, pre-trained=False, epochs=150, data=kielce_university_of_technology  
+Figure s195. recall_over_confidence, maskrcnn, pre-trained=False, epochs=150, data=kielce_university_of_technology  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_150_-data-kielce_university_of_technology-valid-images_recall_over_confidence.png)  
-Figure 196. f1_over_confidence, maskrcnn, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch  
+Figure s196. f1_over_confidence, maskrcnn, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_150_-data-toggenburg_alpaca_ranch-valid-images_f1_over_confidence.png)  
-Figure 197. precision_over_confidence, maskrcnn, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch  
+Figure s197. precision_over_confidence, maskrcnn, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_150_-data-toggenburg_alpaca_ranch-valid-images_precision_over_confidence.png)  
-Figure 198. precision_over_recall, maskrcnn, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch  
+Figure s198. precision_over_recall, maskrcnn, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_150_-data-toggenburg_alpaca_ranch-valid-images_precision_over_recall.png)  
-Figure 199. recall_over_confidence, maskrcnn, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch  
+Figure s199. recall_over_confidence, maskrcnn, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/maskrcnn_resnet50_fpn_False_150_-data-toggenburg_alpaca_ranch-valid-images_recall_over_confidence.png)  
-Figure 200. f1_over_confidence, maskrcnn, pre-trained=True, epochs=0, data=duomo  
+Figure s200. f1_over_confidence, maskrcnn, pre-trained=True, epochs=0, data=duomo  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_0_-data-duomo-valid-images_f1_over_confidence.png)  
-Figure 201. precision_over_confidence, maskrcnn, pre-trained=True, epochs=0, data=duomo  
+Figure s201. precision_over_confidence, maskrcnn, pre-trained=True, epochs=0, data=duomo  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_0_-data-duomo-valid-images_precision_over_confidence.png)  
-Figure 202. precision_over_recall, maskrcnn, pre-trained=True, epochs=0, data=duomo  
+Figure s202. precision_over_recall, maskrcnn, pre-trained=True, epochs=0, data=duomo  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_0_-data-duomo-valid-images_precision_over_recall.png)  
-Figure 203. recall_over_confidence, maskrcnn, pre-trained=True, epochs=0, data=duomo  
+Figure s203. recall_over_confidence, maskrcnn, pre-trained=True, epochs=0, data=duomo  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_0_-data-duomo-valid-images_recall_over_confidence.png)  
-Figure 204. f1_over_confidence, maskrcnn, pre-trained=True, epochs=0, data=hadji_dimitar_square  
+Figure s204. f1_over_confidence, maskrcnn, pre-trained=True, epochs=0, data=hadji_dimitar_square  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_0_-data-hadji_dimitar_square-valid-images_f1_over_confidence.png)  
-Figure 205. precision_over_confidence, maskrcnn, pre-trained=True, epochs=0, data=hadji_dimitar_square  
+Figure s205. precision_over_confidence, maskrcnn, pre-trained=True, epochs=0, data=hadji_dimitar_square  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_0_-data-hadji_dimitar_square-valid-images_precision_over_confidence.png)  
-Figure 206. precision_over_recall, maskrcnn, pre-trained=True, epochs=0, data=hadji_dimitar_square  
+Figure s206. precision_over_recall, maskrcnn, pre-trained=True, epochs=0, data=hadji_dimitar_square  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_0_-data-hadji_dimitar_square-valid-images_precision_over_recall.png)  
-Figure 207. recall_over_confidence, maskrcnn, pre-trained=True, epochs=0, data=hadji_dimitar_square  
+Figure s207. recall_over_confidence, maskrcnn, pre-trained=True, epochs=0, data=hadji_dimitar_square  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_0_-data-hadji_dimitar_square-valid-images_recall_over_confidence.png)  
-Figure 208. f1_over_confidence, maskrcnn, pre-trained=True, epochs=0, data=keskvaljak  
+Figure s208. f1_over_confidence, maskrcnn, pre-trained=True, epochs=0, data=keskvaljak  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_0_-data-keskvaljak-valid-images_f1_over_confidence.png)  
-Figure 209. precision_over_confidence, maskrcnn, pre-trained=True, epochs=0, data=keskvaljak  
+Figure s209. precision_over_confidence, maskrcnn, pre-trained=True, epochs=0, data=keskvaljak  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_0_-data-keskvaljak-valid-images_precision_over_confidence.png)  
-Figure 210. precision_over_recall, maskrcnn, pre-trained=True, epochs=0, data=keskvaljak  
+Figure s210. precision_over_recall, maskrcnn, pre-trained=True, epochs=0, data=keskvaljak  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_0_-data-keskvaljak-valid-images_precision_over_recall.png)  
-Figure 211. recall_over_confidence, maskrcnn, pre-trained=True, epochs=0, data=keskvaljak  
+Figure s211. recall_over_confidence, maskrcnn, pre-trained=True, epochs=0, data=keskvaljak  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_0_-data-keskvaljak-valid-images_recall_over_confidence.png)  
-Figure 212. f1_over_confidence, maskrcnn, pre-trained=True, epochs=0, data=kielce_university_of_technology  
+Figure s212. f1_over_confidence, maskrcnn, pre-trained=True, epochs=0, data=kielce_university_of_technology  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_0_-data-kielce_university_of_technology-valid-images_f1_over_confidence.png)  
-Figure 213. precision_over_confidence, maskrcnn, pre-trained=True, epochs=0, data=kielce_university_of_technology  
+Figure s213. precision_over_confidence, maskrcnn, pre-trained=True, epochs=0, data=kielce_university_of_technology  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_0_-data-kielce_university_of_technology-valid-images_precision_over_confidence.png)  
-Figure 214. precision_over_recall, maskrcnn, pre-trained=True, epochs=0, data=kielce_university_of_technology  
+Figure s214. precision_over_recall, maskrcnn, pre-trained=True, epochs=0, data=kielce_university_of_technology  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_0_-data-kielce_university_of_technology-valid-images_precision_over_recall.png)  
-Figure 215. recall_over_confidence, maskrcnn, pre-trained=True, epochs=0, data=kielce_university_of_technology  
+Figure s215. recall_over_confidence, maskrcnn, pre-trained=True, epochs=0, data=kielce_university_of_technology  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_0_-data-kielce_university_of_technology-valid-images_recall_over_confidence.png)  
-Figure 216. f1_over_confidence, maskrcnn, pre-trained=True, epochs=0, data=toggenburg_alpaca_ranch  
+Figure s216. f1_over_confidence, maskrcnn, pre-trained=True, epochs=0, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_0_-data-toggenburg_alpaca_ranch-valid-images_f1_over_confidence.png)  
-Figure 217. precision_over_confidence, maskrcnn, pre-trained=True, epochs=0, data=toggenburg_alpaca_ranch  
+Figure s217. precision_over_confidence, maskrcnn, pre-trained=True, epochs=0, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_0_-data-toggenburg_alpaca_ranch-valid-images_precision_over_confidence.png)  
-Figure 218. precision_over_recall, maskrcnn, pre-trained=True, epochs=0, data=toggenburg_alpaca_ranch  
+Figure s218. precision_over_recall, maskrcnn, pre-trained=True, epochs=0, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_0_-data-toggenburg_alpaca_ranch-valid-images_precision_over_recall.png)  
-Figure 219. recall_over_confidence, maskrcnn, pre-trained=True, epochs=0, data=toggenburg_alpaca_ranch  
+Figure s219. recall_over_confidence, maskrcnn, pre-trained=True, epochs=0, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_0_-data-toggenburg_alpaca_ranch-valid-images_recall_over_confidence.png)  
-Figure 220. f1_over_confidence, maskrcnn, pre-trained=True, epochs=50, data=duomo  
+Figure s220. f1_over_confidence, maskrcnn, pre-trained=True, epochs=50, data=duomo  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_50_-data-duomo-valid-images_f1_over_confidence.png)  
-Figure 221. precision_over_confidence, maskrcnn, pre-trained=True, epochs=50, data=duomo  
+Figure s221. precision_over_confidence, maskrcnn, pre-trained=True, epochs=50, data=duomo  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_50_-data-duomo-valid-images_precision_over_confidence.png)  
-Figure 222. precision_over_recall, maskrcnn, pre-trained=True, epochs=50, data=duomo  
+Figure s222. precision_over_recall, maskrcnn, pre-trained=True, epochs=50, data=duomo  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_50_-data-duomo-valid-images_precision_over_recall.png)  
-Figure 223. recall_over_confidence, maskrcnn, pre-trained=True, epochs=50, data=duomo  
+Figure s223. recall_over_confidence, maskrcnn, pre-trained=True, epochs=50, data=duomo  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_50_-data-duomo-valid-images_recall_over_confidence.png)  
-Figure 224. f1_over_confidence, maskrcnn, pre-trained=True, epochs=50, data=hadji_dimitar_square  
+Figure s224. f1_over_confidence, maskrcnn, pre-trained=True, epochs=50, data=hadji_dimitar_square  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_50_-data-hadji_dimitar_square-valid-images_f1_over_confidence.png)  
-Figure 225. precision_over_confidence, maskrcnn, pre-trained=True, epochs=50, data=hadji_dimitar_square  
+Figure s225. precision_over_confidence, maskrcnn, pre-trained=True, epochs=50, data=hadji_dimitar_square  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_50_-data-hadji_dimitar_square-valid-images_precision_over_confidence.png)  
-Figure 226. precision_over_recall, maskrcnn, pre-trained=True, epochs=50, data=hadji_dimitar_square  
+Figure s226. precision_over_recall, maskrcnn, pre-trained=True, epochs=50, data=hadji_dimitar_square  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_50_-data-hadji_dimitar_square-valid-images_precision_over_recall.png)  
-Figure 227. recall_over_confidence, maskrcnn, pre-trained=True, epochs=50, data=hadji_dimitar_square  
+Figure s227. recall_over_confidence, maskrcnn, pre-trained=True, epochs=50, data=hadji_dimitar_square  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_50_-data-hadji_dimitar_square-valid-images_recall_over_confidence.png)  
-Figure 228. f1_over_confidence, maskrcnn, pre-trained=True, epochs=50, data=keskvaljak  
+Figure s228. f1_over_confidence, maskrcnn, pre-trained=True, epochs=50, data=keskvaljak  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_50_-data-keskvaljak-valid-images_f1_over_confidence.png)  
-Figure 229. precision_over_confidence, maskrcnn, pre-trained=True, epochs=50, data=keskvaljak  
+Figure s229. precision_over_confidence, maskrcnn, pre-trained=True, epochs=50, data=keskvaljak  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_50_-data-keskvaljak-valid-images_precision_over_confidence.png)  
-Figure 230. precision_over_recall, maskrcnn, pre-trained=True, epochs=50, data=keskvaljak  
+Figure s230. precision_over_recall, maskrcnn, pre-trained=True, epochs=50, data=keskvaljak  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_50_-data-keskvaljak-valid-images_precision_over_recall.png)  
-Figure 231. recall_over_confidence, maskrcnn, pre-trained=True, epochs=50, data=keskvaljak  
+Figure s231. recall_over_confidence, maskrcnn, pre-trained=True, epochs=50, data=keskvaljak  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_50_-data-keskvaljak-valid-images_recall_over_confidence.png)  
-Figure 232. f1_over_confidence, maskrcnn, pre-trained=True, epochs=50, data=kielce_university_of_technology  
+Figure s232. f1_over_confidence, maskrcnn, pre-trained=True, epochs=50, data=kielce_university_of_technology  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_50_-data-kielce_university_of_technology-valid-images_f1_over_confidence.png)  
-Figure 233. precision_over_confidence, maskrcnn, pre-trained=True, epochs=50, data=kielce_university_of_technology  
+Figure s233. precision_over_confidence, maskrcnn, pre-trained=True, epochs=50, data=kielce_university_of_technology  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_50_-data-kielce_university_of_technology-valid-images_precision_over_confidence.png)  
-Figure 234. precision_over_recall, maskrcnn, pre-trained=True, epochs=50, data=kielce_university_of_technology  
+Figure s234. precision_over_recall, maskrcnn, pre-trained=True, epochs=50, data=kielce_university_of_technology  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_50_-data-kielce_university_of_technology-valid-images_precision_over_recall.png)  
-Figure 235. recall_over_confidence, maskrcnn, pre-trained=True, epochs=50, data=kielce_university_of_technology  
+Figure s235. recall_over_confidence, maskrcnn, pre-trained=True, epochs=50, data=kielce_university_of_technology  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_50_-data-kielce_university_of_technology-valid-images_recall_over_confidence.png)  
-Figure 236. f1_over_confidence, maskrcnn, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch  
+Figure s236. f1_over_confidence, maskrcnn, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_50_-data-toggenburg_alpaca_ranch-valid-images_f1_over_confidence.png)  
-Figure 237. precision_over_confidence, maskrcnn, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch  
+Figure s237. precision_over_confidence, maskrcnn, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_50_-data-toggenburg_alpaca_ranch-valid-images_precision_over_confidence.png)  
-Figure 238. precision_over_recall, maskrcnn, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch  
+Figure s238. precision_over_recall, maskrcnn, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_50_-data-toggenburg_alpaca_ranch-valid-images_precision_over_recall.png)  
-Figure 239. recall_over_confidence, maskrcnn, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch  
+Figure s239. recall_over_confidence, maskrcnn, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_50_-data-toggenburg_alpaca_ranch-valid-images_recall_over_confidence.png)  
-Figure 240. f1_over_confidence, maskrcnn, pre-trained=True, epochs=100, data=duomo  
+Figure s240. f1_over_confidence, maskrcnn, pre-trained=True, epochs=100, data=duomo  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_100_-data-duomo-valid-images_f1_over_confidence.png)  
-Figure 241. precision_over_confidence, maskrcnn, pre-trained=True, epochs=100, data=duomo  
+Figure s241. precision_over_confidence, maskrcnn, pre-trained=True, epochs=100, data=duomo  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_100_-data-duomo-valid-images_precision_over_confidence.png)  
-Figure 242. precision_over_recall, maskrcnn, pre-trained=True, epochs=100, data=duomo  
+Figure s242. precision_over_recall, maskrcnn, pre-trained=True, epochs=100, data=duomo  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_100_-data-duomo-valid-images_precision_over_recall.png)  
-Figure 243. recall_over_confidence, maskrcnn, pre-trained=True, epochs=100, data=duomo  
+Figure s243. recall_over_confidence, maskrcnn, pre-trained=True, epochs=100, data=duomo  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_100_-data-duomo-valid-images_recall_over_confidence.png)  
-Figure 244. f1_over_confidence, maskrcnn, pre-trained=True, epochs=100, data=hadji_dimitar_square  
+Figure s244. f1_over_confidence, maskrcnn, pre-trained=True, epochs=100, data=hadji_dimitar_square  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_100_-data-hadji_dimitar_square-valid-images_f1_over_confidence.png)  
-Figure 245. precision_over_confidence, maskrcnn, pre-trained=True, epochs=100, data=hadji_dimitar_square  
+Figure s245. precision_over_confidence, maskrcnn, pre-trained=True, epochs=100, data=hadji_dimitar_square  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_100_-data-hadji_dimitar_square-valid-images_precision_over_confidence.png)  
-Figure 246. precision_over_recall, maskrcnn, pre-trained=True, epochs=100, data=hadji_dimitar_square  
+Figure s246. precision_over_recall, maskrcnn, pre-trained=True, epochs=100, data=hadji_dimitar_square  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_100_-data-hadji_dimitar_square-valid-images_precision_over_recall.png)  
-Figure 247. recall_over_confidence, maskrcnn, pre-trained=True, epochs=100, data=hadji_dimitar_square  
+Figure s247. recall_over_confidence, maskrcnn, pre-trained=True, epochs=100, data=hadji_dimitar_square  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_100_-data-hadji_dimitar_square-valid-images_recall_over_confidence.png)  
-Figure 248. f1_over_confidence, maskrcnn, pre-trained=True, epochs=100, data=keskvaljak  
+Figure s248. f1_over_confidence, maskrcnn, pre-trained=True, epochs=100, data=keskvaljak  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_100_-data-keskvaljak-valid-images_f1_over_confidence.png)  
-Figure 249. precision_over_confidence, maskrcnn, pre-trained=True, epochs=100, data=keskvaljak  
+Figure s249. precision_over_confidence, maskrcnn, pre-trained=True, epochs=100, data=keskvaljak  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_100_-data-keskvaljak-valid-images_precision_over_confidence.png)  
-Figure 250. precision_over_recall, maskrcnn, pre-trained=True, epochs=100, data=keskvaljak  
+Figure s250. precision_over_recall, maskrcnn, pre-trained=True, epochs=100, data=keskvaljak  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_100_-data-keskvaljak-valid-images_precision_over_recall.png)  
-Figure 251. recall_over_confidence, maskrcnn, pre-trained=True, epochs=100, data=keskvaljak  
+Figure s251. recall_over_confidence, maskrcnn, pre-trained=True, epochs=100, data=keskvaljak  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_100_-data-keskvaljak-valid-images_recall_over_confidence.png)  
-Figure 252. f1_over_confidence, maskrcnn, pre-trained=True, epochs=100, data=kielce_university_of_technology  
+Figure s252. f1_over_confidence, maskrcnn, pre-trained=True, epochs=100, data=kielce_university_of_technology  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_100_-data-kielce_university_of_technology-valid-images_f1_over_confidence.png)  
-Figure 253. precision_over_confidence, maskrcnn, pre-trained=True, epochs=100, data=kielce_university_of_technology  
+Figure s253. precision_over_confidence, maskrcnn, pre-trained=True, epochs=100, data=kielce_university_of_technology  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_100_-data-kielce_university_of_technology-valid-images_precision_over_confidence.png)  
-Figure 254. precision_over_recall, maskrcnn, pre-trained=True, epochs=100, data=kielce_university_of_technology  
+Figure s254. precision_over_recall, maskrcnn, pre-trained=True, epochs=100, data=kielce_university_of_technology  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_100_-data-kielce_university_of_technology-valid-images_precision_over_recall.png)  
-Figure 255. recall_over_confidence, maskrcnn, pre-trained=True, epochs=100, data=kielce_university_of_technology  
+Figure s255. recall_over_confidence, maskrcnn, pre-trained=True, epochs=100, data=kielce_university_of_technology  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_100_-data-kielce_university_of_technology-valid-images_recall_over_confidence.png)  
-Figure 256. f1_over_confidence, maskrcnn, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch  
+Figure s256. f1_over_confidence, maskrcnn, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_100_-data-toggenburg_alpaca_ranch-valid-images_f1_over_confidence.png)  
-Figure 257. precision_over_confidence, maskrcnn, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch  
+Figure s257. precision_over_confidence, maskrcnn, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_100_-data-toggenburg_alpaca_ranch-valid-images_precision_over_confidence.png)  
-Figure 258. precision_over_recall, maskrcnn, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch  
+Figure s258. precision_over_recall, maskrcnn, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_100_-data-toggenburg_alpaca_ranch-valid-images_precision_over_recall.png)  
-Figure 259. recall_over_confidence, maskrcnn, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch  
+Figure s259. recall_over_confidence, maskrcnn, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_100_-data-toggenburg_alpaca_ranch-valid-images_recall_over_confidence.png)  
-Figure 260. f1_over_confidence, maskrcnn, pre-trained=True, epochs=150, data=duomo  
+Figure s260. f1_over_confidence, maskrcnn, pre-trained=True, epochs=150, data=duomo  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_150_-data-duomo-valid-images_f1_over_confidence.png)  
-Figure 261. precision_over_confidence, maskrcnn, pre-trained=True, epochs=150, data=duomo  
+Figure s261. precision_over_confidence, maskrcnn, pre-trained=True, epochs=150, data=duomo  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_150_-data-duomo-valid-images_precision_over_confidence.png)  
-Figure 262. precision_over_recall, maskrcnn, pre-trained=True, epochs=150, data=duomo  
+Figure s262. precision_over_recall, maskrcnn, pre-trained=True, epochs=150, data=duomo  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_150_-data-duomo-valid-images_precision_over_recall.png)  
-Figure 263. recall_over_confidence, maskrcnn, pre-trained=True, epochs=150, data=duomo  
+Figure s263. recall_over_confidence, maskrcnn, pre-trained=True, epochs=150, data=duomo  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_150_-data-duomo-valid-images_recall_over_confidence.png)  
-Figure 264. confidence, maskrcnn, pre-trained=True, epochs=150, data=hadji_dimitar_square  
+Figure s264. confidence, maskrcnn, pre-trained=True, epochs=150, data=hadji_dimitar_square  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_150_-data-hadji_dimitar_square-valid-images_f1_over_confidence.png)  
-Figure 265. precision_over_confidence, maskrcnn, pre-trained=True, epochs=150, data=hadji_dimitar_square  
+Figure s265. precision_over_confidence, maskrcnn, pre-trained=True, epochs=150, data=hadji_dimitar_square  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_150_-data-hadji_dimitar_square-valid-images_precision_over_confidence.png)  
-Figure 266. precision_over_recall, maskrcnn, pre-trained=True, epochs=150, data=hadji_dimitar_square  
+Figure s266. precision_over_recall, maskrcnn, pre-trained=True, epochs=150, data=hadji_dimitar_square  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_150_-data-hadji_dimitar_square-valid-images_precision_over_recall.png)  
-Figure 267. recall_over_confidence, maskrcnn, pre-trained=True, epochs=150, data=hadji_dimitar_square  
+Figure s267. recall_over_confidence, maskrcnn, pre-trained=True, epochs=150, data=hadji_dimitar_square  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_150_-data-hadji_dimitar_square-valid-images_recall_over_confidence.png)  
-Figure 268. f1_over_confidence, maskrcnn, pre-trained=True, epochs=150, data=keskvaljak  
+Figure s268. f1_over_confidence, maskrcnn, pre-trained=True, epochs=150, data=keskvaljak  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_150_-data-keskvaljak-valid-images_f1_over_confidence.png)  
-Figure 269. precision_over_confidence, maskrcnn, pre-trained=True, epochs=150, data=keskvaljak  
+Figure s269. precision_over_confidence, maskrcnn, pre-trained=True, epochs=150, data=keskvaljak  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_150_-data-keskvaljak-valid-images_precision_over_confidence.png)  
-Figure 270. precision_over_recall, maskrcnn, pre-trained=True, epochs=150, data=keskvaljak  
+Figure s270. precision_over_recall, maskrcnn, pre-trained=True, epochs=150, data=keskvaljak  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_150_-data-keskvaljak-valid-images_precision_over_recall.png)  
-Figure 271. recall_over_confidence, maskrcnn, pre-trained=True, epochs=150, data=keskvaljak  
+Figure s271. recall_over_confidence, maskrcnn, pre-trained=True, epochs=150, data=keskvaljak  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_150_-data-keskvaljak-valid-images_recall_over_confidence.png)  
-Figure 272. f1_over_confidence, maskrcnn, pre-trained=True, epochs=150, data=kielce_university_of_technology  
+Figure s272. f1_over_confidence, maskrcnn, pre-trained=True, epochs=150, data=kielce_university_of_technology  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_150_-data-kielce_university_of_technology-valid-images_f1_over_confidence.png)  
-Figure 273. precision_over_confidence, maskrcnn, pre-trained=True, epochs=150, data=kielce_university_of_technology  
+Figure s273. precision_over_confidence, maskrcnn, pre-trained=True, epochs=150, data=kielce_university_of_technology  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_150_-data-kielce_university_of_technology-valid-images_precision_over_confidence.png)  
-Figure 274. precision_over_recall, maskrcnn, pre-trained=True, epochs=150, data=kielce_university_of_technology  
+Figure s274. precision_over_recall, maskrcnn, pre-trained=True, epochs=150, data=kielce_university_of_technology  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_150_-data-kielce_university_of_technology-valid-images_precision_over_recall.png)  
-Figure 275. recall_over_confidence, maskrcnn, pre-trained=True, epochs=150, data=kielce_university_of_technology  
+Figure s275. recall_over_confidence, maskrcnn, pre-trained=True, epochs=150, data=kielce_university_of_technology  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_150_-data-kielce_university_of_technology-valid-images_recall_over_confidence.png)  
-Figure 276. f1_over_confidence, maskrcnn, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch  
+Figure s276. f1_over_confidence, maskrcnn, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_150_-data-toggenburg_alpaca_ranch-valid-images_f1_over_confidence.png)  
-Figure 277. precision_over_confidence, maskrcnn, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch  
+Figure s277. precision_over_confidence, maskrcnn, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_150_-data-toggenburg_alpaca_ranch-valid-images_precision_over_confidence.png)  
-Figure 278. precision_over_recall, maskrcnn, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch  
+Figure s278. precision_over_recall, maskrcnn, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_150_-data-toggenburg_alpaca_ranch-valid-images_precision_over_recall.png)  
-Figure 279. recall_over_confidence, maskrcnn, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch  
+Figure s279. recall_over_confidence, maskrcnn, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/maskrcnn_resnet50_fpn_True_150_-data-toggenburg_alpaca_ranch-valid-images_recall_over_confidence.png)  
-Figure 280. f1_over_confidence, retinanet, pre-trained=True, epochs=0, data=duomo  
+Figure s280. f1_over_confidence, retinanet, pre-trained=True, epochs=0, data=duomo  
 ![](./saved_runs/retinanet_resnet50_fpn_True_0_-data-duomo-valid-images_f1_over_confidence.png)  
-Figure 281. precision_over_confidence, retinanet, pre-trained=True, epochs=0, data=duomo  
+Figure s281. precision_over_confidence, retinanet, pre-trained=True, epochs=0, data=duomo  
 ![](./saved_runs/retinanet_resnet50_fpn_True_0_-data-duomo-valid-images_precision_over_confidence.png)  
-Figure 282. precision_over_recall, retinanet, pre-trained=True, epochs=0, data=duomo  
+Figure s282. precision_over_recall, retinanet, pre-trained=True, epochs=0, data=duomo  
 ![](./saved_runs/retinanet_resnet50_fpn_True_0_-data-duomo-valid-images_precision_over_recall.png)  
-Figure 283. recall_over_confidence, retinanet, pre-trained=True, epochs=0, data=duomo  
+Figure s283. recall_over_confidence, retinanet, pre-trained=True, epochs=0, data=duomo  
 ![](./saved_runs/retinanet_resnet50_fpn_True_0_-data-duomo-valid-images_recall_over_confidence.png)  
-Figure 284. f1_over_confidence, retinanet, pre-trained=True, epochs=0, data=hadji_dimitar_square  
+Figure s284. f1_over_confidence, retinanet, pre-trained=True, epochs=0, data=hadji_dimitar_square  
 ![](./saved_runs/retinanet_resnet50_fpn_True_0_-data-hadji_dimitar_square-valid-images_f1_over_confidence.png)  
-Figure 285. precision_over_confidence, retinanet, pre-trained=True, epochs=0, data=hadji_dimitar_square  
+Figure s285. precision_over_confidence, retinanet, pre-trained=True, epochs=0, data=hadji_dimitar_square  
 ![](./saved_runs/retinanet_resnet50_fpn_True_0_-data-hadji_dimitar_square-valid-images_precision_over_confidence.png)  
-Figure 286. precision_over_recall, retinanet, pre-trained=True, epochs=0, data=hadji_dimitar_square  
+Figure s286. precision_over_recall, retinanet, pre-trained=True, epochs=0, data=hadji_dimitar_square  
 ![](./saved_runs/retinanet_resnet50_fpn_True_0_-data-hadji_dimitar_square-valid-images_precision_over_recall.png)  
-Figure 287. recall_over_confidence, retinanet, pre-trained=True, epochs=0, data=hadji_dimitar_square  
+Figure s287. recall_over_confidence, retinanet, pre-trained=True, epochs=0, data=hadji_dimitar_square  
 ![](./saved_runs/retinanet_resnet50_fpn_True_0_-data-hadji_dimitar_square-valid-images_recall_over_confidence.png)  
-Figure 288. f1_over_confidence, retinanet, pre-trained=True, epochs=0, data=keskvaljak  
+Figure s288. f1_over_confidence, retinanet, pre-trained=True, epochs=0, data=keskvaljak  
 ![](./saved_runs/retinanet_resnet50_fpn_True_0_-data-keskvaljak-valid-images_f1_over_confidence.png)  
-Figure 289. precision_over_confidence, retinanet, pre-trained=True, epochs=0, data=keskvaljak  
+Figure s289. precision_over_confidence, retinanet, pre-trained=True, epochs=0, data=keskvaljak  
 ![](./saved_runs/retinanet_resnet50_fpn_True_0_-data-keskvaljak-valid-images_precision_over_confidence.png)  
-Figure 290. precision_over_recall, retinanet, pre-trained=True, epochs=0, data=keskvaljak  
+Figure s290. precision_over_recall, retinanet, pre-trained=True, epochs=0, data=keskvaljak  
 ![](./saved_runs/retinanet_resnet50_fpn_True_0_-data-keskvaljak-valid-images_precision_over_recall.png)  
-Figure 291. recall_over_confidence, retinanet, pre-trained=True, epochs=0, data=keskvaljak  
+Figure s291. recall_over_confidence, retinanet, pre-trained=True, epochs=0, data=keskvaljak  
 ![](./saved_runs/retinanet_resnet50_fpn_True_0_-data-keskvaljak-valid-images_recall_over_confidence.png)  
-Figure 292. f1_over_confidence, retinanet, pre-trained=True, epochs=0, data=kielce_university_of_technology  
+Figure s292. f1_over_confidence, retinanet, pre-trained=True, epochs=0, data=kielce_university_of_technology  
 ![](./saved_runs/retinanet_resnet50_fpn_True_0_-data-kielce_university_of_technology-valid-images_f1_over_confidence.png)  
-Figure 293. precision_over_confidence, retinanet, pre-trained=True, epochs=0, data=kielce_university_of_technology  
+Figure s293. precision_over_confidence, retinanet, pre-trained=True, epochs=0, data=kielce_university_of_technology  
 ![](./saved_runs/retinanet_resnet50_fpn_True_0_-data-kielce_university_of_technology-valid-images_precision_over_confidence.png)  
-Figure 294. precision_over_recall, retinanet, pre-trained=True, epochs=0, data=kielce_university_of_technology  
+Figure s294. precision_over_recall, retinanet, pre-trained=True, epochs=0, data=kielce_university_of_technology  
 ![](./saved_runs/retinanet_resnet50_fpn_True_0_-data-kielce_university_of_technology-valid-images_precision_over_recall.png)  
-Figure 295. recall_over_confidence, retinanet, pre-trained=True, epochs=0, data=kielce_university_of_technology  
+Figure s295. recall_over_confidence, retinanet, pre-trained=True, epochs=0, data=kielce_university_of_technology  
 ![](./saved_runs/retinanet_resnet50_fpn_True_0_-data-kielce_university_of_technology-valid-images_recall_over_confidence.png)  
-Figure 296. f1_over_confidence, retinanet, pre-trained=True, epochs=0, data=toggenburg_alpaca_ranch  
+Figure s296. f1_over_confidence, retinanet, pre-trained=True, epochs=0, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/retinanet_resnet50_fpn_True_0_-data-toggenburg_alpaca_ranch-valid-images_f1_over_confidence.png)  
-Figure 297. precision_over_confidence, retinanet, pre-trained=True, epochs=0, data=toggenburg_alpaca_ranch  
+Figure s297. precision_over_confidence, retinanet, pre-trained=True, epochs=0, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/retinanet_resnet50_fpn_True_0_-data-toggenburg_alpaca_ranch-valid-images_precision_over_confidence.png)  
-Figure 298. precision_over_recall, retinanet, pre-trained=True, epochs=0, data=toggenburg_alpaca_ranch  
+Figure s298. precision_over_recall, retinanet, pre-trained=True, epochs=0, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/retinanet_resnet50_fpn_True_0_-data-toggenburg_alpaca_ranch-valid-images_precision_over_recall.png)  
-Figure 299. recall_over_confidence, retinanet, pre-trained=True, epochs=0, data=toggenburg_alpaca_ranch  
+Figure s299. recall_over_confidence, retinanet, pre-trained=True, epochs=0, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/retinanet_resnet50_fpn_True_0_-data-toggenburg_alpaca_ranch-valid-images_recall_over_confidence.png)  
-Figure 300. f1_over_confidence, retinanet, pre-trained=True, epochs=50, data=duomo  
+Figure s300. f1_over_confidence, retinanet, pre-trained=True, epochs=50, data=duomo  
 ![](./saved_runs/retinanet_resnet50_fpn_True_50_-data-duomo-valid-images_f1_over_confidence.png)  
-Figure 301. precision_over_confidence, retinanet, pre-trained=True, epochs=50, data=duomo  
+Figure s301. precision_over_confidence, retinanet, pre-trained=True, epochs=50, data=duomo  
 ![](./saved_runs/retinanet_resnet50_fpn_True_50_-data-duomo-valid-images_precision_over_confidence.png)  
-Figure 302. precision_over_recall, retinanet, pre-trained=True, epochs=50, data=duomo  
+Figure s302. precision_over_recall, retinanet, pre-trained=True, epochs=50, data=duomo  
 ![](./saved_runs/retinanet_resnet50_fpn_True_50_-data-duomo-valid-images_precision_over_recall.png)  
-Figure 303. recall_over_confidence, retinanet, pre-trained=True, epochs=50, data=duomo  
+Figure s303. recall_over_confidence, retinanet, pre-trained=True, epochs=50, data=duomo  
 ![](./saved_runs/retinanet_resnet50_fpn_True_50_-data-duomo-valid-images_recall_over_confidence.png)  
-Figure 304. f1_over_confidence, retinanet, pre-trained=True, epochs=50, data=hadji_dimitar_square  
+Figure s304. f1_over_confidence, retinanet, pre-trained=True, epochs=50, data=hadji_dimitar_square  
 ![](./saved_runs/retinanet_resnet50_fpn_True_50_-data-hadji_dimitar_square-valid-images_f1_over_confidence.png)  
-Figure 305. precision_over_confidence, retinanet, pre-trained=True, epochs=50, data=hadji_dimitar_square  
+Figure s305. precision_over_confidence, retinanet, pre-trained=True, epochs=50, data=hadji_dimitar_square  
 ![](./saved_runs/retinanet_resnet50_fpn_True_50_-data-hadji_dimitar_square-valid-images_precision_over_confidence.png)  
-Figure 306. precision_over_recall, retinanet, pre-trained=True, epochs=50, data=hadji_dimitar_square  
+Figure s306. precision_over_recall, retinanet, pre-trained=True, epochs=50, data=hadji_dimitar_square  
 ![](./saved_runs/retinanet_resnet50_fpn_True_50_-data-hadji_dimitar_square-valid-images_precision_over_recall.png)  
-Figure 307. recall_over_confidence, retinanet, pre-trained=True, epochs=50, data=hadji_dimitar_square  
+Figure s307. recall_over_confidence, retinanet, pre-trained=True, epochs=50, data=hadji_dimitar_square  
 ![](./saved_runs/retinanet_resnet50_fpn_True_50_-data-hadji_dimitar_square-valid-images_recall_over_confidence.png)  
-Figure 308. f1_over_confidence, retinanet, pre-trained=True, epochs=50, data=keskvaljak  
+Figure s308. f1_over_confidence, retinanet, pre-trained=True, epochs=50, data=keskvaljak  
 ![](./saved_runs/retinanet_resnet50_fpn_True_50_-data-keskvaljak-valid-images_f1_over_confidence.png)  
-Figure 309. precision_over_confidence, retinanet, pre-trained=True, epochs=50, data=keskvaljak  
+Figure s309. precision_over_confidence, retinanet, pre-trained=True, epochs=50, data=keskvaljak  
 ![](./saved_runs/retinanet_resnet50_fpn_True_50_-data-keskvaljak-valid-images_precision_over_confidence.png)  
-Figure 310. precision_over_recall, retinanet, pre-trained=True, epochs=50, data=keskvaljak  
+Figure s310. precision_over_recall, retinanet, pre-trained=True, epochs=50, data=keskvaljak  
 ![](./saved_runs/retinanet_resnet50_fpn_True_50_-data-keskvaljak-valid-images_precision_over_recall.png)  
-Figure 311. recall_over_confidence, retinanet, pre-trained=True, epochs=50, data=keskvaljak  
+Figure s311. recall_over_confidence, retinanet, pre-trained=True, epochs=50, data=keskvaljak  
 ![](./saved_runs/retinanet_resnet50_fpn_True_50_-data-keskvaljak-valid-images_recall_over_confidence.png)  
-Figure 312. f1_over_confidence, retinanet, pre-trained=True, epochs=50, data=kielce_university_of_technology  
+Figure s312. f1_over_confidence, retinanet, pre-trained=True, epochs=50, data=kielce_university_of_technology  
 ![](./saved_runs/retinanet_resnet50_fpn_True_50_-data-kielce_university_of_technology-valid-images_f1_over_confidence.png)  
-Figure 313. precision_over_confidence, retinanet, pre-trained=True, epochs=50, data=kielce_university_of_technology  
+Figure s313. precision_over_confidence, retinanet, pre-trained=True, epochs=50, data=kielce_university_of_technology  
 ![](./saved_runs/retinanet_resnet50_fpn_True_50_-data-kielce_university_of_technology-valid-images_precision_over_confidence.png)  
-Figure 314. precision_over_recall, retinanet, pre-trained=True, epochs=50, data=kielce_university_of_technology  
+Figure s314. precision_over_recall, retinanet, pre-trained=True, epochs=50, data=kielce_university_of_technology  
 ![](./saved_runs/retinanet_resnet50_fpn_True_50_-data-kielce_university_of_technology-valid-images_precision_over_recall.png)  
-Figure 315. recall_over_confidence, retinanet, pre-trained=True, epochs=50, data=kielce_university_of_technology  
+Figure s315. recall_over_confidence, retinanet, pre-trained=True, epochs=50, data=kielce_university_of_technology  
 ![](./saved_runs/retinanet_resnet50_fpn_True_50_-data-kielce_university_of_technology-valid-images_recall_over_confidence.png)  
-Figure 316. f1_over_confidence, retinanet, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch  
+Figure s316. f1_over_confidence, retinanet, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/retinanet_resnet50_fpn_True_50_-data-toggenburg_alpaca_ranch-valid-images_f1_over_confidence.png)  
-Figure 317. precision_over_confidence, retinanet, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch  
+Figure s317. precision_over_confidence, retinanet, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/retinanet_resnet50_fpn_True_50_-data-toggenburg_alpaca_ranch-valid-images_precision_over_confidence.png)  
-Figure 318. precision_over_recall, retinanet, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch  
+Figure s318. precision_over_recall, retinanet, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/retinanet_resnet50_fpn_True_50_-data-toggenburg_alpaca_ranch-valid-images_precision_over_recall.png)  
-Figure 319. recall_over_confidence, retinanet, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch  
+Figure s319. recall_over_confidence, retinanet, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/retinanet_resnet50_fpn_True_50_-data-toggenburg_alpaca_ranch-valid-images_recall_over_confidence.png)  
-Figure 320. f1_over_confidence, retinanet, pre-trained=True, epochs=100, data=duomo  
+Figure s320. f1_over_confidence, retinanet, pre-trained=True, epochs=100, data=duomo  
 ![](./saved_runs/retinanet_resnet50_fpn_True_100_-data-duomo-valid-images_f1_over_confidence.png)  
-Figure 321. precision_over_confidence, retinanet, pre-trained=True, epochs=100, data=duomo  
+Figure s321. precision_over_confidence, retinanet, pre-trained=True, epochs=100, data=duomo  
 ![](./saved_runs/retinanet_resnet50_fpn_True_100_-data-duomo-valid-images_precision_over_confidence.png)  
-Figure 322. precision_over_recall, retinanet, pre-trained=True, epochs=100, data=duomo  
+Figure s322. precision_over_recall, retinanet, pre-trained=True, epochs=100, data=duomo  
 ![](./saved_runs/retinanet_resnet50_fpn_True_100_-data-duomo-valid-images_precision_over_recall.png)  
-Figure 323. recall_over_confidence, retinanet, pre-trained=True, epochs=100, data=duomo  
+Figure s323. recall_over_confidence, retinanet, pre-trained=True, epochs=100, data=duomo  
 ![](./saved_runs/retinanet_resnet50_fpn_True_100_-data-duomo-valid-images_recall_over_confidence.png)  
-Figure 324. f1_over_confidence, retinanet, pre-trained=True, epochs=100, data=hadji_dimitar_square  
+Figure s324. f1_over_confidence, retinanet, pre-trained=True, epochs=100, data=hadji_dimitar_square  
 ![](./saved_runs/retinanet_resnet50_fpn_True_100_-data-hadji_dimitar_square-valid-images_f1_over_confidence.png)  
-Figure 325. precision_over_confidence, retinanet, pre-trained=True, epochs=100, data=hadji_dimitar_square  
+Figure s325. precision_over_confidence, retinanet, pre-trained=True, epochs=100, data=hadji_dimitar_square  
 ![](./saved_runs/retinanet_resnet50_fpn_True_100_-data-hadji_dimitar_square-valid-images_precision_over_confidence.png)  
-Figure 326. precision_over_recall, retinanet, pre-trained=True, epochs=100, data=hadji_dimitar_square  
+Figure s326. precision_over_recall, retinanet, pre-trained=True, epochs=100, data=hadji_dimitar_square  
 ![](./saved_runs/retinanet_resnet50_fpn_True_100_-data-hadji_dimitar_square-valid-images_precision_over_recall.png)  
-Figure 327. recall_over_confidence, retinanet, pre-trained=True, epochs=100, data=hadji_dimitar_square  
+Figure s327. recall_over_confidence, retinanet, pre-trained=True, epochs=100, data=hadji_dimitar_square  
 ![](./saved_runs/retinanet_resnet50_fpn_True_100_-data-hadji_dimitar_square-valid-images_recall_over_confidence.png)  
-Figure 328. f1_over_confidence, retinanet, pre-trained=True, epochs=100, data=keskvaljak  
+Figure s328. f1_over_confidence, retinanet, pre-trained=True, epochs=100, data=keskvaljak  
 ![](./saved_runs/retinanet_resnet50_fpn_True_100_-data-keskvaljak-valid-images_f1_over_confidence.png)  
-Figure 329. precision_over_confidence, retinanet, pre-trained=True, epochs=100, data=keskvaljak  
+Figure s329. precision_over_confidence, retinanet, pre-trained=True, epochs=100, data=keskvaljak  
 ![](./saved_runs/retinanet_resnet50_fpn_True_100_-data-keskvaljak-valid-images_precision_over_confidence.png)  
-Figure 330. precision_over_recall, retinanet, pre-trained=True, epochs=100, data=keskvaljak  
+Figure s330. precision_over_recall, retinanet, pre-trained=True, epochs=100, data=keskvaljak  
 ![](./saved_runs/retinanet_resnet50_fpn_True_100_-data-keskvaljak-valid-images_precision_over_recall.png)  
-Figure 331. recall_over_confidence, retinanet, pre-trained=True, epochs=100, data=keskvaljak  
+Figure s331. recall_over_confidence, retinanet, pre-trained=True, epochs=100, data=keskvaljak  
 ![](./saved_runs/retinanet_resnet50_fpn_True_100_-data-keskvaljak-valid-images_recall_over_confidence.png)  
-Figure 332. f1_over_confidence, retinanet, pre-trained=True, epochs=100, data=kielce_university_of_technology  
+Figure s332. f1_over_confidence, retinanet, pre-trained=True, epochs=100, data=kielce_university_of_technology  
 ![](./saved_runs/retinanet_resnet50_fpn_True_100_-data-kielce_university_of_technology-valid-images_f1_over_confidence.png)  
-Figure 333. precision_over_confidence, retinanet, pre-trained=True, epochs=100, data=kielce_university_of_technology  
+Figure s333. precision_over_confidence, retinanet, pre-trained=True, epochs=100, data=kielce_university_of_technology  
 ![](./saved_runs/retinanet_resnet50_fpn_True_100_-data-kielce_university_of_technology-valid-images_precision_over_confidence.png)  
-Figure 334. precision_over_recall, retinanet, pre-trained=True, epochs=100, data=kielce_university_of_technology  
+Figure s334. precision_over_recall, retinanet, pre-trained=True, epochs=100, data=kielce_university_of_technology  
 ![](./saved_runs/retinanet_resnet50_fpn_True_100_-data-kielce_university_of_technology-valid-images_precision_over_recall.png)  
-Figure 335. recall_over_confidence, retinanet, pre-trained=True, epochs=100, data=kielce_university_of_technology  
+Figure s335. recall_over_confidence, retinanet, pre-trained=True, epochs=100, data=kielce_university_of_technology  
 ![](./saved_runs/retinanet_resnet50_fpn_True_100_-data-kielce_university_of_technology-valid-images_recall_over_confidence.png)  
-Figure 336. f1_over_confidence, retinanet, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch  
+Figure s336. f1_over_confidence, retinanet, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/retinanet_resnet50_fpn_True_100_-data-toggenburg_alpaca_ranch-valid-images_f1_over_confidence.png)  
-Figure 337. precision_over_confidence, retinanet, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch  
+Figure s337. precision_over_confidence, retinanet, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/retinanet_resnet50_fpn_True_100_-data-toggenburg_alpaca_ranch-valid-images_precision_over_confidence.png)  
-Figure 338. precision_over_recall, retinanet, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch  
+Figure s338. precision_over_recall, retinanet, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/retinanet_resnet50_fpn_True_100_-data-toggenburg_alpaca_ranch-valid-images_precision_over_recall.png)  
-Figure 339. recall_over_confidence, retinanet, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch  
+Figure s339. recall_over_confidence, retinanet, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/retinanet_resnet50_fpn_True_100_-data-toggenburg_alpaca_ranch-valid-images_recall_over_confidence.png)  
-Figure 340. f1_over_confidence, retinanet, pre-trained=True, epochs=150, data=duomo  
+Figure s340. f1_over_confidence, retinanet, pre-trained=True, epochs=150, data=duomo  
 ![](./saved_runs/retinanet_resnet50_fpn_True_150_-data-duomo-valid-images_f1_over_confidence.png)  
-Figure 341. precision_over_confidence, retinanet, pre-trained=True, epochs=150, data=duomo  
+Figure s341. precision_over_confidence, retinanet, pre-trained=True, epochs=150, data=duomo  
 ![](./saved_runs/retinanet_resnet50_fpn_True_150_-data-duomo-valid-images_precision_over_confidence.png)  
-Figure 342. precision_over_recall, retinanet, pre-trained=True, epochs=150, data=duomo  
+Figure s342. precision_over_recall, retinanet, pre-trained=True, epochs=150, data=duomo  
 ![](./saved_runs/retinanet_resnet50_fpn_True_150_-data-duomo-valid-images_precision_over_recall.png)  
-Figure 343. recall_over_confidence, retinanet, pre-trained=True, epochs=150, data=duomo  
+Figure s343. recall_over_confidence, retinanet, pre-trained=True, epochs=150, data=duomo  
 ![](./saved_runs/retinanet_resnet50_fpn_True_150_-data-duomo-valid-images_recall_over_confidence.png)  
-Figure 344. f1_over_confidence, retinanet, pre-trained=True, epochs=150, data=hadji_dimitar_square  
+Figure s344. f1_over_confidence, retinanet, pre-trained=True, epochs=150, data=hadji_dimitar_square  
 ![](./saved_runs/retinanet_resnet50_fpn_True_150_-data-hadji_dimitar_square-valid-images_f1_over_confidence.png)  
-Figure 345. precision_over_confidence, retinanet, pre-trained=True, epochs=150, data=hadji_dimitar_square  
+Figure s345. precision_over_confidence, retinanet, pre-trained=True, epochs=150, data=hadji_dimitar_square  
 ![](./saved_runs/retinanet_resnet50_fpn_True_150_-data-hadji_dimitar_square-valid-images_precision_over_confidence.png)  
-Figure 346. precision_over_recall, retinanet, pre-trained=True, epochs=150, data=hadji_dimitar_square  
+Figure s346. precision_over_recall, retinanet, pre-trained=True, epochs=150, data=hadji_dimitar_square  
 ![](./saved_runs/retinanet_resnet50_fpn_True_150_-data-hadji_dimitar_square-valid-images_precision_over_recall.png)  
-Figure 347. recall_over_confidence, retinanet, pre-trained=True, epochs=150, data=hadji_dimitar_square  
+Figure s347. recall_over_confidence, retinanet, pre-trained=True, epochs=150, data=hadji_dimitar_square  
 ![](./saved_runs/retinanet_resnet50_fpn_True_150_-data-hadji_dimitar_square-valid-images_recall_over_confidence.png)  
-Figure 348. f1_over_confidence, retinanet, pre-trained=True, epochs=150, data=keskvaljak  
+Figure s348. f1_over_confidence, retinanet, pre-trained=True, epochs=150, data=keskvaljak  
 ![](./saved_runs/retinanet_resnet50_fpn_True_150_-data-keskvaljak-valid-images_f1_over_confidence.png)  
-Figure 349. precision_over_confidence, retinanet, pre-trained=True, epochs=150, data=keskvaljak  
+Figure s349. precision_over_confidence, retinanet, pre-trained=True, epochs=150, data=keskvaljak  
 ![](./saved_runs/retinanet_resnet50_fpn_True_150_-data-keskvaljak-valid-images_precision_over_confidence.png)  
-Figure 350. precision_over_recall, retinanet, pre-trained=True, epochs=150, data=keskvaljak  
+Figure s350. precision_over_recall, retinanet, pre-trained=True, epochs=150, data=keskvaljak  
 ![](./saved_runs/retinanet_resnet50_fpn_True_150_-data-keskvaljak-valid-images_precision_over_recall.png)  
-Figure 351. recall_over_confidence, retinanet, pre-trained=True, epochs=150, data=keskvaljak  
+Figure s351. recall_over_confidence, retinanet, pre-trained=True, epochs=150, data=keskvaljak  
 ![](./saved_runs/retinanet_resnet50_fpn_True_150_-data-keskvaljak-valid-images_recall_over_confidence.png)  
-Figure 352. f1_over_confidence, retinanet, pre-trained=True, epochs=150, data=kielce_university_of_technology  
+Figure s352. f1_over_confidence, retinanet, pre-trained=True, epochs=150, data=kielce_university_of_technology  
 ![](./saved_runs/retinanet_resnet50_fpn_True_150_-data-kielce_university_of_technology-valid-images_f1_over_confidence.png)  
-Figure 353. precision_over_confidence, retinanet, pre-trained=True, epochs=150, data=kielce_university_of_technology  
+Figure s353. precision_over_confidence, retinanet, pre-trained=True, epochs=150, data=kielce_university_of_technology  
 ![](./saved_runs/retinanet_resnet50_fpn_True_150_-data-kielce_university_of_technology-valid-images_precision_over_confidence.png)  
-Figure 354. precision_over_recall, retinanet, pre-trained=True, epochs=150, data=kielce_university_of_technology  
+Figure s354. precision_over_recall, retinanet, pre-trained=True, epochs=150, data=kielce_university_of_technology  
 ![](./saved_runs/retinanet_resnet50_fpn_True_150_-data-kielce_university_of_technology-valid-images_precision_over_recall.png)  
-Figure 355. recall_over_confidence, retinanet, pre-trained=True, epochs=150, data=kielce_university_of_technology  
+Figure s355. recall_over_confidence, retinanet, pre-trained=True, epochs=150, data=kielce_university_of_technology  
 ![](./saved_runs/retinanet_resnet50_fpn_True_150_-data-kielce_university_of_technology-valid-images_recall_over_confidence.png)  
-Figure 356. f1_over_confidence, retinanet, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch  
+Figure s356. f1_over_confidence, retinanet, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/retinanet_resnet50_fpn_True_150_-data-toggenburg_alpaca_ranch-valid-images_f1_over_confidence.png)  
-Figure 357. precision_over_confidence, retinanet, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch  
+Figure s357. precision_over_confidence, retinanet, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/retinanet_resnet50_fpn_True_150_-data-toggenburg_alpaca_ranch-valid-images_precision_over_confidence.png)  
-Figure 358. precision_over_recall, retinanet, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch  
+Figure s358. precision_over_recall, retinanet, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/retinanet_resnet50_fpn_True_150_-data-toggenburg_alpaca_ranch-valid-images_precision_over_recall.png)  
-Figure 359. recall_over_confidence, retinanet, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch  
+Figure s359. recall_over_confidence, retinanet, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch  
 ![](./saved_runs/retinanet_resnet50_fpn_True_150_-data-toggenburg_alpaca_ranch-valid-images_recall_over_confidence.png)  
-
-Figure 360. f1_over_confidence, yolov8n, pre-trained=True, epochs=50, data=duomo, hyperparameter-tuned=False  
+Figure s360. f1_over_confidence, yolov8n, pre-trained=True, epochs=50, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/train/F1_curve.png)  
-Figure 361. precision_over_recall, yolov8n, pre-trained=True, epochs=50, data=duomo, hyperparameter-tuned=False  
+Figure s361. precision_over_recall, yolov8n, pre-trained=True, epochs=50, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/train/PR_curve.png)  
-Figure 362. precision_over_confidence, yolov8n, pre-trained=True, epochs=50, data=duomo, hyperparameter-tuned=False  
+Figure s362. precision_over_confidence, yolov8n, pre-trained=True, epochs=50, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/train/P_curve.png)  
-Figure 363. recall_over_confidence, yolov8n, pre-trained=True, epochs=50, data=duomo, hyperparameter-tuned=False  
+Figure s363. recall_over_confidence, yolov8n, pre-trained=True, epochs=50, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/train/R_curve.png)  
-Figure 364. confusion_matrix, yolov8n, pre-trained=True, epochs=50, data=duomo, hyperparameter-tuned=False  
+Figure s364. confusion_matrix, yolov8n, pre-trained=True, epochs=50, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/train/confusion_matrix.png)  
-Figure 365. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=50, data=duomo, hyperparameter-tuned=False  
+Figure s365. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=50, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/train/confusion_matrix_normalized.png)  
-
-Figure 366. f1_over_confidence, yolov8n, pre-trained=True, epochs=100, data=duomo, hyperparameter-tuned=False  
+Figure s366. f1_over_confidence, yolov8n, pre-trained=True, epochs=100, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/train2/F1_curve.png)  
-Figure 367. precision_over_recall, yolov8n, pre-trained=True, epochs=100, data=duomo, hyperparameter-tuned=False  
+Figure s367. precision_over_recall, yolov8n, pre-trained=True, epochs=100, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/train2/PR_curve.png)  
-Figure 368. precision_over_confidence, yolov8n, pre-trained=True, epochs=100, data=duomo, hyperparameter-tuned=False  
+Figure s368. precision_over_confidence, yolov8n, pre-trained=True, epochs=100, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/train2/P_curve.png)  
-Figure 369. recall_over_confidence, yolov8n, pre-trained=True, epochs=100, data=duomo, hyperparameter-tuned=False  
+Figure s369. recall_over_confidence, yolov8n, pre-trained=True, epochs=100, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/train2/R_curve.png)  
-Figure 370. confusion_matrix, yolov8n, pre-trained=True, epochs=100, data=duomo, hyperparameter-tuned=False  
+Figure s370. confusion_matrix, yolov8n, pre-trained=True, epochs=100, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/train2/confusion_matrix.png)  
-Figure 371. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=100, data=duomo, hyperparameter-tuned=False  
+Figure s371. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=100, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/train2/confusion_matrix_normalized.png)  
-
-Figure 372. f1_over_confidence, yolov8n, pre-trained=True, epochs=150, data=duomo, hyperparameter-tuned=False  
+Figure s372. f1_over_confidence, yolov8n, pre-trained=True, epochs=150, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/train3/F1_curve.png)  
-Figure 373. precision_over_recall, yolov8n, pre-trained=True, epochs=150, data=duomo, hyperparameter-tuned=False  
+Figure s373. precision_over_recall, yolov8n, pre-trained=True, epochs=150, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/train3/PR_curve.png)  
-Figure 374. precision_over_confidence, yolov8n, pre-trained=True, epochs=150, data=duomo, hyperparameter-tuned=False  
+Figure s374. precision_over_confidence, yolov8n, pre-trained=True, epochs=150, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/train3/P_curve.png)  
-Figure 375. recall_over_confidence, yolov8n, pre-trained=True, epochs=150, data=duomo, hyperparameter-tuned=False  
+Figure s375. recall_over_confidence, yolov8n, pre-trained=True, epochs=150, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/train3/R_curve.png)  
-Figure 376. confusion_matrix, yolov8n, pre-trained=True, epochs=150, data=duomo, hyperparameter-tuned=False  
+Figure s376. confusion_matrix, yolov8n, pre-trained=True, epochs=150, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/train3/confusion_matrix.png)  
-Figure 377. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=150, data=duomo, hyperparameter-tuned=False  
+Figure s377. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=150, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/train3/confusion_matrix_normalized.png)  
-
-Figure 378. f1_over_confidence, yolov8n, pre-trained=True, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=False  
+Figure s378. f1_over_confidence, yolov8n, pre-trained=True, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=False  
 ![](./saved_runs/train4/F1_curve.png)  
-Figure 379. precision_over_recall, yolov8n, pre-trained=True, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=False  
+Figure s379. precision_over_recall, yolov8n, pre-trained=True, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=False  
 ![](./saved_runs/train4/PR_curve.png)  
-Figure 380. precision_over_confidence, yolov8n, pre-trained=True, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=False  
+Figure s380. precision_over_confidence, yolov8n, pre-trained=True, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=False  
 ![](./saved_runs/train4/P_curve.png)  
-Figure 381. recall_over_confidence, yolov8n, pre-trained=True, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=False  
+Figure s381. recall_over_confidence, yolov8n, pre-trained=True, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=False  
 ![](./saved_runs/train4/R_curve.png)  
-Figure 382. confusion_matrix, yolov8n, pre-trained=True, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=False  
+Figure s382. confusion_matrix, yolov8n, pre-trained=True, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=False  
 ![](./saved_runs/train4/confusion_matrix.png)  
-Figure 383. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=False  
+Figure s383. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=False  
 ![](./saved_runs/train4/confusion_matrix_normalized.png)  
-
-Figure 384. f1_over_confidence, yolov8n, pre-trained=True, epochs=100, data=hadji_dimitar_square, hyperparameter-tuned=False  
+Figure s384. f1_over_confidence, yolov8n, pre-trained=True, epochs=100, data=hadji_dimitar_square, hyperparameter-tuned=False  
 ![](./saved_runs/train5/F1_curve.png)  
-Figure 385. precision_over_recall, yolov8n, pre-trained=True, epochs=100, data=hadji_dimitar_square, hyperparameter-tuned=False  
+Figure s385. precision_over_recall, yolov8n, pre-trained=True, epochs=100, data=hadji_dimitar_square, hyperparameter-tuned=False  
 ![](./saved_runs/train5/PR_curve.png)  
-Figure 386. precision_over_confidence, yolov8n, pre-trained=True, epochs=100, data=hadji_dimitar_square, hyperparameter-tuned=False  
+Figure s386. precision_over_confidence, yolov8n, pre-trained=True, epochs=100, data=hadji_dimitar_square, hyperparameter-tuned=False  
 ![](./saved_runs/train5/P_curve.png)  
-Figure 387. recall_over_confidence, yolov8n, pre-trained=True, epochs=100, data=hadji_dimitar_square, hyperparameter-tuned=False  
+Figure s387. recall_over_confidence, yolov8n, pre-trained=True, epochs=100, data=hadji_dimitar_square, hyperparameter-tuned=False  
 ![](./saved_runs/train5/R_curve.png)  
-Figure 388. confusion_matrix, yolov8n, pre-trained=True, epochs=100, data=hadji_dimitar_square, hyperparameter-tuned=False  
+Figure s388. confusion_matrix, yolov8n, pre-trained=True, epochs=100, data=hadji_dimitar_square, hyperparameter-tuned=False  
 ![](./saved_runs/train5/confusion_matrix.png)  
-Figure 389. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=100, data=hadji_dimitar_square, hyperparameter-tuned=False  
+Figure s389. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=100, data=hadji_dimitar_square, hyperparameter-tuned=False  
 ![](./saved_runs/train5/confusion_matrix_normalized.png)  
-
-Figure 390. f1_over_confidence, yolov8n, pre-trained=True, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=False  
+Figure s390. f1_over_confidence, yolov8n, pre-trained=True, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=False  
 ![](./saved_runs/train6/F1_curve.png)  
-Figure 391. precision_over_recall, yolov8n, pre-trained=True, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=False  
+Figure s391. precision_over_recall, yolov8n, pre-trained=True, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=False  
 ![](./saved_runs/train6/PR_curve.png)  
-Figure 392. precision_over_confidence, yolov8n, pre-trained=True, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=False  
+Figure s392. precision_over_confidence, yolov8n, pre-trained=True, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=False  
 ![](./saved_runs/train6/P_curve.png)  
-Figure 393. recall_over_confidence, yolov8n, pre-trained=True, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=False  
+Figure s393. recall_over_confidence, yolov8n, pre-trained=True, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=False  
 ![](./saved_runs/train6/R_curve.png)  
-Figure 394. confusion_matrix, yolov8n, pre-trained=True, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=False  
+Figure s394. confusion_matrix, yolov8n, pre-trained=True, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=False  
 ![](./saved_runs/train6/confusion_matrix.png)  
-Figure 395. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=False  
+Figure s395. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=False  
 ![](./saved_runs/train6/confusion_matrix_normalized.png)  
-
-Figure 396. f1_over_confidence, yolov8n, pre-trained=True, epochs=50, data=keskvaljak, hyperparameter-tuned=False  
+Figure s396. f1_over_confidence, yolov8n, pre-trained=True, epochs=50, data=keskvaljak, hyperparameter-tuned=False  
 ![](./saved_runs/train7/F1_curve.png)  
-Figure 397. precision_over_recall, yolov8n, pre-trained=True, epochs=50, data=keskvaljak, hyperparameter-tuned=False  
+Figure s397. precision_over_recall, yolov8n, pre-trained=True, epochs=50, data=keskvaljak, hyperparameter-tuned=False  
 ![](./saved_runs/train7/PR_curve.png)  
-Figure 398. precision_over_confidence, yolov8n, pre-trained=True, epochs=50, data=keskvaljak, hyperparameter-tuned=False  
+Figure s398. precision_over_confidence, yolov8n, pre-trained=True, epochs=50, data=keskvaljak, hyperparameter-tuned=False  
 ![](./saved_runs/train7/P_curve.png)  
-Figure 399. recall_over_confidence, yolov8n, pre-trained=True, epochs=50, data=keskvaljak, hyperparameter-tuned=False  
+Figure s399. recall_over_confidence, yolov8n, pre-trained=True, epochs=50, data=keskvaljak, hyperparameter-tuned=False  
 ![](./saved_runs/train7/R_curve.png)  
-Figure 400. confusion_matrix, yolov8n, pre-trained=True, epochs=50, data=keskvaljak, hyperparameter-tuned=False  
+Figure s400. confusion_matrix, yolov8n, pre-trained=True, epochs=50, data=keskvaljak, hyperparameter-tuned=False  
 ![](./saved_runs/train7/confusion_matrix.png)  
-Figure 401. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=50, data=keskvaljak, hyperparameter-tuned=False  
+Figure s401. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=50, data=keskvaljak, hyperparameter-tuned=False  
 ![](./saved_runs/train7/confusion_matrix_normalized.png)  
-
-Figure 402. f1_over_confidence, yolov8n, pre-trained=True, epochs=100, data=keskvaljak, hyperparameter-tuned=False  
+Figure s402. f1_over_confidence, yolov8n, pre-trained=True, epochs=100, data=keskvaljak, hyperparameter-tuned=False  
 ![](./saved_runs/train8/F1_curve.png)  
-Figure 403. precision_over_recall, yolov8n, pre-trained=True, epochs=100, data=keskvaljak, hyperparameter-tuned=False  
+Figure s403. precision_over_recall, yolov8n, pre-trained=True, epochs=100, data=keskvaljak, hyperparameter-tuned=False  
 ![](./saved_runs/train8/PR_curve.png)  
-Figure 404. precision_over_confidence, yolov8n, pre-trained=True, epochs=100, data=keskvaljak, hyperparameter-tuned=False  
+Figure s404. precision_over_confidence, yolov8n, pre-trained=True, epochs=100, data=keskvaljak, hyperparameter-tuned=False  
 ![](./saved_runs/train8/P_curve.png)  
-Figure 405. recall_over_confidence, yolov8n, pre-trained=True, epochs=100, data=keskvaljak, hyperparameter-tuned=False  
+Figure s405. recall_over_confidence, yolov8n, pre-trained=True, epochs=100, data=keskvaljak, hyperparameter-tuned=False  
 ![](./saved_runs/train8/R_curve.png)  
-Figure 406. confusion_matrix, yolov8n, pre-trained=True, epochs=100, data=keskvaljak, hyperparameter-tuned=False  
+Figure s406. confusion_matrix, yolov8n, pre-trained=True, epochs=100, data=keskvaljak, hyperparameter-tuned=False  
 ![](./saved_runs/train8/confusion_matrix.png)  
-Figure 407. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=100, data=keskvaljak, hyperparameter-tuned=False  
+Figure s407. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=100, data=keskvaljak, hyperparameter-tuned=False  
 ![](./saved_runs/train8/confusion_matrix_normalized.png)  
-
-Figure 408. f1_over_confidence, yolov8n, pre-trained=True, epochs=150, data=keskvaljak, hyperparameter-tuned=False  
+Figure s408. f1_over_confidence, yolov8n, pre-trained=True, epochs=150, data=keskvaljak, hyperparameter-tuned=False  
 ![](./saved_runs/train9/F1_curve.png)  
-Figure 409. precision_over_recall, yolov8n, pre-trained=True, epochs=150, data=keskvaljak, hyperparameter-tuned=False  
+Figure s409. precision_over_recall, yolov8n, pre-trained=True, epochs=150, data=keskvaljak, hyperparameter-tuned=False  
 ![](./saved_runs/train9/PR_curve.png)  
-Figure 410. precision_over_confidence, yolov8n, pre-trained=True, epochs=150, data=keskvaljak, hyperparameter-tuned=False  
+Figure s410. precision_over_confidence, yolov8n, pre-trained=True, epochs=150, data=keskvaljak, hyperparameter-tuned=False  
 ![](./saved_runs/train9/P_curve.png)  
-Figure 411. recall_over_confidence, yolov8n, pre-trained=True, epochs=150, data=keskvaljak, hyperparameter-tuned=False  
+Figure s411. recall_over_confidence, yolov8n, pre-trained=True, epochs=150, data=keskvaljak, hyperparameter-tuned=False  
 ![](./saved_runs/train9/R_curve.png)  
-Figure 412. confusion_matrix, yolov8n, pre-trained=True, epochs=150, data=keskvaljak, hyperparameter-tuned=False  
+Figure s412. confusion_matrix, yolov8n, pre-trained=True, epochs=150, data=keskvaljak, hyperparameter-tuned=False  
 ![](./saved_runs/train9/confusion_matrix.png)  
-Figure 413. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=150, data=keskvaljak, hyperparameter-tuned=False  
+Figure s413. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=150, data=keskvaljak, hyperparameter-tuned=False  
 ![](./saved_runs/train9/confusion_matrix_normalized.png)  
-
-Figure 414. f1_over_confidence, yolov8n, pre-trained=True, epochs=50, data=kielce_university_of_technology, hyperparameter-tuned=False  
+Figure s414. f1_over_confidence, yolov8n, pre-trained=True, epochs=50, data=kielce_university_of_technology, hyperparameter-tuned=False  
 ![](./saved_runs/train10/F1_curve.png)  
-Figure 415. precision_over_recall, yolov8n, pre-trained=True, epochs=50, data=kielce_university_of_technology, hyperparameter-tuned=False  
+Figure s415. precision_over_recall, yolov8n, pre-trained=True, epochs=50, data=kielce_university_of_technology, hyperparameter-tuned=False  
 ![](./saved_runs/train10/PR_curve.png)  
-Figure 416. precision_over_confidence, yolov8n, pre-trained=True, epochs=50, data=kielce_university_of_technology, hyperparameter-tuned=False  
+Figure s416. precision_over_confidence, yolov8n, pre-trained=True, epochs=50, data=kielce_university_of_technology, hyperparameter-tuned=False  
 ![](./saved_runs/train10/P_curve.png)  
-Figure 417. recall_over_confidence, yolov8n, pre-trained=True, epochs=50, data=kielce_university_of_technology, hyperparameter-tuned=False  
+Figure s417. recall_over_confidence, yolov8n, pre-trained=True, epochs=50, data=kielce_university_of_technology, hyperparameter-tuned=False  
 ![](./saved_runs/train10/R_curve.png)  
-Figure 418. confusion_matrix, yolov8n, pre-trained=True, epochs=50, data=kielce_university_of_technology, hyperparameter-tuned=False  
+Figure s418. confusion_matrix, yolov8n, pre-trained=True, epochs=50, data=kielce_university_of_technology, hyperparameter-tuned=False  
 ![](./saved_runs/train10/confusion_matrix.png)  
-Figure 419. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=50, data=kielce_university_of_technology, hyperparameter-tuned=False  
+Figure s419. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=50, data=kielce_university_of_technology, hyperparameter-tuned=False  
 ![](./saved_runs/train10/confusion_matrix_normalized.png)  
-
-Figure 420. f1_over_confidence, yolov8n, pre-trained=True, epochs=100, data=kielce_university_of_technology, hyperparameter-tuned=False  
+Figure s420. f1_over_confidence, yolov8n, pre-trained=True, epochs=100, data=kielce_university_of_technology, hyperparameter-tuned=False  
 ![](./saved_runs/train11/F1_curve.png)  
-Figure 421. precision_over_recall, yolov8n, pre-trained=True, epochs=100, data=kielce_university_of_technology, hyperparameter-tuned=False  
+Figure s421. precision_over_recall, yolov8n, pre-trained=True, epochs=100, data=kielce_university_of_technology, hyperparameter-tuned=False  
 ![](./saved_runs/train11/PR_curve.png)  
-Figure 422. precision_over_confidence, yolov8n, pre-trained=True, epochs=100, data=kielce_university_of_technology, hyperparameter-tuned=False  
+Figure s422. precision_over_confidence, yolov8n, pre-trained=True, epochs=100, data=kielce_university_of_technology, hyperparameter-tuned=False  
 ![](./saved_runs/train11/P_curve.png)  
-Figure 423. recall_over_confidence, yolov8n, pre-trained=True, epochs=100, data=kielce_university_of_technology, hyperparameter-tuned=False  
+Figure s423. recall_over_confidence, yolov8n, pre-trained=True, epochs=100, data=kielce_university_of_technology, hyperparameter-tuned=False  
 ![](./saved_runs/train11/R_curve.png)  
-Figure 424. confusion_matrix, yolov8n, pre-trained=True, epochs=100, data=kielce_university_of_technology, hyperparameter-tuned=False  
+Figure s424. confusion_matrix, yolov8n, pre-trained=True, epochs=100, data=kielce_university_of_technology, hyperparameter-tuned=False  
 ![](./saved_runs/train11/confusion_matrix.png)  
-Figure 425. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=100, data=kielce_university_of_technology, hyperparameter-tuned=False  
+Figure s425. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=100, data=kielce_university_of_technology, hyperparameter-tuned=False  
 ![](./saved_runs/train11/confusion_matrix_normalized.png)  
-
-Figure 426. f1_over_confidence, yolov8n, pre-trained=True, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=False  
+Figure s426. f1_over_confidence, yolov8n, pre-trained=True, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=False  
 ![](./saved_runs/train12/F1_curve.png)  
-Figure 427. precision_over_recall, yolov8n, pre-trained=True, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=False  
+Figure s427. precision_over_recall, yolov8n, pre-trained=True, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=False  
 ![](./saved_runs/train12/PR_curve.png)  
-Figure 428. precision_over_confidence, yolov8n, pre-trained=True, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=False  
+Figure s428. precision_over_confidence, yolov8n, pre-trained=True, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=False  
 ![](./saved_runs/train12/P_curve.png)  
-Figure 429. recall_over_confidence, yolov8n, pre-trained=True, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=False  
+Figure s429. recall_over_confidence, yolov8n, pre-trained=True, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=False  
 ![](./saved_runs/train12/R_curve.png)  
-Figure 430. confusion_matrix, yolov8n, pre-trained=True, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=False  
+Figure s430. confusion_matrix, yolov8n, pre-trained=True, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=False  
 ![](./saved_runs/train12/confusion_matrix.png)  
-Figure 431. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=False  
+Figure s431. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=False  
 ![](./saved_runs/train12/confusion_matrix_normalized.png)  
-
-Figure 432. f1_over_confidence, yolov8n, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
+Figure s432. f1_over_confidence, yolov8n, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
 ![](./saved_runs/train13/F1_curve.png)  
-Figure 433. precision_over_recall, yolov8n, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
+Figure s433. precision_over_recall, yolov8n, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
 ![](./saved_runs/train13/PR_curve.png)  
-Figure 434. precision_over_confidence, yolov8n, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
+Figure s434. precision_over_confidence, yolov8n, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
 ![](./saved_runs/train13/P_curve.png)  
-Figure 435. recall_over_confidence, yolov8n, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
+Figure s435. recall_over_confidence, yolov8n, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
 ![](./saved_runs/train13/R_curve.png)  
-Figure 436. confusion_matrix, yolov8n, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
+Figure s436. confusion_matrix, yolov8n, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
 ![](./saved_runs/train13/confusion_matrix.png)  
-Figure 437. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
+Figure s437. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
 ![](./saved_runs/train13/confusion_matrix_normalized.png)  
-
-Figure 438. f1_over_confidence, yolov8n, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
+Figure s438. f1_over_confidence, yolov8n, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
 ![](./saved_runs/train15/F1_curve.png)  
-Figure 439. precision_over_recall, yolov8n, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
+Figure s439. precision_over_recall, yolov8n, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
 ![](./saved_runs/train15/PR_curve.png)  
-Figure 440. precision_over_confidence, yolov8n, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
+Figure s440. precision_over_confidence, yolov8n, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
 ![](./saved_runs/train15/P_curve.png)  
-Figure 441. recall_over_confidence, yolov8n, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
+Figure s441. recall_over_confidence, yolov8n, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
 ![](./saved_runs/train15/R_curve.png)  
-Figure 442. confusion_matrix, yolov8n, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
+Figure s442. confusion_matrix, yolov8n, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
 ![](./saved_runs/train15/confusion_matrix.png)  
-Figure 443. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
+Figure s443. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
 ![](./saved_runs/train15/confusion_matrix_normalized.png)  
-
-Figure 444. f1_over_confidence, yolov8n, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
+Figure s444. f1_over_confidence, yolov8n, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
 ![](./saved_runs/train16/F1_curve.png)  
-Figure 445. precision_over_recall, yolov8n, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
+Figure s445. precision_over_recall, yolov8n, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
 ![](./saved_runs/train16/PR_curve.png)  
-Figure 446. precision_over_confidence, yolov8n, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
+Figure s446. precision_over_confidence, yolov8n, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
 ![](./saved_runs/train16/P_curve.png)  
-Figure 447. recall_over_confidence, yolov8n, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
+Figure s447. recall_over_confidence, yolov8n, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
 ![](./saved_runs/train16/R_curve.png)  
-Figure 448. confusion_matrix, yolov8n, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
+Figure s448. confusion_matrix, yolov8n, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
 ![](./saved_runs/train16/confusion_matrix.png)  
-Figure 449. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
+Figure s449. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
 ![](./saved_runs/train16/confusion_matrix_normalized.png)  
-
-Figure 450. f1_over_confidence, yolov8n, pre-trained=False, epochs=50, data=duomo, hyperparameter-tuned=False  
+Figure s450. f1_over_confidence, yolov8n, pre-trained=False, epochs=50, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/train17/F1_curve.png)  
-Figure 451. precision_over_recall, yolov8n, pre-trained=False, epochs=50, data=duomo, hyperparameter-tuned=False  
+Figure s451. precision_over_recall, yolov8n, pre-trained=False, epochs=50, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/train17/PR_curve.png)  
-Figure 452. precision_over_confidence, yolov8n, pre-trained=False, epochs=50, data=duomo, hyperparameter-tuned=False  
+Figure s452. precision_over_confidence, yolov8n, pre-trained=False, epochs=50, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/train17/P_curve.png)  
-Figure 453. recall_over_confidence, yolov8n, pre-trained=False, epochs=50, data=duomo, hyperparameter-tuned=False  
+Figure s453. recall_over_confidence, yolov8n, pre-trained=False, epochs=50, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/train17/R_curve.png)  
-Figure 454. confusion_matrix, yolov8n, pre-trained=False, epochs=50, data=duomo, hyperparameter-tuned=False  
+Figure s454. confusion_matrix, yolov8n, pre-trained=False, epochs=50, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/train17/confusion_matrix.png)  
-Figure 455. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=50, data=duomo, hyperparameter-tuned=False  
+Figure s455. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=50, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/train17/confusion_matrix_normalized.png)  
-
-Figure 456. f1_over_confidence, yolov8n, pre-trained=False, epochs=100, data=duomo, hyperparameter-tuned=False  
+Figure s456. f1_over_confidence, yolov8n, pre-trained=False, epochs=100, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/train18/F1_curve.png)  
-Figure 457. precision_over_recall, yolov8n, pre-trained=False, epochs=100, data=duomo, hyperparameter-tuned=False  
+Figure s457. precision_over_recall, yolov8n, pre-trained=False, epochs=100, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/train18/PR_curve.png)  
-Figure 458. precision_over_confidence, yolov8n, pre-trained=False, epochs=100, data=duomo, hyperparameter-tuned=False  
+Figure s458. precision_over_confidence, yolov8n, pre-trained=False, epochs=100, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/train18/P_curve.png)  
-Figure 459. recall_over_confidence, yolov8n, pre-trained=False, epochs=100, data=duomo, hyperparameter-tuned=False  
+Figure s459. recall_over_confidence, yolov8n, pre-trained=False, epochs=100, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/train18/R_curve.png)  
-Figure 460. confusion_matrix, yolov8n, pre-trained=False, epochs=100, data=duomo, hyperparameter-tuned=False  
+Figure s460. confusion_matrix, yolov8n, pre-trained=False, epochs=100, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/train18/confusion_matrix.png)  
-Figure 461. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=100, data=duomo, hyperparameter-tuned=False  
+Figure s461. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=100, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/train18/confusion_matrix_normalized.png)  
-
-Figure 462. f1_over_confidence, yolov8n, pre-trained=False, epochs=150, data=duomo, hyperparameter-tuned=False  
+Figure s462. f1_over_confidence, yolov8n, pre-trained=False, epochs=150, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/train19/F1_curve.png)  
-Figure 463. precision_over_recall, yolov8n, pre-trained=False, epochs=150, data=duomo, hyperparameter-tuned=False  
+Figure s463. precision_over_recall, yolov8n, pre-trained=False, epochs=150, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/train19/PR_curve.png)  
-Figure 464. precision_over_confidence, yolov8n, pre-trained=False, epochs=150, data=duomo, hyperparameter-tuned=False  
+Figure s464. precision_over_confidence, yolov8n, pre-trained=False, epochs=150, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/train19/P_curve.png)  
-Figure 465. recall_over_confidence, yolov8n, pre-trained=False, epochs=150, data=duomo, hyperparameter-tuned=False  
+Figure s465. recall_over_confidence, yolov8n, pre-trained=False, epochs=150, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/train19/R_curve.png)  
-Figure 466. confusion_matrix, yolov8n, pre-trained=False, epochs=150, data=duomo, hyperparameter-tuned=False  
+Figure s466. confusion_matrix, yolov8n, pre-trained=False, epochs=150, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/train19/confusion_matrix.png)  
-Figure 467. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=150, data=duomo, hyperparameter-tuned=False  
+Figure s467. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=150, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/train19/confusion_matrix_normalized.png)  
-
-Figure 468. f1_over_confidence, yolov8n, pre-trained=False, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=False  
+Figure s468. f1_over_confidence, yolov8n, pre-trained=False, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=False  
 ![](./saved_runs/train20/F1_curve.png)  
-Figure 469. precision_over_recall, yolov8n, pre-trained=False, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=False  
+Figure s469. precision_over_recall, yolov8n, pre-trained=False, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=False  
 ![](./saved_runs/train20/PR_curve.png)  
-Figure 470. precision_over_confidence, yolov8n, pre-trained=False, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=False  
+Figure s470. precision_over_confidence, yolov8n, pre-trained=False, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=False  
 ![](./saved_runs/train20/P_curve.png)  
-Figure 471. recall_over_confidence, yolov8n, pre-trained=False, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=False  
+Figure s471. recall_over_confidence, yolov8n, pre-trained=False, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=False  
 ![](./saved_runs/train20/R_curve.png)  
-Figure 472. confusion_matrix, yolov8n, pre-trained=False, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=False  
+Figure s472. confusion_matrix, yolov8n, pre-trained=False, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=False  
 ![](./saved_runs/train20/confusion_matrix.png)  
-Figure 473. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=False  
+Figure s473. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=False  
 ![](./saved_runs/train20/confusion_matrix_normalized.png)  
-
-Figure 478. confusion_matrix, yolov8n, pre-trained=False, epochs=100, data=hadji_dimitar_square, hyperparameter-tuned=False  
+Figure s478. confusion_matrix, yolov8n, pre-trained=False, epochs=100, data=hadji_dimitar_square, hyperparameter-tuned=False  
 ![](./saved_runs/train21/confusion_matrix.png)  
-Figure 479. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=100, data=hadji_dimitar_square, hyperparameter-tuned=False  
+Figure s479. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=100, data=hadji_dimitar_square, hyperparameter-tuned=False  
 ![](./saved_runs/train21/confusion_matrix_normalized.png)  
-
-Figure 480. f1_over_confidence, yolov8n, pre-trained=False, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=False  
+Figure s480. f1_over_confidence, yolov8n, pre-trained=False, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=False  
 ![](./saved_runs/train22/F1_curve.png)  
-Figure 481. precision_over_recall, yolov8n, pre-trained=False, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=False  
+Figure s481. precision_over_recall, yolov8n, pre-trained=False, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=False  
 ![](./saved_runs/train22/PR_curve.png)  
-Figure 482. precision_over_confidence, yolov8n, pre-trained=False, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=False  
+Figure s482. precision_over_confidence, yolov8n, pre-trained=False, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=False  
 ![](./saved_runs/train22/P_curve.png)  
-Figure 483. recall_over_confidence, yolov8n, pre-trained=False, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=False  
+Figure s483. recall_over_confidence, yolov8n, pre-trained=False, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=False  
 ![](./saved_runs/train22/R_curve.png)  
-Figure 484. confusion_matrix, yolov8n, pre-trained=False, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=False  
+Figure s484. confusion_matrix, yolov8n, pre-trained=False, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=False  
 ![](./saved_runs/train22/confusion_matrix.png)  
-Figure 485. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=False  
+Figure s485. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=False  
 ![](./saved_runs/train22/confusion_matrix_normalized.png)  
-
-Figure 490. confusion_matrix, yolov8n, pre-trained=False, epochs=50, data=keskvaljak, hyperparameter-tuned=False  
+Figure s490. confusion_matrix, yolov8n, pre-trained=False, epochs=50, data=keskvaljak, hyperparameter-tuned=False  
 ![](./saved_runs/train23/confusion_matrix.png)  
-Figure 491. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=50, data=keskvaljak, hyperparameter-tuned=False  
+Figure s491. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=50, data=keskvaljak, hyperparameter-tuned=False  
 ![](./saved_runs/train23/confusion_matrix_normalized.png)  
-
-Figure 496. confusion_matrix, yolov8n, pre-trained=False, epochs=100, data=keskvaljak, hyperparameter-tuned=False  
+Figure s496. confusion_matrix, yolov8n, pre-trained=False, epochs=100, data=keskvaljak, hyperparameter-tuned=False  
 ![](./saved_runs/train24/confusion_matrix.png)  
-Figure 497. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=100, data=keskvaljak, hyperparameter-tuned=False  
+Figure s497. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=100, data=keskvaljak, hyperparameter-tuned=False  
 ![](./saved_runs/train24/confusion_matrix_normalized.png)  
-
-Figure 498. f1_over_confidence, yolov8n, pre-trained=False, epochs=150, data=keskvaljak, hyperparameter-tuned=False  
+Figure s498. f1_over_confidence, yolov8n, pre-trained=False, epochs=150, data=keskvaljak, hyperparameter-tuned=False  
 ![](./saved_runs/train25/F1_curve.png)  
-Figure 499. precision_over_recall, yolov8n, pre-trained=False, epochs=150, data=keskvaljak, hyperparameter-tuned=False  
+Figure s499. precision_over_recall, yolov8n, pre-trained=False, epochs=150, data=keskvaljak, hyperparameter-tuned=False  
 ![](./saved_runs/train25/PR_curve.png)  
-Figure 500. precision_over_confidence, yolov8n, pre-trained=False, epochs=150, data=keskvaljak, hyperparameter-tuned=False  
+Figure s500. precision_over_confidence, yolov8n, pre-trained=False, epochs=150, data=keskvaljak, hyperparameter-tuned=False  
 ![](./saved_runs/train25/P_curve.png)  
-Figure 501. recall_over_confidence, yolov8n, pre-trained=False, epochs=150, data=keskvaljak, hyperparameter-tuned=False  
+Figure s501. recall_over_confidence, yolov8n, pre-trained=False, epochs=150, data=keskvaljak, hyperparameter-tuned=False  
 ![](./saved_runs/train25/R_curve.png)  
-Figure 502. confusion_matrix, yolov8n, pre-trained=False, epochs=150, data=keskvaljak, hyperparameter-tuned=False  
+Figure s502. confusion_matrix, yolov8n, pre-trained=False, epochs=150, data=keskvaljak, hyperparameter-tuned=False  
 ![](./saved_runs/train25/confusion_matrix.png)  
-Figure 503. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=150, data=keskvaljak, hyperparameter-tuned=False  
+Figure s503. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=150, data=keskvaljak, hyperparameter-tuned=False  
 ![](./saved_runs/train25/confusion_matrix_normalized.png)  
-
-Figure 508. confusion_matrix, yolov8n, pre-trained=False, epochs=50, data=kielce_university_of_technology, hyperparameter-tuned=False  
+Figure s508. confusion_matrix, yolov8n, pre-trained=False, epochs=50, data=kielce_university_of_technology, hyperparameter-tuned=False  
 ![](./saved_runs/train26/confusion_matrix.png)  
-Figure 509. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=50, data=kielce_university_of_technology, hyperparameter-tuned=False  
+Figure s509. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=50, data=kielce_university_of_technology, hyperparameter-tuned=False  
 ![](./saved_runs/train26/confusion_matrix_normalized.png)  
-
-Figure 514. confusion_matrix, yolov8n, pre-trained=False, epochs=100, data=kielce_university_of_technology, hyperparameter-tuned=False  
+Figure s514. confusion_matrix, yolov8n, pre-trained=False, epochs=100, data=kielce_university_of_technology, hyperparameter-tuned=False  
 ![](./saved_runs/train27/confusion_matrix.png)  
-Figure 515. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=100, data=kielce_university_of_technology, hyperparameter-tuned=False  
+Figure s515. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=100, data=kielce_university_of_technology, hyperparameter-tuned=False  
 ![](./saved_runs/train27/confusion_matrix_normalized.png)  
-
-Figure 516. f1_over_confidence, yolov8n, pre-trained=False, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=False  
+Figure s516. f1_over_confidence, yolov8n, pre-trained=False, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=False  
 ![](./saved_runs/train28/F1_curve.png)  
-Figure 517. precision_over_recall, yolov8n, pre-trained=False, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=False  
+Figure s517. precision_over_recall, yolov8n, pre-trained=False, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=False  
 ![](./saved_runs/train28/PR_curve.png)  
-Figure 518. precision_over_confidence, yolov8n, pre-trained=False, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=False  
+Figure s518. precision_over_confidence, yolov8n, pre-trained=False, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=False  
 ![](./saved_runs/train28/P_curve.png)  
-Figure 519. recall_over_confidence, yolov8n, pre-trained=False, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=False  
+Figure s519. recall_over_confidence, yolov8n, pre-trained=False, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=False  
 ![](./saved_runs/train28/R_curve.png)  
-Figure 520. confusion_matrix, yolov8n, pre-trained=False, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=False  
+Figure s520. confusion_matrix, yolov8n, pre-trained=False, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=False  
 ![](./saved_runs/train28/confusion_matrix.png)  
-Figure 521. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=False  
+Figure s521. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=False  
 ![](./saved_runs/train28/confusion_matrix_normalized.png)  
-
-Figure 526. confusion_matrix, yolov8n, pre-trained=False, epochs=50, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
+Figure s526. confusion_matrix, yolov8n, pre-trained=False, epochs=50, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
 ![](./saved_runs/train29/confusion_matrix.png)  
-Figure 527. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=50, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
+Figure s527. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=50, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
 ![](./saved_runs/train29/confusion_matrix_normalized.png)  
-
-Figure 528. f1_over_confidence, yolov8n, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
+Figure s528. f1_over_confidence, yolov8n, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
 ![](./saved_runs/train30/F1_curve.png)  
-Figure 529. precision_over_recall, yolov8n, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
+Figure s529. precision_over_recall, yolov8n, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
 ![](./saved_runs/train30/PR_curve.png)  
-Figure 530. precision_over_confidence, yolov8n, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
+Figure s530. precision_over_confidence, yolov8n, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
 ![](./saved_runs/train30/P_curve.png)  
-Figure 531. recall_over_confidence, yolov8n, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
+Figure s531. recall_over_confidence, yolov8n, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
 ![](./saved_runs/train30/R_curve.png)  
-Figure 532. confusion_matrix, yolov8n, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
+Figure s532. confusion_matrix, yolov8n, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
 ![](./saved_runs/train30/confusion_matrix.png)  
-Figure 533. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
+Figure s533. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
 ![](./saved_runs/train30/confusion_matrix_normalized.png)  
-
-Figure 534. f1_over_confidence, yolov8n, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
+Figure s534. f1_over_confidence, yolov8n, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
 ![](./saved_runs/train31/F1_curve.png)  
-Figure 535. precision_over_recall, yolov8n, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
+Figure s535. precision_over_recall, yolov8n, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
 ![](./saved_runs/train31/PR_curve.png)  
-Figure 536. precision_over_confidence, yolov8n, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
+Figure s536. precision_over_confidence, yolov8n, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
 ![](./saved_runs/train31/P_curve.png)  
-Figure 537. recall_over_confidence, yolov8n, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
+Figure s537. recall_over_confidence, yolov8n, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
 ![](./saved_runs/train31/R_curve.png)  
-Figure 538. confusion_matrix, yolov8n, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
+Figure s538. confusion_matrix, yolov8n, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
 ![](./saved_runs/train31/confusion_matrix.png)  
-Figure 539. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
+Figure s539. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
 ![](./saved_runs/train31/confusion_matrix_normalized.png)  
-
-Figure 540. f1_over_confidence, yolov8n, pre-trained=True, epochs=50, data=duomo, hyperparameter-tuned=True  
+Figure s540. f1_over_confidence, yolov8n, pre-trained=True, epochs=50, data=duomo, hyperparameter-tuned=True  
 ![](./saved_runs/train32/F1_curve.png)  
-Figure 541. precision_over_recall, yolov8n, pre-trained=True, epochs=50, data=duomo, hyperparameter-tuned=True  
+Figure s541. precision_over_recall, yolov8n, pre-trained=True, epochs=50, data=duomo, hyperparameter-tuned=True  
 ![](./saved_runs/train32/PR_curve.png)  
-Figure 542. precision_over_confidence, yolov8n, pre-trained=True, epochs=50, data=duomo, hyperparameter-tuned=True  
+Figure s542. precision_over_confidence, yolov8n, pre-trained=True, epochs=50, data=duomo, hyperparameter-tuned=True  
 ![](./saved_runs/train32/P_curve.png)  
-Figure 543. recall_over_confidence, yolov8n, pre-trained=True, epochs=50, data=duomo, hyperparameter-tuned=True  
+Figure s543. recall_over_confidence, yolov8n, pre-trained=True, epochs=50, data=duomo, hyperparameter-tuned=True  
 ![](./saved_runs/train32/R_curve.png)  
-Figure 544. confusion_matrix, yolov8n, pre-trained=True, epochs=50, data=duomo, hyperparameter-tuned=True  
+Figure s544. confusion_matrix, yolov8n, pre-trained=True, epochs=50, data=duomo, hyperparameter-tuned=True  
 ![](./saved_runs/train32/confusion_matrix.png)  
-Figure 545. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=50, data=duomo, hyperparameter-tuned=True  
+Figure s545. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=50, data=duomo, hyperparameter-tuned=True  
 ![](./saved_runs/train32/confusion_matrix_normalized.png)  
-
-Figure 546. f1_over_confidence, yolov8n, pre-trained=True, epochs=100, data=duomo, hyperparameter-tuned=True  
+Figure s546. f1_over_confidence, yolov8n, pre-trained=True, epochs=100, data=duomo, hyperparameter-tuned=True  
 ![](./saved_runs/train33/F1_curve.png)  
-Figure 547. precision_over_recall, yolov8n, pre-trained=True, epochs=100, data=duomo, hyperparameter-tuned=True  
+Figure s547. precision_over_recall, yolov8n, pre-trained=True, epochs=100, data=duomo, hyperparameter-tuned=True  
 ![](./saved_runs/train33/PR_curve.png)  
-Figure 548. precision_over_confidence, yolov8n, pre-trained=True, epochs=100, data=duomo, hyperparameter-tuned=True  
+Figure s548. precision_over_confidence, yolov8n, pre-trained=True, epochs=100, data=duomo, hyperparameter-tuned=True  
 ![](./saved_runs/train33/P_curve.png)  
-Figure 549. recall_over_confidence, yolov8n, pre-trained=True, epochs=100, data=duomo, hyperparameter-tuned=True  
+Figure s549. recall_over_confidence, yolov8n, pre-trained=True, epochs=100, data=duomo, hyperparameter-tuned=True  
 ![](./saved_runs/train33/R_curve.png)  
-Figure 550. confusion_matrix, yolov8n, pre-trained=True, epochs=100, data=duomo, hyperparameter-tuned=True  
+Figure s550. confusion_matrix, yolov8n, pre-trained=True, epochs=100, data=duomo, hyperparameter-tuned=True  
 ![](./saved_runs/train33/confusion_matrix.png)  
-Figure 551. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=100, data=duomo, hyperparameter-tuned=True  
+Figure s551. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=100, data=duomo, hyperparameter-tuned=True  
 ![](./saved_runs/train33/confusion_matrix_normalized.png)  
-
-Figure 552. f1_over_confidence, yolov8n, pre-trained=True, epochs=150, data=duomo, hyperparameter-tuned=True  
+Figure s552. f1_over_confidence, yolov8n, pre-trained=True, epochs=150, data=duomo, hyperparameter-tuned=True  
 ![](./saved_runs/train34/F1_curve.png)  
-Figure 553. precision_over_recall, yolov8n, pre-trained=True, epochs=150, data=duomo, hyperparameter-tuned=True  
+Figure s553. precision_over_recall, yolov8n, pre-trained=True, epochs=150, data=duomo, hyperparameter-tuned=True  
 ![](./saved_runs/train34/PR_curve.png)  
-Figure 554. precision_over_confidence, yolov8n, pre-trained=True, epochs=150, data=duomo, hyperparameter-tuned=True  
+Figure s554. precision_over_confidence, yolov8n, pre-trained=True, epochs=150, data=duomo, hyperparameter-tuned=True  
 ![](./saved_runs/train34/P_curve.png)  
-Figure 555. recall_over_confidence, yolov8n, pre-trained=True, epochs=150, data=duomo, hyperparameter-tuned=True  
+Figure s555. recall_over_confidence, yolov8n, pre-trained=True, epochs=150, data=duomo, hyperparameter-tuned=True  
 ![](./saved_runs/train34/R_curve.png)  
-Figure 556. confusion_matrix, yolov8n, pre-trained=True, epochs=150, data=duomo, hyperparameter-tuned=True  
+Figure s556. confusion_matrix, yolov8n, pre-trained=True, epochs=150, data=duomo, hyperparameter-tuned=True  
 ![](./saved_runs/train34/confusion_matrix.png)  
-Figure 557. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=150, data=duomo, hyperparameter-tuned=True  
+Figure s557. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=150, data=duomo, hyperparameter-tuned=True  
 ![](./saved_runs/train34/confusion_matrix_normalized.png)  
-
-Figure 558. f1_over_confidence, yolov8n, pre-trained=True, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=True  
+Figure s558. f1_over_confidence, yolov8n, pre-trained=True, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=True  
 ![](./saved_runs/train35/F1_curve.png)  
-Figure 559. precision_over_recall, yolov8n, pre-trained=True, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=True  
+Figure s559. precision_over_recall, yolov8n, pre-trained=True, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=True  
 ![](./saved_runs/train35/PR_curve.png)  
-Figure 560. precision_over_confidence, yolov8n, pre-trained=True, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=True  
+Figure s560. precision_over_confidence, yolov8n, pre-trained=True, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=True  
 ![](./saved_runs/train35/P_curve.png)  
-Figure 561. recall_over_confidence, yolov8n, pre-trained=True, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=True  
+Figure s561. recall_over_confidence, yolov8n, pre-trained=True, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=True  
 ![](./saved_runs/train35/R_curve.png)  
-Figure 562. confusion_matrix, yolov8n, pre-trained=True, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=True  
+Figure s562. confusion_matrix, yolov8n, pre-trained=True, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=True  
 ![](./saved_runs/train35/confusion_matrix.png)  
-Figure 563. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=True  
+Figure s563. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=True  
 ![](./saved_runs/train35/confusion_matrix_normalized.png)  
-
-Figure 564. f1_over_confidence, yolov8n, pre-trained=True, epochs=100, data=hadji_dimitar_square, hyperparameter-tuned=True  
+Figure s564. f1_over_confidence, yolov8n, pre-trained=True, epochs=100, data=hadji_dimitar_square, hyperparameter-tuned=True  
 ![](./saved_runs/train36/F1_curve.png)  
-Figure 565. precision_over_recall, yolov8n, pre-trained=True, epochs=100, data=hadji_dimitar_square, hyperparameter-tuned=True  
+Figure s565. precision_over_recall, yolov8n, pre-trained=True, epochs=100, data=hadji_dimitar_square, hyperparameter-tuned=True  
 ![](./saved_runs/train36/PR_curve.png)  
-Figure 566. precision_over_confidence, yolov8n, pre-trained=True, epochs=100, data=hadji_dimitar_square, hyperparameter-tuned=True  
+Figure s566. precision_over_confidence, yolov8n, pre-trained=True, epochs=100, data=hadji_dimitar_square, hyperparameter-tuned=True  
 ![](./saved_runs/train36/P_curve.png)  
-Figure 567. recall_over_confidence, yolov8n, pre-trained=True, epochs=100, data=hadji_dimitar_square, hyperparameter-tuned=True  
+Figure s567. recall_over_confidence, yolov8n, pre-trained=True, epochs=100, data=hadji_dimitar_square, hyperparameter-tuned=True  
 ![](./saved_runs/train36/R_curve.png)  
-Figure 568. confusion_matrix, yolov8n, pre-trained=True, epochs=100, data=hadji_dimitar_square, hyperparameter-tuned=True  
+Figure s568. confusion_matrix, yolov8n, pre-trained=True, epochs=100, data=hadji_dimitar_square, hyperparameter-tuned=True  
 ![](./saved_runs/train36/confusion_matrix.png)  
-Figure 569. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=100, data=hadji_dimitar_square, hyperparameter-tuned=True  
+Figure s569. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=100, data=hadji_dimitar_square, hyperparameter-tuned=True  
 ![](./saved_runs/train36/confusion_matrix_normalized.png)  
-
-Figure 570. f1_over_confidence, yolov8n, pre-trained=True, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=True  
+Figure s570. f1_over_confidence, yolov8n, pre-trained=True, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=True  
 ![](./saved_runs/train37/F1_curve.png)  
-Figure 571. precision_over_recall, yolov8n, pre-trained=True, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=True  
+Figure s571. precision_over_recall, yolov8n, pre-trained=True, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=True  
 ![](./saved_runs/train37/PR_curve.png)  
-Figure 572. precision_over_confidence, yolov8n, pre-trained=True, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=True  
+Figure s572. precision_over_confidence, yolov8n, pre-trained=True, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=True  
 ![](./saved_runs/train37/P_curve.png)  
-Figure 573. recall_over_confidence, yolov8n, pre-trained=True, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=True  
+Figure s573. recall_over_confidence, yolov8n, pre-trained=True, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=True  
 ![](./saved_runs/train37/R_curve.png)  
-Figure 574. confusion_matrix, yolov8n, pre-trained=True, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=True  
+Figure s574. confusion_matrix, yolov8n, pre-trained=True, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=True  
 ![](./saved_runs/train37/confusion_matrix.png)  
-Figure 575. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=True  
+Figure s575. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=True  
 ![](./saved_runs/train37/confusion_matrix_normalized.png)  
-
-Figure 576. f1_over_confidence, yolov8n, pre-trained=True, epochs=50, data=keskvaljak, hyperparameter-tuned=True  
+Figure s576. f1_over_confidence, yolov8n, pre-trained=True, epochs=50, data=keskvaljak, hyperparameter-tuned=True  
 ![](./saved_runs/train38/F1_curve.png)  
-Figure 577. precision_over_recall, yolov8n, pre-trained=True, epochs=50, data=keskvaljak, hyperparameter-tuned=True  
+Figure s577. precision_over_recall, yolov8n, pre-trained=True, epochs=50, data=keskvaljak, hyperparameter-tuned=True  
 ![](./saved_runs/train38/PR_curve.png)  
-Figure 578. precision_over_confidence, yolov8n, pre-trained=True, epochs=50, data=keskvaljak, hyperparameter-tuned=True  
+Figure s578. precision_over_confidence, yolov8n, pre-trained=True, epochs=50, data=keskvaljak, hyperparameter-tuned=True  
 ![](./saved_runs/train38/P_curve.png)  
-Figure 579. recall_over_confidence, yolov8n, pre-trained=True, epochs=50, data=keskvaljak, hyperparameter-tuned=True  
+Figure s579. recall_over_confidence, yolov8n, pre-trained=True, epochs=50, data=keskvaljak, hyperparameter-tuned=True  
 ![](./saved_runs/train38/R_curve.png)  
-Figure 580. confusion_matrix, yolov8n, pre-trained=True, epochs=50, data=keskvaljak, hyperparameter-tuned=True  
+Figure s580. confusion_matrix, yolov8n, pre-trained=True, epochs=50, data=keskvaljak, hyperparameter-tuned=True  
 ![](./saved_runs/train38/confusion_matrix.png)  
-Figure 581. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=50, data=keskvaljak, hyperparameter-tuned=True  
+Figure s581. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=50, data=keskvaljak, hyperparameter-tuned=True  
 ![](./saved_runs/train38/confusion_matrix_normalized.png)  
-
-Figure 582. f1_over_confidence, yolov8n, pre-trained=True, epochs=100, data=keskvaljak, hyperparameter-tuned=True  
+Figure s582. f1_over_confidence, yolov8n, pre-trained=True, epochs=100, data=keskvaljak, hyperparameter-tuned=True  
 ![](./saved_runs/train39/F1_curve.png)  
-Figure 583. precision_over_recall, yolov8n, pre-trained=True, epochs=100, data=keskvaljak, hyperparameter-tuned=True  
+Figure s583. precision_over_recall, yolov8n, pre-trained=True, epochs=100, data=keskvaljak, hyperparameter-tuned=True  
 ![](./saved_runs/train39/PR_curve.png)  
-Figure 584. precision_over_confidence, yolov8n, pre-trained=True, epochs=100, data=keskvaljak, hyperparameter-tuned=True  
+Figure s584. precision_over_confidence, yolov8n, pre-trained=True, epochs=100, data=keskvaljak, hyperparameter-tuned=True  
 ![](./saved_runs/train39/P_curve.png)  
-Figure 585. recall_over_confidence, yolov8n, pre-trained=True, epochs=100, data=keskvaljak, hyperparameter-tuned=True  
+Figure s585. recall_over_confidence, yolov8n, pre-trained=True, epochs=100, data=keskvaljak, hyperparameter-tuned=True  
 ![](./saved_runs/train39/R_curve.png)  
-Figure 586. confusion_matrix, yolov8n, pre-trained=True, epochs=100, data=keskvaljak, hyperparameter-tuned=True  
+Figure s586. confusion_matrix, yolov8n, pre-trained=True, epochs=100, data=keskvaljak, hyperparameter-tuned=True  
 ![](./saved_runs/train39/confusion_matrix.png)  
-Figure 587. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=100, data=keskvaljak, hyperparameter-tuned=True  
+Figure s587. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=100, data=keskvaljak, hyperparameter-tuned=True  
 ![](./saved_runs/train39/confusion_matrix_normalized.png)  
-
-Figure 588. f1_over_confidence, yolov8n, pre-trained=True, epochs=150, data=keskvaljak, hyperparameter-tuned=True  
+Figure s588. f1_over_confidence, yolov8n, pre-trained=True, epochs=150, data=keskvaljak, hyperparameter-tuned=True  
 ![](./saved_runs/train40/F1_curve.png)  
-Figure 589. precision_over_recall, yolov8n, pre-trained=True, epochs=150, data=keskvaljak, hyperparameter-tuned=True  
+Figure s589. precision_over_recall, yolov8n, pre-trained=True, epochs=150, data=keskvaljak, hyperparameter-tuned=True  
 ![](./saved_runs/train40/PR_curve.png)  
-Figure 590. precision_over_confidence, yolov8n, pre-trained=True, epochs=150, data=keskvaljak, hyperparameter-tuned=True  
+Figure s590. precision_over_confidence, yolov8n, pre-trained=True, epochs=150, data=keskvaljak, hyperparameter-tuned=True  
 ![](./saved_runs/train40/P_curve.png)  
-Figure 591. recall_over_confidence, yolov8n, pre-trained=True, epochs=150, data=keskvaljak, hyperparameter-tuned=True  
+Figure s591. recall_over_confidence, yolov8n, pre-trained=True, epochs=150, data=keskvaljak, hyperparameter-tuned=True  
 ![](./saved_runs/train40/R_curve.png)  
-Figure 592. confusion_matrix, yolov8n, pre-trained=True, epochs=150, data=keskvaljak, hyperparameter-tuned=True  
+Figure s592. confusion_matrix, yolov8n, pre-trained=True, epochs=150, data=keskvaljak, hyperparameter-tuned=True  
 ![](./saved_runs/train40/confusion_matrix.png)  
-Figure 593. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=150, data=keskvaljak, hyperparameter-tuned=True  
+Figure s593. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=150, data=keskvaljak, hyperparameter-tuned=True  
 ![](./saved_runs/train40/confusion_matrix_normalized.png)  
-
-Figure 594. f1_over_confidence, yolov8n, pre-trained=True, epochs=50, data=kielce_university_of_technology, hyperparameter-tuned=True  
+Figure s594. f1_over_confidence, yolov8n, pre-trained=True, epochs=50, data=kielce_university_of_technology, hyperparameter-tuned=True  
 ![](./saved_runs/train41/F1_curve.png)  
-Figure 595. precision_over_recall, yolov8n, pre-trained=True, epochs=50, data=kielce_university_of_technology, hyperparameter-tuned=True  
+Figure s595. precision_over_recall, yolov8n, pre-trained=True, epochs=50, data=kielce_university_of_technology, hyperparameter-tuned=True  
 ![](./saved_runs/train41/PR_curve.png)  
-Figure 596. precision_over_confidence, yolov8n, pre-trained=True, epochs=50, data=kielce_university_of_technology, hyperparameter-tuned=True  
+Figure s596. precision_over_confidence, yolov8n, pre-trained=True, epochs=50, data=kielce_university_of_technology, hyperparameter-tuned=True  
 ![](./saved_runs/train41/P_curve.png)  
-Figure 597. recall_over_confidence, yolov8n, pre-trained=True, epochs=50, data=kielce_university_of_technology, hyperparameter-tuned=True  
+Figure s597. recall_over_confidence, yolov8n, pre-trained=True, epochs=50, data=kielce_university_of_technology, hyperparameter-tuned=True  
 ![](./saved_runs/train41/R_curve.png)  
-Figure 598. confusion_matrix, yolov8n, pre-trained=True, epochs=50, data=kielce_university_of_technology, hyperparameter-tuned=True  
+Figure s598. confusion_matrix, yolov8n, pre-trained=True, epochs=50, data=kielce_university_of_technology, hyperparameter-tuned=True  
 ![](./saved_runs/train41/confusion_matrix.png)  
-Figure 599. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=50, data=kielce_university_of_technology, hyperparameter-tuned=True  
+Figure s599. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=50, data=kielce_university_of_technology, hyperparameter-tuned=True  
 ![](./saved_runs/train41/confusion_matrix_normalized.png)  
-
-Figure 600. f1_over_confidence, yolov8n, pre-trained=True, epochs=100, data=kielce_university_of_technology, hyperparameter-tuned=True  
+Figure s600. f1_over_confidence, yolov8n, pre-trained=True, epochs=100, data=kielce_university_of_technology, hyperparameter-tuned=True  
 ![](./saved_runs/train42/F1_curve.png)  
-Figure 601. precision_over_recall, yolov8n, pre-trained=True, epochs=100, data=kielce_university_of_technology, hyperparameter-tuned=True  
+Figure s601. precision_over_recall, yolov8n, pre-trained=True, epochs=100, data=kielce_university_of_technology, hyperparameter-tuned=True  
 ![](./saved_runs/train42/PR_curve.png)  
-Figure 602. precision_over_confidence, yolov8n, pre-trained=True, epochs=100, data=kielce_university_of_technology, hyperparameter-tuned=True  
+Figure s602. precision_over_confidence, yolov8n, pre-trained=True, epochs=100, data=kielce_university_of_technology, hyperparameter-tuned=True  
 ![](./saved_runs/train42/P_curve.png)  
-Figure 603. recall_over_confidence, yolov8n, pre-trained=True, epochs=100, data=kielce_university_of_technology, hyperparameter-tuned=True  
+Figure s603. recall_over_confidence, yolov8n, pre-trained=True, epochs=100, data=kielce_university_of_technology, hyperparameter-tuned=True  
 ![](./saved_runs/train42/R_curve.png)  
-Figure 604. confusion_matrix, yolov8n, pre-trained=True, epochs=100, data=kielce_university_of_technology, hyperparameter-tuned=True  
+Figure s604. confusion_matrix, yolov8n, pre-trained=True, epochs=100, data=kielce_university_of_technology, hyperparameter-tuned=True  
 ![](./saved_runs/train42/confusion_matrix.png)  
-Figure 605. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=100, data=kielce_university_of_technology, hyperparameter-tuned=True  
+Figure s605. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=100, data=kielce_university_of_technology, hyperparameter-tuned=True  
 ![](./saved_runs/train42/confusion_matrix_normalized.png)  
-
-Figure 606. f1_over_confidence, yolov8n, pre-trained=True, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=True  
+Figure s606. f1_over_confidence, yolov8n, pre-trained=True, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=True  
 ![](./saved_runs/train43/F1_curve.png)  
-Figure 607. precision_over_recall, yolov8n, pre-trained=True, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=True  
+Figure s607. precision_over_recall, yolov8n, pre-trained=True, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=True  
 ![](./saved_runs/train43/PR_curve.png)  
-Figure 608. precision_over_confidence, yolov8n, pre-trained=True, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=True  
+Figure s608. precision_over_confidence, yolov8n, pre-trained=True, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=True  
 ![](./saved_runs/train43/P_curve.png)  
-Figure 609. recall_over_confidence, yolov8n, pre-trained=True, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=True  
+Figure s609. recall_over_confidence, yolov8n, pre-trained=True, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=True  
 ![](./saved_runs/train43/R_curve.png)  
-Figure 610. confusion_matrix, yolov8n, pre-trained=True, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=True  
+Figure s610. confusion_matrix, yolov8n, pre-trained=True, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=True  
 ![](./saved_runs/train43/confusion_matrix.png)  
-Figure 611. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=True  
+Figure s611. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=True  
 ![](./saved_runs/train43/confusion_matrix_normalized.png)  
-
-Figure 612. f1_over_confidence, yolov8n, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
+Figure s612. f1_over_confidence, yolov8n, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
 ![](./saved_runs/train44/F1_curve.png)  
-Figure 613. precision_over_recall, yolov8n, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
+Figure s613. precision_over_recall, yolov8n, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
 ![](./saved_runs/train44/PR_curve.png)  
-Figure 614. precision_over_confidence, yolov8n, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
+Figure s614. precision_over_confidence, yolov8n, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
 ![](./saved_runs/train44/P_curve.png)  
-Figure 615. recall_over_confidence, yolov8n, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
+Figure s615. recall_over_confidence, yolov8n, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
 ![](./saved_runs/train44/R_curve.png)  
-Figure 616. confusion_matrix, yolov8n, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
+Figure s616. confusion_matrix, yolov8n, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
 ![](./saved_runs/train44/confusion_matrix.png)  
-Figure 617. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
+Figure s617. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=50, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
 ![](./saved_runs/train44/confusion_matrix_normalized.png)  
-
-Figure 618. f1_over_confidence, yolov8n, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
+Figure s618. f1_over_confidence, yolov8n, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
 ![](./saved_runs/train45/F1_curve.png)  
-Figure 619. precision_over_recall, yolov8n, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
+Figure s619. precision_over_recall, yolov8n, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
 ![](./saved_runs/train45/PR_curve.png)  
-Figure 620. precision_over_confidence, yolov8n, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
+Figure s620. precision_over_confidence, yolov8n, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
 ![](./saved_runs/train45/P_curve.png)  
-Figure 621. recall_over_confidence, yolov8n, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
+Figure s621. recall_over_confidence, yolov8n, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
 ![](./saved_runs/train45/R_curve.png)  
-Figure 622. confusion_matrix, yolov8n, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
+Figure s622. confusion_matrix, yolov8n, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
 ![](./saved_runs/train45/confusion_matrix.png)  
-Figure 623. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
+Figure s623. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
 ![](./saved_runs/train45/confusion_matrix_normalized.png)  
-
-Figure 624. f1_over_confidence, yolov8n, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
+Figure s624. f1_over_confidence, yolov8n, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
 ![](./saved_runs/train46/F1_curve.png)  
-Figure 625. precision_over_recall, yolov8n, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
+Figure s625. precision_over_recall, yolov8n, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
 ![](./saved_runs/train46/PR_curve.png)  
-Figure 626. precision_over_confidence, yolov8n, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
+Figure s626. precision_over_confidence, yolov8n, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
 ![](./saved_runs/train46/P_curve.png)  
-Figure 627. recall_over_confidence, yolov8n, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
+Figure s627. recall_over_confidence, yolov8n, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
 ![](./saved_runs/train46/R_curve.png)  
-Figure 628. confusion_matrix, yolov8n, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
+Figure s628. confusion_matrix, yolov8n, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
 ![](./saved_runs/train46/confusion_matrix.png)  
-Figure 629. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
+Figure s629. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
 ![](./saved_runs/train46/confusion_matrix_normalized.png)  
-
-Figure 630. f1_over_confidence, yolov8n, pre-trained=False, epochs=50, data=duomo, hyperparameter-tuned=True  
+Figure s630. f1_over_confidence, yolov8n, pre-trained=False, epochs=50, data=duomo, hyperparameter-tuned=True  
 ![](./saved_runs/train47/F1_curve.png)  
-Figure 631. precision_over_recall, yolov8n, pre-trained=False, epochs=50, data=duomo, hyperparameter-tuned=True  
+Figure s631. precision_over_recall, yolov8n, pre-trained=False, epochs=50, data=duomo, hyperparameter-tuned=True  
 ![](./saved_runs/train47/PR_curve.png)  
-Figure 632. precision_over_confidence, yolov8n, pre-trained=False, epochs=50, data=duomo, hyperparameter-tuned=True  
+Figure s632. precision_over_confidence, yolov8n, pre-trained=False, epochs=50, data=duomo, hyperparameter-tuned=True  
 ![](./saved_runs/train47/P_curve.png)  
-Figure 633. recall_over_confidence, yolov8n, pre-trained=False, epochs=50, data=duomo, hyperparameter-tuned=True  
+Figure s633. recall_over_confidence, yolov8n, pre-trained=False, epochs=50, data=duomo, hyperparameter-tuned=True  
 ![](./saved_runs/train47/R_curve.png)  
-Figure 634. confusion_matrix, yolov8n, pre-trained=False, epochs=50, data=duomo, hyperparameter-tuned=True  
+Figure s634. confusion_matrix, yolov8n, pre-trained=False, epochs=50, data=duomo, hyperparameter-tuned=True  
 ![](./saved_runs/train47/confusion_matrix.png)  
-Figure 635. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=50, data=duomo, hyperparameter-tuned=True  
+Figure s635. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=50, data=duomo, hyperparameter-tuned=True  
 ![](./saved_runs/train47/confusion_matrix_normalized.png)  
-
-Figure 636. f1_over_confidence, yolov8n, pre-trained=False, epochs=100, data=duomo, hyperparameter-tuned=True  
+Figure s636. f1_over_confidence, yolov8n, pre-trained=False, epochs=100, data=duomo, hyperparameter-tuned=True  
 ![](./saved_runs/train48/F1_curve.png)  
-Figure 637. precision_over_recall, yolov8n, pre-trained=False, epochs=100, data=duomo, hyperparameter-tuned=True  
+Figure s637. precision_over_recall, yolov8n, pre-trained=False, epochs=100, data=duomo, hyperparameter-tuned=True  
 ![](./saved_runs/train48/PR_curve.png)  
-Figure 638. precision_over_confidence, yolov8n, pre-trained=False, epochs=100, data=duomo, hyperparameter-tuned=True  
+Figure s638. precision_over_confidence, yolov8n, pre-trained=False, epochs=100, data=duomo, hyperparameter-tuned=True  
 ![](./saved_runs/train48/P_curve.png)  
-Figure 639. recall_over_confidence, yolov8n, pre-trained=False, epochs=100, data=duomo, hyperparameter-tuned=True  
+Figure s639. recall_over_confidence, yolov8n, pre-trained=False, epochs=100, data=duomo, hyperparameter-tuned=True  
 ![](./saved_runs/train48/R_curve.png)  
-Figure 640. confusion_matrix, yolov8n, pre-trained=False, epochs=100, data=duomo, hyperparameter-tuned=True  
+Figure s640. confusion_matrix, yolov8n, pre-trained=False, epochs=100, data=duomo, hyperparameter-tuned=True  
 ![](./saved_runs/train48/confusion_matrix.png)  
-Figure 641. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=100, data=duomo, hyperparameter-tuned=True  
+Figure s641. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=100, data=duomo, hyperparameter-tuned=True  
 ![](./saved_runs/train48/confusion_matrix_normalized.png)  
-
-Figure 642. f1_over_confidence, yolov8n, pre-trained=False, epochs=150, data=duomo, hyperparameter-tuned=True  
+Figure s642. f1_over_confidence, yolov8n, pre-trained=False, epochs=150, data=duomo, hyperparameter-tuned=True  
 ![](./saved_runs/train49/F1_curve.png)  
-Figure 643. precision_over_recall, yolov8n, pre-trained=False, epochs=150, data=duomo, hyperparameter-tuned=True  
+Figure s643. precision_over_recall, yolov8n, pre-trained=False, epochs=150, data=duomo, hyperparameter-tuned=True  
 ![](./saved_runs/train49/PR_curve.png)  
-Figure 644. precision_over_confidence, yolov8n, pre-trained=False, epochs=150, data=duomo, hyperparameter-tuned=True  
+Figure s644. precision_over_confidence, yolov8n, pre-trained=False, epochs=150, data=duomo, hyperparameter-tuned=True  
 ![](./saved_runs/train49/P_curve.png)  
-Figure 645. recall_over_confidence, yolov8n, pre-trained=False, epochs=150, data=duomo, hyperparameter-tuned=True  
+Figure s645. recall_over_confidence, yolov8n, pre-trained=False, epochs=150, data=duomo, hyperparameter-tuned=True  
 ![](./saved_runs/train49/R_curve.png)  
-Figure 646. confusion_matrix, yolov8n, pre-trained=False, epochs=150, data=duomo, hyperparameter-tuned=True  
+Figure s646. confusion_matrix, yolov8n, pre-trained=False, epochs=150, data=duomo, hyperparameter-tuned=True  
 ![](./saved_runs/train49/confusion_matrix.png)  
-Figure 647. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=150, data=duomo, hyperparameter-tuned=True  
+Figure s647. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=150, data=duomo, hyperparameter-tuned=True  
 ![](./saved_runs/train49/confusion_matrix_normalized.png)  
-
-Figure 648. f1_over_confidence, yolov8n, pre-trained=False, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=True  
+Figure s648. f1_over_confidence, yolov8n, pre-trained=False, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=True  
 ![](./saved_runs/train50/F1_curve.png)  
-Figure 649. precision_over_recall, yolov8n, pre-trained=False, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=True  
+Figure s649. precision_over_recall, yolov8n, pre-trained=False, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=True  
 ![](./saved_runs/train50/PR_curve.png)  
-Figure 650. precision_over_confidence, yolov8n, pre-trained=False, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=True  
+Figure s650. precision_over_confidence, yolov8n, pre-trained=False, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=True  
 ![](./saved_runs/train50/P_curve.png)  
-Figure 651. recall_over_confidence, yolov8n, pre-trained=False, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=True  
+Figure s651. recall_over_confidence, yolov8n, pre-trained=False, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=True  
 ![](./saved_runs/train50/R_curve.png)  
-Figure 652. confusion_matrix, yolov8n, pre-trained=False, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=True  
+Figure s652. confusion_matrix, yolov8n, pre-trained=False, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=True  
 ![](./saved_runs/train50/confusion_matrix.png)  
-Figure 653. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=True  
+Figure s653. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=50, data=hadji_dimitar_square, hyperparameter-tuned=True  
 ![](./saved_runs/train50/confusion_matrix_normalized.png)  
-
-Figure 658. confusion_matrix, yolov8n, pre-trained=False, epochs=100, data=hadji_dimitar_square, hyperparameter-tuned=True  
+Figure s658. confusion_matrix, yolov8n, pre-trained=False, epochs=100, data=hadji_dimitar_square, hyperparameter-tuned=True  
 ![](./saved_runs/train51/confusion_matrix.png)  
-Figure 659. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=100, data=hadji_dimitar_square, hyperparameter-tuned=True  
+Figure s659. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=100, data=hadji_dimitar_square, hyperparameter-tuned=True  
 ![](./saved_runs/train51/confusion_matrix_normalized.png)  
-
-Figure 664. confusion_matrix, yolov8n, pre-trained=False, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=True  
+Figure s664. confusion_matrix, yolov8n, pre-trained=False, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=True  
 ![](./saved_runs/train52/confusion_matrix.png)  
-Figure 665. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=True  
+Figure s665. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=150, data=hadji_dimitar_square, hyperparameter-tuned=True  
 ![](./saved_runs/train52/confusion_matrix_normalized.png)  
-
-Figure 670. confusion_matrix, yolov8n, pre-trained=False, epochs=50, data=keskvaljak, hyperparameter-tuned=True  
+Figure s670. confusion_matrix, yolov8n, pre-trained=False, epochs=50, data=keskvaljak, hyperparameter-tuned=True  
 ![](./saved_runs/train53/confusion_matrix.png)  
-Figure 671. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=50, data=keskvaljak, hyperparameter-tuned=True  
+Figure s671. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=50, data=keskvaljak, hyperparameter-tuned=True  
 ![](./saved_runs/train53/confusion_matrix_normalized.png)  
-
-Figure 676. confusion_matrix, yolov8n, pre-trained=False, epochs=100, data=keskvaljak, hyperparameter-tuned=True  
+Figure s676. confusion_matrix, yolov8n, pre-trained=False, epochs=100, data=keskvaljak, hyperparameter-tuned=True  
 ![](./saved_runs/train54/confusion_matrix.png)  
-Figure 677. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=100, data=keskvaljak, hyperparameter-tuned=True  
+Figure s677. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=100, data=keskvaljak, hyperparameter-tuned=True  
 ![](./saved_runs/train54/confusion_matrix_normalized.png)  
-
-Figure 682. confusion_matrix, yolov8n, pre-trained=False, epochs=150, data=keskvaljak, hyperparameter-tuned=True  
+Figure s682. confusion_matrix, yolov8n, pre-trained=False, epochs=150, data=keskvaljak, hyperparameter-tuned=True  
 ![](./saved_runs/train55/confusion_matrix.png)  
-Figure 683. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=150, data=keskvaljak, hyperparameter-tuned=True  
+Figure s683. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=150, data=keskvaljak, hyperparameter-tuned=True  
 ![](./saved_runs/train55/confusion_matrix_normalized.png)  
-
-Figure 688. confusion_matrix, yolov8n, pre-trained=False, epochs=50, data=kielce_university_of_technology, hyperparameter-tuned=True  
+Figure s688. confusion_matrix, yolov8n, pre-trained=False, epochs=50, data=kielce_university_of_technology, hyperparameter-tuned=True  
 ![](./saved_runs/train56/confusion_matrix.png)  
-Figure 689. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=50, data=kielce_university_of_technology, hyperparameter-tuned=True  
+Figure s689. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=50, data=kielce_university_of_technology, hyperparameter-tuned=True  
 ![](./saved_runs/train56/confusion_matrix_normalized.png)  
-
-Figure 694. confusion_matrix, yolov8n, pre-trained=False, epochs=100, data=kielce_university_of_technology, hyperparameter-tuned=True  
+Figure s694. confusion_matrix, yolov8n, pre-trained=False, epochs=100, data=kielce_university_of_technology, hyperparameter-tuned=True  
 ![](./saved_runs/train57/confusion_matrix.png)  
-Figure 695. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=100, data=kielce_university_of_technology, hyperparameter-tuned=True  
+Figure s695. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=100, data=kielce_university_of_technology, hyperparameter-tuned=True  
 ![](./saved_runs/train57/confusion_matrix_normalized.png)  
-
-Figure 696. f1_over_confidence, yolov8n, pre-trained=False, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=True  
+Figure s696. f1_over_confidence, yolov8n, pre-trained=False, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=True  
 ![](./saved_runs/train58/F1_curve.png)  
-Figure 697. precision_over_recall, yolov8n, pre-trained=False, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=True  
+Figure s697. precision_over_recall, yolov8n, pre-trained=False, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=True  
 ![](./saved_runs/train58/PR_curve.png)  
-Figure 698. precision_over_confidence, yolov8n, pre-trained=False, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=True  
+Figure s698. precision_over_confidence, yolov8n, pre-trained=False, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=True  
 ![](./saved_runs/train58/P_curve.png)  
-Figure 699. recall_over_confidence, yolov8n, pre-trained=False, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=True  
+Figure s699. recall_over_confidence, yolov8n, pre-trained=False, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=True  
 ![](./saved_runs/train58/R_curve.png)  
-Figure 700. confusion_matrix, yolov8n, pre-trained=False, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=True  
+Figure s700. confusion_matrix, yolov8n, pre-trained=False, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=True  
 ![](./saved_runs/train58/confusion_matrix.png)  
-Figure 701. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=True  
+Figure s701. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=150, data=kielce_university_of_technology, hyperparameter-tuned=True  
 ![](./saved_runs/train58/confusion_matrix_normalized.png)  
-
-Figure 706. confusion_matrix, yolov8n, pre-trained=False, epochs=50, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
+Figure s706. confusion_matrix, yolov8n, pre-trained=False, epochs=50, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
 ![](./saved_runs/train59/confusion_matrix.png)  
-Figure 707. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=50, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
+Figure s707. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=50, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
 ![](./saved_runs/train59/confusion_matrix_normalized.png)  
-
-Figure 708. f1_over_confidence, yolov8n, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
+Figure s708. f1_over_confidence, yolov8n, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
 ![](./saved_runs/train60/F1_curve.png)  
-Figure 709. precision_over_recall, yolov8n, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
+Figure s709. precision_over_recall, yolov8n, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
 ![](./saved_runs/train60/PR_curve.png)  
-Figure 710. precision_over_confidence, yolov8n, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
+Figure s710. precision_over_confidence, yolov8n, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
 ![](./saved_runs/train60/P_curve.png)  
-Figure 711. recall_over_confidence, yolov8n, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
+Figure s711. recall_over_confidence, yolov8n, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
 ![](./saved_runs/train60/R_curve.png)  
-Figure 712. confusion_matrix, yolov8n, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
+Figure s712. confusion_matrix, yolov8n, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
 ![](./saved_runs/train60/confusion_matrix.png)  
-Figure 713. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
+Figure s713. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=100, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
 ![](./saved_runs/train60/confusion_matrix_normalized.png)  
-
-Figure 714. f1_over_confidence, yolov8n, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
+Figure s714. f1_over_confidence, yolov8n, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
 ![](./saved_runs/train61/F1_curve.png)  
-Figure 715. precision_over_recall, yolov8n, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
+Figure s715. precision_over_recall, yolov8n, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
 ![](./saved_runs/train61/PR_curve.png)  
-Figure 716. precision_over_confidence, yolov8n, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
+Figure s716. precision_over_confidence, yolov8n, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
 ![](./saved_runs/train61/P_curve.png)  
-Figure 717. recall_over_confidence, yolov8n, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
+Figure s717. recall_over_confidence, yolov8n, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
 ![](./saved_runs/train61/R_curve.png)  
-Figure 718. confusion_matrix, yolov8n, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
+Figure s718. confusion_matrix, yolov8n, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
 ![](./saved_runs/train61/confusion_matrix.png)  
-Figure 719. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
+Figure s719. confusion_matrix_normalized, yolov8n, pre-trained=False, epochs=150, data=toggenburg_alpaca_ranch, hyperparameter-tuned=True  
 ![](./saved_runs/train61/confusion_matrix_normalized.png)  
-
-Figure 720. f1_over_confidence, yolov8n, pre-trained=True, epochs=0, data=duomo, hyperparameter-tuned=False  
+Figure s720. f1_over_confidence, yolov8n, pre-trained=True, epochs=0, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/val2/F1_curve.png)  
-Figure 721. precision_over_recall, yolov8n, pre-trained=True, epochs=0, data=duomo, hyperparameter-tuned=False  
+Figure s721. precision_over_recall, yolov8n, pre-trained=True, epochs=0, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/val2/PR_curve.png)  
-Figure 722. precision_over_confidence, yolov8n, pre-trained=True, epochs=0, data=duomo, hyperparameter-tuned=False  
+Figure s722. precision_over_confidence, yolov8n, pre-trained=True, epochs=0, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/val2/P_curve.png)  
-Figure 723. recall_over_confidence, yolov8n, pre-trained=True, epochs=0, data=duomo, hyperparameter-tuned=False  
+Figure s723. recall_over_confidence, yolov8n, pre-trained=True, epochs=0, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/val2/R_curve.png)  
-Figure 724. confusion_matrix, yolov8n, pre-trained=True, epochs=0, data=duomo, hyperparameter-tuned=False  
+Figure s724. confusion_matrix, yolov8n, pre-trained=True, epochs=0, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/val2/confusion_matrix.png)  
-Figure 725. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=0, data=duomo, hyperparameter-tuned=False  
+Figure s725. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=0, data=duomo, hyperparameter-tuned=False  
 ![](./saved_runs/val2/confusion_matrix_normalized.png)  
-
-Figure 726. f1_over_confidence, yolov8n, pre-trained=True, epochs=0, data=hadji_dimitar_square, hyperparameter-tuned=False  
+Figure s726. f1_over_confidence, yolov8n, pre-trained=True, epochs=0, data=hadji_dimitar_square, hyperparameter-tuned=False  
 ![](./saved_runs/val3/F1_curve.png)  
-Figure 727. precision_over_recall, yolov8n, pre-trained=True, epochs=0, data=hadji_dimitar_square, hyperparameter-tuned=False  
+Figure s727. precision_over_recall, yolov8n, pre-trained=True, epochs=0, data=hadji_dimitar_square, hyperparameter-tuned=False  
 ![](./saved_runs/val3/PR_curve.png)  
-Figure 728. precision_over_confidence, yolov8n, pre-trained=True, epochs=0, data=hadji_dimitar_square, hyperparameter-tuned=False  
+Figure s728. precision_over_confidence, yolov8n, pre-trained=True, epochs=0, data=hadji_dimitar_square, hyperparameter-tuned=False  
 ![](./saved_runs/val3/P_curve.png)  
-Figure 729. recall_over_confidence, yolov8n, pre-trained=True, epochs=0, data=hadji_dimitar_square, hyperparameter-tuned=False  
+Figure s729. recall_over_confidence, yolov8n, pre-trained=True, epochs=0, data=hadji_dimitar_square, hyperparameter-tuned=False  
 ![](./saved_runs/val3/R_curve.png)  
-Figure 730. confusion_matrix, yolov8n, pre-trained=True, epochs=0, data=hadji_dimitar_square, hyperparameter-tuned=False  
+Figure s730. confusion_matrix, yolov8n, pre-trained=True, epochs=0, data=hadji_dimitar_square, hyperparameter-tuned=False  
 ![](./saved_runs/val3/confusion_matrix.png)  
-Figure 731. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=0, data=hadji_dimitar_square, hyperparameter-tuned=False  
+Figure s731. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=0, data=hadji_dimitar_square, hyperparameter-tuned=False  
 ![](./saved_runs/val3/confusion_matrix_normalized.png)  
-
-Figure 732. f1_over_confidence, yolov8n, pre-trained=True, epochs=0, data=keskvaljak, hyperparameter-tuned=False  
+Figure s732. f1_over_confidence, yolov8n, pre-trained=True, epochs=0, data=keskvaljak, hyperparameter-tuned=False  
 ![](./saved_runs/val4/F1_curve.png)  
-Figure 733. precision_over_recall, yolov8n, pre-trained=True, epochs=0, data=keskvaljak, hyperparameter-tuned=False  
+Figure s733. precision_over_recall, yolov8n, pre-trained=True, epochs=0, data=keskvaljak, hyperparameter-tuned=False  
 ![](./saved_runs/val4/PR_curve.png)  
-Figure 734. precision_over_confidence, yolov8n, pre-trained=True, epochs=0, data=keskvaljak, hyperparameter-tuned=False  
+Figure s734. precision_over_confidence, yolov8n, pre-trained=True, epochs=0, data=keskvaljak, hyperparameter-tuned=False  
 ![](./saved_runs/val4/P_curve.png)  
-Figure 735. recall_over_confidence, yolov8n, pre-trained=True, epochs=0, data=keskvaljak, hyperparameter-tuned=False  
+Figure s735. recall_over_confidence, yolov8n, pre-trained=True, epochs=0, data=keskvaljak, hyperparameter-tuned=False  
 ![](./saved_runs/val4/R_curve.png)  
-Figure 736. confusion_matrix, yolov8n, pre-trained=True, epochs=0, data=keskvaljak, hyperparameter-tuned=False  
+Figure s736. confusion_matrix, yolov8n, pre-trained=True, epochs=0, data=keskvaljak, hyperparameter-tuned=False  
 ![](./saved_runs/val4/confusion_matrix.png)  
-Figure 737. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=0, data=keskvaljak, hyperparameter-tuned=False  
+Figure s737. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=0, data=keskvaljak, hyperparameter-tuned=False  
 ![](./saved_runs/val4/confusion_matrix_normalized.png)  
-
-Figure 738. f1_over_confidence, yolov8n, pre-trained=True, epochs=0, data=kielce_university_of_technology, hyperparameter-tuned=False  
+Figure s738. f1_over_confidence, yolov8n, pre-trained=True, epochs=0, data=kielce_university_of_technology, hyperparameter-tuned=False  
 ![](./saved_runs/val5/F1_curve.png)  
-Figure 739. precision_over_recall, yolov8n, pre-trained=True, epochs=0, data=kielce_university_of_technology, hyperparameter-tuned=False  
+Figure s739. precision_over_recall, yolov8n, pre-trained=True, epochs=0, data=kielce_university_of_technology, hyperparameter-tuned=False  
 ![](./saved_runs/val5/PR_curve.png)  
-Figure 740. precision_over_confidence, yolov8n, pre-trained=True, epochs=0, data=kielce_university_of_technology, hyperparameter-tuned=False  
+Figure s740. precision_over_confidence, yolov8n, pre-trained=True, epochs=0, data=kielce_university_of_technology, hyperparameter-tuned=False  
 ![](./saved_runs/val5/P_curve.png)  
-Figure 741. recall_over_confidence, yolov8n, pre-trained=True, epochs=0, data=kielce_university_of_technology, hyperparameter-tuned=False  
+Figure s741. recall_over_confidence, yolov8n, pre-trained=True, epochs=0, data=kielce_university_of_technology, hyperparameter-tuned=False  
 ![](./saved_runs/val5/R_curve.png)  
-Figure 742. confusion_matrix, yolov8n, pre-trained=True, epochs=0, data=kielce_university_of_technology, hyperparameter-tuned=False  
+Figure s742. confusion_matrix, yolov8n, pre-trained=True, epochs=0, data=kielce_university_of_technology, hyperparameter-tuned=False  
 ![](./saved_runs/val5/confusion_matrix.png)  
-Figure 744. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=0, data=kielce_university_of_technology, hyperparameter-tuned=False  
+Figure s744. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=0, data=kielce_university_of_technology, hyperparameter-tuned=False  
 ![](./saved_runs/val5/confusion_matrix_normalized.png)  
-
-Figure 745. f1_over_confidence, yolov8n, pre-trained=True, epochs=0, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
+Figure s745. f1_over_confidence, yolov8n, pre-trained=True, epochs=0, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
 ![](./saved_runs/val6/F1_curve.png)  
-Figure 746. precision_over_recall, yolov8n, pre-trained=True, epochs=0, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
+Figure s746. precision_over_recall, yolov8n, pre-trained=True, epochs=0, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
 ![](./saved_runs/val6/PR_curve.png)  
-Figure 747. precision_over_confidence, yolov8n, pre-trained=True, epochs=0, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
+Figure s747. precision_over_confidence, yolov8n, pre-trained=True, epochs=0, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
 ![](./saved_runs/val6/P_curve.png)  
-Figure 748. recall_over_confidence, yolov8n, pre-trained=True, epochs=0, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
+Figure s748. recall_over_confidence, yolov8n, pre-trained=True, epochs=0, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
 ![](./saved_runs/val6/R_curve.png)  
-Figure 749. confusion_matrix, yolov8n, pre-trained=True, epochs=0, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
+Figure s749. confusion_matrix, yolov8n, pre-trained=True, epochs=0, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
 ![](./saved_runs/val6/confusion_matrix.png)  
-Figure 750. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=0, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
+Figure s750. confusion_matrix_normalized, yolov8n, pre-trained=True, epochs=0, data=toggenburg_alpaca_ranch, hyperparameter-tuned=False  
 ![](./saved_runs/val6/confusion_matrix_normalized.png)  
