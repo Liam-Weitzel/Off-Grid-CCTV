@@ -138,8 +138,8 @@ pointLightTopRight.position.z = 10
 scene.add(pointLightTopRight)
 
 const points = []
-points.push(new THREE.Vector3(-90, 0, 0))
-points.push(new THREE.Vector3(90, 0, 0))
+points.push(new THREE.Vector3(-2, 0, 0))
+points.push(new THREE.Vector3(2, 0, 0))
 const latLine = new THREE.Line(
     new THREE.BufferGeometry().setFromPoints(points),
     new THREE.LineBasicMaterial({ color: 0x00ff00 })
@@ -200,24 +200,14 @@ window.addEventListener('resize', () =>
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 })
 
-/**
- * Animate
- */
-
 const clock = new THREE.Clock()
 
 const tick = () =>
 {
-
     const elapsedTime = clock.getElapsedTime()
 
-    // Update Orbital Controls
     controls.update()
-
-    // Render
     renderer.render(scene, camera)
-
-    // Call tick again on the next frame
     window.requestAnimationFrame(tick)
 }
 
