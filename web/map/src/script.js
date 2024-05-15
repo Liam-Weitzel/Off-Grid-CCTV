@@ -12,7 +12,6 @@ const sizes = {
 const loader = new THREE.TextureLoader()
 const height_map = loader.load('height_map.png')
 const texture = loader.load('texture.png')
-const under = loader.load('under.jpg')
 
 new RGBELoader().load('bg.hdr', function (texture) {
     texture.mapping = THREE.EquirectangularReflectionMapping
@@ -58,7 +57,7 @@ boxGeo.setAttribute(
 
 // Materials
 const boxMat = new THREE.MeshStandardMaterial({
-    map: under,
+    color: '#ead0a8',
     displacementMap: height_map,
     displacementScale: 2,
     onBeforeCompile: (shader) => {
@@ -204,7 +203,7 @@ const animate = () =>
 {
     controls.update()
     renderer.render(scene, camera)
-    window.requestAnimationFrame(tick)
+    window.requestAnimationFrame(animate)
 }
 
 animate()
