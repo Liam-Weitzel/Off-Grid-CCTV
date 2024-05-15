@@ -200,15 +200,11 @@ window.addEventListener('resize', () =>
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 })
 
-const clock = new THREE.Clock()
-
-const tick = () =>
+const animate = () =>
 {
-    const elapsedTime = clock.getElapsedTime()
-
     controls.update()
     renderer.render(scene, camera)
     window.requestAnimationFrame(tick)
 }
 
-tick()
+animate()
