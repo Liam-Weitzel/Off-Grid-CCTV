@@ -57,10 +57,6 @@ boxGeo.setAttribute(
 )
 
 // Materials
-const mapMat = new THREE.MeshStandardMaterial({
-    map: texture,
-})
-
 const boxMat = new THREE.MeshStandardMaterial({
     map: under,
     displacementMap: height_map,
@@ -97,7 +93,7 @@ const boxMat = new THREE.MeshStandardMaterial({
 });
 
 // Mesh
-const plane = new THREE.Mesh(planeGeo, mapMat)
+const plane = new THREE.Mesh(planeGeo, new THREE.MeshStandardMaterial({map: texture}))
 scene.add(plane)
 
 const box = new THREE.Mesh(boxGeo, [boxMat,boxMat,null,null,boxMat,boxMat])
@@ -129,15 +125,6 @@ loader.load('height_map.png', function (t) {
   planeGeo.computeVertexNormals()
 })
 
-const points = []
-points.push(new THREE.Vector3(-90, 0, 0))
-points.push(new THREE.Vector3(90, 0, 0))
-const latLine = new THREE.Line(
-    new THREE.BufferGeometry().setFromPoints(points),
-    new THREE.LineBasicMaterial({ color: 0x00ff00 })
-)
-scene.add(latLine)
-
 const pointLightBottomLeft = new THREE.PointLight(0xffffff, 0.9)
 pointLightBottomLeft.position.x = -10
 pointLightBottomLeft.position.y = 10
@@ -150,6 +137,15 @@ pointLightTopRight.position.y = 10
 pointLightTopRight.position.z = 10
 scene.add(pointLightTopRight)
 
+const points = []
+points.push(new THREE.Vector3(-90, 0, 0))
+points.push(new THREE.Vector3(90, 0, 0))
+const latLine = new THREE.Line(
+    new THREE.BufferGeometry().setFromPoints(points),
+    new THREE.LineBasicMaterial({ color: 0x00ff00 })
+)
+scene.add(latLine)
+
 const lonLine = latLine.clone()
 lonLine.rotateY(Math.PI / 2)
 scene.add(lonLine)
@@ -157,6 +153,14 @@ scene.add(lonLine)
 const altLine = latLine.clone()
 altLine.rotateZ(Math.PI / 2)
 scene.add(altLine)
+
+latLine.position.y = 100
+latLine.position.z = 100
+lonLine.position.y = 100
+lonLine.position.x = 100
+altLine.position.x = 100
+altLine.position.y = 100
+altLine.position.z = 100
 
 const mouse = new THREE.Vector2()
 const raycaster = new THREE.Raycaster()
@@ -170,7 +174,13 @@ function onDoubleClick(event) {
     const intersects = raycaster.intersectObject(plane, false)
     if (intersects.length > 0) {
         const { point, uv } = intersects[0]
-        console.log(point)
+        latLine.position.y = point.y
+        latLine.position.z = point.z
+        lonLine.position.y = point.y
+        lonLine.position.x = point.x
+        altLine.position.x = point.x
+        altLine.position.y = point.y
+        altLine.position.z = point.z
     }
 }
 renderer.domElement.addEventListener('dblclick', onDoubleClick, false)
