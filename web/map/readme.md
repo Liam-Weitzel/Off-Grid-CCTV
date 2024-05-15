@@ -1,7 +1,8 @@
 # Setup
-Download [Node.js](https://nodejs.org/en/download/) version 16.20.2.
-Pro-tip: use [NodeVersionManager](https://tecadmin.net/how-to-install-nvm-on-ubuntu-20-04/).
-Run this followed commands:
+Generate a height-map and satelite image using [heightmap](https://heightmap.skydark.pl/). Replace the default files in the souce folder.  
+Download [Node.js](https://nodejs.org/en/download/) version 16.20.2.  
+Pro-tip: use [NodeVersionManager](https://tecadmin.net/how-to-install-nvm-on-ubuntu-20-04/).  
+Run this followed commands:  
 
 ``` bash
 # Install dependencies (only the first time)
