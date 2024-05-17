@@ -37,6 +37,7 @@ public class CameraPreview extends FrameLayout {
         webSettings.setJavaScriptEnabled(true);
         addView(wv);
 
+        // When preview is clicked, open full screen version (CameraActivity)
         wv.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {

@@ -56,11 +56,13 @@ public class MapActivity extends AppCompatActivity {
     private String serverIp;
     private static final String apiPort = "8080";
 
+    // Retrofit interface for fetching configuration data
     interface FetchConfigs{
         @GET("/fetchConfigs")
         Call<ConfigsData> getConfigs();
     }
 
+    // Retrofit interface for fetching camera data
     interface FetchCameras{
         @GET("/fetchCameras")
         Call<List<CameraData>> getCameras();
@@ -73,6 +75,7 @@ public class MapActivity extends AppCompatActivity {
         Intent intent = getIntent();
         serverIp = intent.getStringExtra("serverIp");
 
+        // Initialize Retrofit for network requests using serverIp from intent callee
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://" + serverIp + ":" + apiPort + "/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -80,6 +83,7 @@ public class MapActivity extends AppCompatActivity {
 
         FetchConfigs configs = retrofit.create(FetchConfigs.class);
 
+        // Enqueue the network request to fetch configuration data
         configs.getConfigs().enqueue(new Callback<ConfigsData>() {
             @Override
             public void onResponse(Call<ConfigsData> call, Response<ConfigsData> response) {
@@ -109,6 +113,7 @@ public class MapActivity extends AppCompatActivity {
 
         FetchCameras cameras = retrofit.create(FetchCameras.class);
 
+        // Enqueue the network request to fetch camera data
         cameras.getCameras().enqueue(new Callback<List<CameraData>>() {
             @Override
             public void onResponse(Call<List<CameraData>> call, Response<List<CameraData>> response) {
@@ -131,9 +136,9 @@ public class MapActivity extends AppCompatActivity {
 
     private StyleContract.StyleExtension createStyle() {
         CompassPlugin compassPlugin = mapView.getPlugin(Plugin.MAPBOX_COMPASS_PLUGIN_ID);
-        compassPlugin.setEnabled(false);
+        compassPlugin.setEnabled(false); //Defaults to true
         ScaleBarPlugin scaleBarPlugin = mapView.getPlugin(Plugin.MAPBOX_SCALEBAR_PLUGIN_ID);
-        scaleBarPlugin.setEnabled(false);
+        scaleBarPlugin.setEnabled(false); //Defaults to true
 
         StyleExtensionImpl.Builder builder = new StyleExtensionImpl.Builder(Style.SATELLITE);
 
@@ -148,16 +153,21 @@ public class MapActivity extends AppCompatActivity {
         return builder.build();
     }
 
+    // Add an annotation to the map for a given camera
     private void addAnnotationToMap(CameraData camera) {
         Bitmap bitmap = bitmapFromDrawableRes(this, R.drawable.camera);
         if (bitmap != null) {
+            // Create a PointAnnotationManager for managing annotations
             AnnotationPlugin annotationApi = mapView.getPlugin(Plugin.MAPBOX_ANNOTATION_PLUGIN_ID);
             PointAnnotationManager pointAnnotationManager = (PointAnnotationManager) annotationApi.createAnnotationManager(AnnotationType.PointAnnotation, new AnnotationConfig());
+
+            // Configure annotation options
             PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions()
                     .withPoint(Point.fromLngLat(Double.parseDouble(camera.getLon()), Double.parseDouble(camera.getLat())))
                     .withIconImage(bitmap);
             pointAnnotationManager.create(pointAnnotationOptions);
 
+            // Set a click listener for the annotation
             pointAnnotationManager.addClickListener(pointAnnotation -> {
                 openCameraPreview(camera);
                 return false;
@@ -165,10 +175,13 @@ public class MapActivity extends AppCompatActivity {
         }
     }
 
+    // Open a camera preview when an annotation is clicked
     private void openCameraPreview(CameraData camera) {
         CameraPreview cameraPreview = new CameraPreview(this);
         cameraPreview.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         cameraPreview.init(serverIp, apiPort, camera.getHttpPort());
+
+        // Configure view annotation options
         AnnotatedFeature annotatedFeature = new AnnotatedFeature(Point.fromLngLat(Double.parseDouble(camera.getLon()), Double.parseDouble(camera.getLat())));
         ViewAnnotationOptions options = new ViewAnnotationOptions.Builder()
                 .annotatedFeature(annotatedFeature)
@@ -178,12 +191,16 @@ public class MapActivity extends AppCompatActivity {
                 .visible(true)
                 .build();
 
+        // Add the view annotation to the map
         ViewAnnotationManager viewAnnotationManager = mapView.getViewAnnotationManager();
         viewAnnotationManager.addViewAnnotation(cameraPreview, options);
     }
 
+    // Initialize gesture handlers for the map
     private void clickHandler() {
         GesturesPlugin gesturesPlugin = mapView.getPlugin(Plugin.MAPBOX_GESTURES_PLUGIN_ID);
+
+        // Disable various gesture interactions that default to true
         gesturesPlugin.setRotateEnabled(false);
         gesturesPlugin.setPitchEnabled(false);
         gesturesPlugin.setRotateDecelerationEnabled(false);
@@ -206,10 +223,11 @@ public class MapActivity extends AppCompatActivity {
 
             @Override
             public boolean onMove(@NonNull MoveGestureDetector moveGestureDetector) {
-
+                // Update the camera bearing and pitch based on touch movement
                 bearing += (double) ((moveGestureDetector.getLastDistanceX()-pressedX)/11);
                 pitch += (double) ((moveGestureDetector.getLastDistanceY()-pressedY)/15);
 
+                // Clamp the pitch value to the allowable range
                 if(pitch > 60.0) pitch = 60.0;
                 if(pitch < 0.0) pitch = 0.0;
 
@@ -227,10 +245,11 @@ public class MapActivity extends AppCompatActivity {
 
             @Override
             public void onMoveEnd(@NonNull MoveGestureDetector moveGestureDetector) {
-
+                // No action needed on move end
             }
         });
 
+        //If user clicks on the map, close all open camera previews
         gesturesPlugin.addOnMapClickListener(point -> {
             ViewAnnotationManager viewAnnotationManager = mapView.getViewAnnotationManager();
             if(!viewAnnotationManager.getAnnotations().isEmpty()) {
